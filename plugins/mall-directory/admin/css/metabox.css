@@ -1,0 +1,64 @@
+.mall-dir-metabox {
+    padding: 10px 0;
+}
+
+.mall-dir-field {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.mall-dir-field label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.logo-upload-wrapper {
+    margin-top: 10px;
+}
+
+.logo-upload-wrapper img {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.logo-upload-wrapper button {
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+.coordinates-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.coord-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.coord-field input[type="number"] {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.coord-field input[type="number"]:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.1);
+}
+
+@media (max-width: 600px) {
+    .coordinates-wrapper {
+        grid-template-columns: 1fr;
+    }
+}

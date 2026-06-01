@@ -1,0 +1,395 @@
+/* Mall Directory Container */
+.mall-directory-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+/* Filter Section */
+.mall-directory-filters {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.filter-group h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.category-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.category-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.category-checkbox input[type="checkbox"] {
+    margin-right: 8px;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    accent-color: #0073aa;
+}
+
+.category-checkbox span {
+    color: #555;
+    font-size: 14px;
+}
+
+.category-checkbox:hover span {
+    color: #0073aa;
+}
+
+.store-search-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.store-search-input:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1);
+}
+
+/* Main Directory Section */
+.mall-directory-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+/* Floor Plan Section */
+.floor-plan-section {
+    position: sticky;
+    top: 20px;
+}
+
+.floor-plan-container {
+    position: relative;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.floor-plan-image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.stores-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Store Markers */
+.store-marker {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    pointer-events: all;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.store-marker:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    z-index: 100;
+}
+
+.store-marker.active {
+    transform: translate(-50%, -50%) scale(1.15);
+    z-index: 101;
+}
+
+.store-marker-inner {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border: 3px solid #0073aa;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+}
+
+.store-marker:hover .store-marker-inner,
+.store-marker.active .store-marker-inner {
+    border-color: #005a87;
+    background: #e7f1f8;
+    box-shadow: 0 4px 12px rgba(0, 115, 170, 0.3);
+}
+
+.store-marker-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.store-marker-icon {
+    font-size: 24px;
+}
+
+.store-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 12px;
+    margin-bottom: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 200;
+}
+
+.store-marker:hover .store-tooltip {
+    opacity: 1;
+}
+
+.store-tooltip strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 3px;
+}
+
+.store-tooltip small {
+    display: block;
+    color: #bbb;
+}
+
+/* Stores List Section */
+.stores-list-section {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    max-height: 800px;
+    overflow-y: auto;
+}
+
+.stores-list-section h3 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.stores-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.store-item {
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.store-item:hover {
+    border-color: #0073aa;
+    background: #f9f9f9;
+}
+
+.store-item.active {
+    background: #e7f1f8;
+    border-color: #0073aa;
+    box-shadow: 0 2px 8px rgba(0, 115, 170, 0.15);
+}
+
+.store-item-header {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.store-item-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.store-item-logo-placeholder {
+    width: 60px;
+    height: 60px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+.store-item-info {
+    flex: 1;
+}
+
+.store-item-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.store-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.category-badge {
+    display: inline-block;
+    background: #0073aa;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.store-item-description {
+    margin: 0;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.no-stores-message,
+.no-results-found {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+    font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .mall-directory-filters {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .mall-directory-main {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .floor-plan-section {
+        position: static;
+    }
+    
+    .stores-list-section {
+        max-height: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .mall-directory-container {
+        padding: 15px;
+    }
+    
+    .mall-directory-filters {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .filter-group h3 {
+        font-size: 14px;
+    }
+    
+    .category-checkbox span {
+        font-size: 13px;
+    }
+    
+    .mall-directory-main {
+        gap: 15px;
+    }
+    
+    .store-marker-inner {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .store-marker-logo {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .store-marker-icon {
+        font-size: 18px;
+    }
+    
+    .stores-list-section {
+        padding: 15px;
+    }
+    
+    .store-item-header {
+        gap: 10px;
+    }
+    
+    .store-item-logo,
+    .store-item-logo-placeholder {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .store-item-info h4 {
+        font-size: 13px;
+    }
+}
+
+/* Scrollbar Styling */
+.stores-list-section::-webkit-scrollbar {
+    width: 6px;
+}
+
+.stores-list-section::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.stores-list-section::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.stores-list-section::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
