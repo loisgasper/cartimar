@@ -9,16 +9,16 @@ if (!defined('ABSPATH')) {
 
 // Get all stores
 $stores = new WP_Query([
-    'post_type' => 'md_store',
+    'post_type'      => 'md_store',
     'posts_per_page' => -1,
-    'orderby' => 'title',
-    'order' => 'ASC',
+    'orderby'        => 'title',
+    'order'          => 'ASC',
 ]);
 
-// Get all categories
+// Get only categories that have at least one store
 $categories = get_terms([
-    'taxonomy' => 'md_store_category',
-    'hide_empty' => false,
+    'taxonomy'   => 'md_store_category',
+    'hide_empty' => true,
 ]);
 
 // Prepare stores data for JavaScript
@@ -26,122 +26,111 @@ $stores_data = [];
 if ($stores->have_posts()) {
     while ($stores->have_posts()) {
         $stores->the_post();
-        $store_id = get_the_ID();
-        $logo_id = get_post_meta($store_id, '_md_store_logo', true);
-        $logo_url = $logo_id ? wp_get_attachment_url($logo_id) : '';
-        $map_x = get_post_meta($store_id, '_md_store_map_x', true);
-        $map_y = get_post_meta($store_id, '_md_store_map_y', true);
-        
-        $terms = wp_get_post_terms($store_id, 'md_store_category', ['fields' => 'all']);
+        $store_id   = get_the_ID();
+        $logo_id    = get_post_meta($store_id, '_md_store_logo', true);
+        $logo_url   = $logo_id ? wp_get_attachment_url($logo_id) : '';
+        $map_x      = get_post_meta($store_id, '_md_store_map_x', true);
+        $map_y      = get_post_meta($store_id, '_md_store_map_y', true);
+        $store_name = get_post_meta($store_id, '_md_store_name', true);
+
+        $terms           = wp_get_post_terms($store_id, 'md_store_category', ['fields' => 'all']);
         $categories_list = [];
         if (!empty($terms)) {
             foreach ($terms as $term) {
-                $categories_list[] = [
-                    'id' => $term->term_id,
-                    'name' => $term->name,
-                ];
+                $categories_list[] = ['id' => $term->term_id, 'name' => $term->name];
             }
         }
-        
+
         $stores_data[] = [
-            'id' => $store_id,
-            'title' => get_the_title(),
-            'logo' => $logo_url,
-            'x' => (int)$map_x,
-            'y' => (int)$map_y,
+            'id'         => $store_id,
+            'title'      => $store_name ?: get_the_title(),
+            'logo'       => $logo_url,
+            'x'          => (int) $map_x,
+            'y'          => (int) $map_y,
+            'location'   => get_post_meta($store_id, '_md_store_location', true),
+            'phone'      => get_post_meta($store_id, '_md_store_phone', true),
+            'map_area'   => get_post_meta($store_id, '_md_store_map_area', true),
             'categories' => $categories_list,
-            'description' => get_the_excerpt(),
         ];
     }
     wp_reset_postdata();
 }
+
+// Collect unique map areas that have at least one store (preserving map order)
+$area_order = array_column(mall_dir_get_map_areas(), 'name');
+$used_areas = array_filter(array_unique(array_column($stores_data, 'map_area')));
+usort($used_areas, function($a, $b) use ($area_order) {
+    $ai = array_search($a, $area_order);
+    $bi = array_search($b, $area_order);
+    return ($ai === false ? 999 : $ai) - ($bi === false ? 999 : $bi);
+});
+
+$pin_icon = '<svg class="store-pin-svg" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>';
 ?>
 
 <div class="mall-directory-container">
-    
-    <!-- Filter Section -->
+
+    <!-- Category Pills + Search -->
     <div class="mall-directory-filters">
-        <div class="filter-group">
-            <h3><?php _e('Filter by Category', 'mall-directory'); ?></h3>
-            <div class="category-filters">
-                <?php if (!empty($categories) && !is_wp_error($categories)): ?>
-                    <?php foreach ($categories as $category): ?>
-                        <label class="category-checkbox">
-                            <input type="checkbox" value="<?php echo esc_attr($category->term_id); ?>" class="store-category-filter">
-                            <span><?php echo esc_html($category->name); ?></span>
-                        </label>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </div>
+        <div class="category-pills">
+            <button class="category-pill is-active" data-filter-type="all">
+                <?php _e('All Shops', 'mall-directory'); ?>
+            </button>
+            <?php foreach ($used_areas as $area): ?>
+                <button class="category-pill" data-filter-type="location" data-location="<?php echo esc_attr($area); ?>">
+                    <?php echo esc_html($area); ?>
+                </button>
+            <?php endforeach; ?>
         </div>
-        
-        <div class="filter-group">
-            <h3><?php _e('Search Store', 'mall-directory'); ?></h3>
-            <input type="text" id="store-search" class="store-search-input" placeholder="<?php _e('Enter store name...', 'mall-directory'); ?>">
+        <div class="search-wrapper">
+            <input type="text" id="store-search" class="store-search-input" placeholder="<?php _e('Search directory...', 'mall-directory'); ?>">
         </div>
     </div>
 
-    <!-- Main Directory Section -->
+    <!-- Main: Map (left 70%) | Stores (right 30%) -->
     <div class="mall-directory-main">
-        
+
         <!-- Floor Plan Map -->
         <div class="floor-plan-section">
             <div class="floor-plan-container">
-                <img src="<?php echo esc_url($atts['floorplan']); ?>" alt="<?php _e('Floor Plan', 'mall-directory'); ?>" class="floor-plan-image" id="floorPlanImage">
-                <div class="stores-overlay" id="storesOverlay">
-                    <?php foreach ($stores_data as $store): ?>
-                        <div class="store-marker" 
-                             data-store-id="<?php echo esc_attr($store['id']); ?>"
-                             data-categories="<?php echo esc_attr(json_encode(array_column($store['categories'], 'id'))); ?>"
-                             style="left: <?php echo esc_attr($store['x']); ?>px; top: <?php echo esc_attr($store['y']); ?>px;">
-                            <div class="store-marker-inner">
-                                <?php if ($store['logo']): ?>
-                                    <img src="<?php echo esc_url($store['logo']); ?>" alt="<?php echo esc_attr($store['title']); ?>" class="store-marker-logo">
-                                <?php else: ?>
-                                    <span class="store-marker-icon">🏪</span>
-                                <?php endif; ?>
-                            </div>
-                            <div class="store-tooltip">
-                                <strong><?php echo esc_html($store['title']); ?></strong>
-                                <?php if (!empty($store['categories'])): ?>
-                                    <br><small><?php echo esc_html(implode(', ', array_column($store['categories'], 'name'))); ?></small>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
+                <div id="mallDirectoryMap" class="mall-directory-map" data-floorplan="<?php echo esc_url($atts['floorplan']); ?>"></div>
             </div>
         </div>
 
         <!-- Store List -->
         <div class="stores-list-section">
-            <h3><?php _e('Store Directory', 'mall-directory'); ?></h3>
             <div class="stores-list" id="storesList">
                 <?php foreach ($stores_data as $store): ?>
-                    <div class="store-item" 
+                    <div class="store-item"
                          data-store-id="<?php echo esc_attr($store['id']); ?>"
                          data-store-name="<?php echo esc_attr($store['title']); ?>"
+                         data-map-area="<?php echo esc_attr($store['map_area']); ?>"
                          data-categories="<?php echo esc_attr(json_encode(array_column($store['categories'], 'id'))); ?>">
-                        <div class="store-item-header">
+
+                        <div class="store-item-thumb">
                             <?php if ($store['logo']): ?>
-                                <img src="<?php echo esc_url($store['logo']); ?>" alt="<?php echo esc_attr($store['title']); ?>" class="store-item-logo">
+                                <img src="<?php echo esc_url($store['logo']); ?>" alt="<?php echo esc_attr($store['title']); ?>">
                             <?php else: ?>
-                                <div class="store-item-logo-placeholder">🏪</div>
+                                <div class="store-item-thumb--pin"><?php echo $pin_icon; ?></div>
                             <?php endif; ?>
-                            <div class="store-item-info">
-                                <h4><?php echo esc_html($store['title']); ?></h4>
-                                <?php if (!empty($store['categories'])): ?>
-                                    <div class="store-categories">
-                                        <?php foreach ($store['categories'] as $cat): ?>
-                                            <span class="category-badge"><?php echo esc_html($cat['name']); ?></span>
-                                        <?php endforeach; ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
                         </div>
-                        <?php if (!empty($store['description'])): ?>
-                            <p class="store-item-description"><?php echo wp_kses_post($store['description']); ?></p>
-                        <?php endif; ?>
+
+                        <div class="store-item-info">
+                            <h4><?php echo esc_html($store['title']); ?></h4>
+                            <?php if (!empty($store['location'])): ?>
+                                <p class="store-item-location">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                    <?php echo esc_html($store['location']); ?>
+                                </p>
+                            <?php endif; ?>
+                            <?php if (!empty($store['phone'])): ?>
+                                <p class="store-item-phone">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+                                    <?php echo esc_html($store['phone']); ?>
+                                </p>
+                            <?php endif; ?>
+                        </div>
+
                     </div>
                 <?php endforeach; ?>
             </div>

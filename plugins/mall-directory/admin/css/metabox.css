@@ -29,36 +29,68 @@
     margin-bottom: 10px;
 }
 
-.coordinates-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-.coord-field label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 5px;
-    font-size: 13px;
-}
-
-.coord-field input[type="number"] {
+.mall-dir-text-input {
     width: 100%;
-    padding: 6px;
+    padding: 7px 10px;
     border: 1px solid #ddd;
     border-radius: 3px;
     font-size: 14px;
+    margin-top: 6px;
+    box-sizing: border-box;
 }
 
-.coord-field input[type="number"]:focus {
+.mall-dir-text-input:focus {
     outline: none;
     border-color: #0073aa;
     box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.1);
 }
 
-@media (max-width: 600px) {
-    .coordinates-wrapper {
-        grid-template-columns: 1fr;
-    }
+.mall-dir-area-select {
+    width: 100%;
+    max-width: 480px;
+    padding: 7px 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+.mall-dir-area-select:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.1);
+}
+
+.mall-dir-map-picker {
+    margin-top: 20px;
+}
+
+.mall-dir-floorplan-wrapper {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    max-width: 100%;
+}
+
+.mall-dir-floorplan-wrapper img {
+    display: block;
+    width: 100%;
+    height: auto;
+    cursor: default;
+}
+
+.mall-dir-floorplan-marker {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    margin-left: -9px;
+    margin-top: -9px;
+    background: rgba(0, 115, 170, 0.9);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }

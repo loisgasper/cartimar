@@ -1,395 +1,281 @@
-/* Mall Directory Container */
+/* ── Container ─────────────────────────────────────────────── */
 .mall-directory-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* Filter Section */
+/* ── Category Pills + Search ────────────────────────────────── */
 .mall-directory-filters {
-    background: #f5f5f5;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-}
-
-.filter-group h3 {
-    margin: 0 0 15px 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-}
-
-.category-filters {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.category-checkbox {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 20px 32px;
+    border-bottom: 1px solid #e8e8ee;
+    margin-bottom: 0;
+}
+
+.category-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex: 1;
+}
+
+.category-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
     cursor: pointer;
-    user-select: none;
+    border: 1.5px solid #ddd;
+    background: #fff;
+    color: #333;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    line-height: 1;
+}
+.category-pill:hover {
+    border-color: #1a1a3c;
+    color: #1a1a3c;
+}
+.category-pill.is-active {
+    background: #1a1a3c;
+    border-color: #1a1a3c;
+    color: #fff;
 }
 
-.category-checkbox input[type="checkbox"] {
-    margin-right: 8px;
-    cursor: pointer;
-    width: 16px;
-    height: 16px;
-    accent-color: #0073aa;
-}
-
-.category-checkbox span {
-    color: #555;
-    font-size: 14px;
-}
-
-.category-checkbox:hover span {
-    color: #0073aa;
-}
+.search-wrapper { flex-shrink: 0; }
 
 .store-search-input {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-.store-search-input:focus {
+    padding: 8px 16px;
+    border: 1.5px solid #ddd;
+    border-radius: 999px;
+    font-size: 13px;
     outline: none;
-    border-color: #0073aa;
-    box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1);
+    width: 200px;
+    transition: border-color 0.2s ease;
 }
+.store-search-input:focus { border-color: #1a1a3c; }
 
-/* Main Directory Section */
+/* ── Main grid: map 70% | list 30% ──────────────────────────── */
 .mall-directory-main {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    grid-template-columns: 70% 30%;
     align-items: start;
+    min-height: 600px;
 }
 
-/* Floor Plan Section */
+/* ── Floor Plan (left) ──────────────────────────────────────── */
 .floor-plan-section {
     position: sticky;
-    top: 20px;
+    top: 0;
+    height: 680px;
+    border-right: 1px solid #e8e8ee;
 }
 
 .floor-plan-container {
-    position: relative;
-    background: #fff;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.floor-plan-image {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
-.stores-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
+    background: #f9f9fb;
 }
 
-/* Store Markers */
-.store-marker {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    pointer-events: all;
-    cursor: pointer;
-    transition: transform 0.2s ease;
+.mall-directory-map {
+    width: 100%;
+    height: 680px;
 }
 
-.store-marker:hover {
-    transform: translate(-50%, -50%) scale(1.1);
-    z-index: 100;
-}
+.leaflet-container { background: #f9f9fb; }
 
-.store-marker.active {
-    transform: translate(-50%, -50%) scale(1.15);
-    z-index: 101;
-}
-
-.store-marker-inner {
-    width: 50px;
-    height: 50px;
-    background: white;
-    border: 3px solid #0073aa;
-    border-radius: 50%;
+/* ── Leaflet markers ────────────────────────────────────────── */
+.mall-directory-marker {
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    transition: all 0.2s ease;
+    border: 2.5px solid #1a1a3c;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    overflow: hidden;
 }
-
-.store-marker:hover .store-marker-inner,
-.store-marker.active .store-marker-inner {
-    border-color: #005a87;
-    background: #e7f1f8;
-    box-shadow: 0 4px 12px rgba(0, 115, 170, 0.3);
-}
-
-.store-marker-logo {
-    width: 40px;
-    height: 40px;
+.mall-directory-marker img {
+    width: 42px;
+    height: 42px;
     object-fit: cover;
     border-radius: 50%;
 }
 
-.store-marker-icon {
-    font-size: 24px;
+/* Pin-style marker (no logo) */
+.mall-directory-marker--pin {
+    width: 32px;
+    height: 42px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    border: none;
+    background: #1a1a3c;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mall-directory-marker--pin .leaflet-marker-inner {
+    transform: rotate(45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.mall-directory-marker--pin svg {
+    width: 16px;
+    height: 16px;
+    fill: #fff;
 }
 
-.store-tooltip {
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #333;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 4px;
-    white-space: nowrap;
-    font-size: 12px;
-    margin-bottom: 10px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-    z-index: 200;
+.leaflet-marker-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
 }
 
-.store-marker:hover .store-tooltip {
-    opacity: 1;
+.mall-directory-tooltip {
+    background: rgba(26,26,60,0.95) !important;
+    color: #fff !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2) !important;
+    border: none !important;
 }
+.mall-directory-tooltip strong { display: block; font-size: 14px; margin-bottom: 3px; }
+.mall-directory-tooltip em { display: block; font-size: 12px; color: rgba(255,255,255,0.75); }
 
-.store-tooltip strong {
-    display: block;
-    font-size: 13px;
-    margin-bottom: 3px;
-}
-
-.store-tooltip small {
-    display: block;
-    color: #bbb;
-}
-
-/* Stores List Section */
+/* ── Store List (right) ─────────────────────────────────────── */
 .stores-list-section {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    max-height: 800px;
+    height: 680px;
     overflow-y: auto;
-}
-
-.stores-list-section h3 {
-    margin: 0 0 20px 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
+    background: #fff;
 }
 
 .stores-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
 }
 
+/* ── Store Card ──────────────────────────────────────────────── */
 .store-item {
-    padding: 15px;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
-
-.store-item:hover {
-    border-color: #0073aa;
-    background: #f9f9f9;
-}
-
-.store-item.active {
-    background: #e7f1f8;
-    border-color: #0073aa;
-    box-shadow: 0 2px 8px rgba(0, 115, 170, 0.15);
-}
-
-.store-item-header {
     display: flex;
+    align-items: center;
     gap: 12px;
-    margin-bottom: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f0f0f4;
+    cursor: pointer;
+    transition: background 0.18s ease;
 }
+.store-item:hover  { background: #f5f5fa; }
+.store-item.active {
+    background: #1a1a3c;
+}
+.store-item.active .store-item-info h4,
+.store-item.active .store-item-location,
+.store-item.active .store-item-phone,
+.store-item.active .store-item-location svg,
+.store-item.active .store-item-phone svg { color: #fff; fill: #fff; }
 
-.store-item-logo {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 4px;
+/* Thumbnail */
+.store-item-thumb {
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
     flex-shrink: 0;
-}
-
-.store-item-logo-placeholder {
-    width: 60px;
-    height: 60px;
-    background: #f0f0f0;
-    border-radius: 4px;
+    overflow: hidden;
+    background: #f0f0f5;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
+}
+.store-item-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.store-item-thumb--pin {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eeeef5;
+    border-radius: 8px;
+}
+.store-pin-svg {
+    width: 26px;
+    height: 26px;
+    fill: #1a1a3c;
+}
+
+/* Info */
+.store-item-info { flex: 1; min-width: 0; }
+.store-item-info h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a3c;
+    margin: 0 0 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.store-item-location,
+.store-item-phone {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #777;
+    margin: 2px 0 0 0;
+    line-height: 1.3;
+}
+.store-item-location svg,
+.store-item-phone svg {
+    width: 12px;
+    height: 12px;
+    fill: #999;
     flex-shrink: 0;
 }
 
-.store-item-info {
-    flex: 1;
-}
-
-.store-item-info h4 {
-    margin: 0 0 5px 0;
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
-}
-
-.store-categories {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-}
-
-.category-badge {
-    display: inline-block;
-    background: #0073aa;
-    color: white;
-    padding: 3px 8px;
-    border-radius: 3px;
-    font-size: 11px;
-    font-weight: 500;
-}
-
-.store-item-description {
-    margin: 0;
-    font-size: 13px;
-    color: #666;
-    line-height: 1.5;
-}
-
+/* Empty states */
 .no-stores-message,
 .no-results-found {
-    text-align: center;
     padding: 40px 20px;
-    color: #999;
+    text-align: center;
+    color: #aaa;
     font-size: 14px;
 }
 
-/* Responsive Design */
+/* Scrollbar */
+.stores-list-section::-webkit-scrollbar { width: 4px; }
+.stores-list-section::-webkit-scrollbar-track { background: #f5f5f5; }
+.stores-list-section::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+.stores-list-section::-webkit-scrollbar-thumb:hover { background: #aaa; }
+
+/* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-    .mall-directory-filters {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-    
-    .mall-directory-main {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .floor-plan-section {
-        position: static;
-    }
-    
-    .stores-list-section {
-        max-height: none;
-    }
+    .mall-directory-main { grid-template-columns: 1fr; }
+    .floor-plan-section  { position: static; height: 420px; border-right: none; border-bottom: 1px solid #e8e8ee; }
+    .mall-directory-map  { height: 420px; }
+    .stores-list-section { height: auto; max-height: 500px; }
 }
 
-@media (max-width: 768px) {
-    .mall-directory-container {
-        padding: 15px;
-    }
-    
-    .mall-directory-filters {
-        padding: 15px;
-        margin-bottom: 20px;
-    }
-    
-    .filter-group h3 {
-        font-size: 14px;
-    }
-    
-    .category-checkbox span {
-        font-size: 13px;
-    }
-    
-    .mall-directory-main {
-        gap: 15px;
-    }
-    
-    .store-marker-inner {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .store-marker-logo {
-        width: 32px;
-        height: 32px;
-    }
-    
-    .store-marker-icon {
-        font-size: 18px;
-    }
-    
-    .stores-list-section {
-        padding: 15px;
-    }
-    
-    .store-item-header {
-        gap: 10px;
-    }
-    
-    .store-item-logo,
-    .store-item-logo-placeholder {
-        width: 50px;
-        height: 50px;
-    }
-    
-    .store-item-info h4 {
-        font-size: 13px;
-    }
-}
-
-/* Scrollbar Styling */
-.stores-list-section::-webkit-scrollbar {
-    width: 6px;
-}
-
-.stores-list-section::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 3px;
-}
-
-.stores-list-section::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 3px;
-}
-
-.stores-list-section::-webkit-scrollbar-thumb:hover {
-    background: #999;
+@media (max-width: 640px) {
+    .mall-directory-filters { padding: 16px; }
+    .store-search-input { width: 100%; }
+    .search-wrapper { width: 100%; }
 }

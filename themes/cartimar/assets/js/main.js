@@ -1,0 +1,56 @@
+jQuery(function ($) {
+
+    // Nav: add .scrolled class on scroll
+    var nav = $('#cartNav');
+    $(window).on('scroll', function () {
+        if ($(this).scrollTop() > 60) {
+            nav.addClass('scrolled');
+        } else {
+            nav.removeClass('scrolled');
+        }
+    });
+
+    // Category pill active state (visual only — the checkbox still drives filtering)
+    $(document).on('change', '.store-category-filter', function () {
+        var $label = $(this).closest('.category-checkbox');
+        if ($(this).is(':checked')) {
+            $label.addClass('is-checked');
+        } else {
+            $label.removeClass('is-checked');
+        }
+    });
+
+    // Hero search → focus the directory search input
+    $('.cart-hero__search').on('submit', function (e) {
+        e.preventDefault();
+        var query = $(this).find('.cart-hero__search-input').val().trim();
+        var $directorySearch = $('#store-search');
+        if ($directorySearch.length) {
+            $('html, body').animate({ scrollTop: $('#directory').offset().top - 80 }, 500, function () {
+                $directorySearch.val(query).trigger('keyup');
+            });
+        }
+    });
+
+    // Smooth scroll for all anchor links
+    $(document).on('click', 'a[href*="#"]', function (e) {
+        var target = this.hash;
+        if (!target || $(target).length === 0) return;
+        e.preventDefault();
+        $('html, body').animate({ scrollTop: $(target).offset().top - 70 }, 500);
+    });
+
+    // Fade-in sections on scroll
+    var $sections = $('section');
+    function checkVisible() {
+        $sections.each(function () {
+            var top = $(this).offset().top;
+            var scrollBottom = $(window).scrollTop() + $(window).height();
+            if (scrollBottom > top + 80 && !$(this).hasClass('visible')) {
+                $(this).addClass('visible');
+            }
+        });
+    }
+    $(window).on('scroll', checkVisible);
+    checkVisible();
+});
