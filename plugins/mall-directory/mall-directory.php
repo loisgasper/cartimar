@@ -62,9 +62,7 @@ add_action('admin_enqueue_scripts', 'mall_dir_admin_enqueue_scripts');
 
 // Enqueue frontend scripts and styles
 function mall_dir_frontend_enqueue_scripts() {
-    wp_enqueue_style('leaflet-css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', [], '1.9.4');
-    wp_enqueue_script('leaflet-js', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', [], '1.9.4', true);
-    wp_enqueue_script('mall-dir-frontend', MALL_DIR_PLUGIN_URL . 'frontend/js/directory.js', ['jquery', 'leaflet-js'], MALL_DIR_VERSION, true);
+    wp_enqueue_script('mall-dir-frontend', MALL_DIR_PLUGIN_URL . 'frontend/js/directory.js', ['jquery'], MALL_DIR_VERSION, true);
     wp_enqueue_style('mall-dir-frontend-css', MALL_DIR_PLUGIN_URL . 'frontend/css/directory.css', [], MALL_DIR_VERSION);
 }
 add_action('wp_enqueue_scripts', 'mall_dir_frontend_enqueue_scripts');

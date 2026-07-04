@@ -63,124 +63,81 @@
 /* ── Main grid: map 70% | list 30% ──────────────────────────── */
 .mall-directory-main {
     display: grid;
-    grid-template-columns: 70% 30%;
-    align-items: start;
-    min-height: 600px;
+    grid-template-columns: 30% 70%;
+    align-items: stretch;
+    min-height: 500px;
 }
 
 /* ── Floor Plan (left) ──────────────────────────────────────── */
 .floor-plan-section {
     position: sticky;
     top: 0;
-    height: 680px;
+    /* height auto — follows the SVG's natural aspect ratio */
+    max-height: 680px;
+    overflow: hidden;
     border-right: 1px solid #e8e8ee;
 }
 
 .floor-plan-container {
+    position: relative;
     width: 100%;
-    height: 100%;
-    background: #f9f9fb;
-}
-
-.mall-directory-map {
-    width: 100%;
-    height: 680px;
-}
-
-.leaflet-container { background: #f9f9fb; }
-
-/* Coordinate readout */
-.map-coord-readout {
-    position: absolute;
-    bottom: 8px;
-    left: 8px;
-    z-index: 1000;
-    background: rgba(0,0,0,0.72);
-    color: #fff;
-    font-size: 12px;
-    font-family: monospace;
-    padding: 4px 10px;
-    border-radius: 4px;
-    pointer-events: none;
-    letter-spacing: 0.03em;
-}
-
-/* ── Area highlight rectangles ──────────────────────────────── */
-.area-rect path,
-.leaflet-interactive {
-    transition: fill-opacity 0.35s ease, stroke-opacity 0.35s ease, stroke-width 0.35s ease;
-}
-
-/* ── Leaflet markers ────────────────────────────────────────── */
-.mall-directory-marker {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2.5px solid #1a1a3c;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    background: #edeae3;
     overflow: hidden;
-}
-.mall-directory-marker img {
-    width: 42px;
-    height: 42px;
-    object-fit: cover;
-    border-radius: 50%;
+    /* Aspect-ratio lock keeps the container in exact 1672:941 proportion,
+       ensuring SVG viewBox zones align pixel-perfectly with the image. */
+    aspect-ratio: 1672 / 941;
+    max-height: 680px;
 }
 
-/* Pin-style marker (no logo) */
-.mall-directory-marker--pin {
-    width: 32px;
-    height: 42px;
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
-    border: none;
-    background: #1a1a3c;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.mall-directory-marker--pin .leaflet-marker-inner {
-    transform: rotate(45deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* ── SVG map ─────────────────────────────────────────────────── */
+/* width:100%;height:auto lets the SVG scale proportionally from
+   its intrinsic width="1672" height="941" attributes — no letterbox
+   centering, so the <image> base layer and zone overlays always align. */
+#cartimar-map-svg {
     width: 100%;
-    height: 100%;
+    height: auto;
+    display: block;
+    touch-action: none;
+    cursor: grab;
 }
-.mall-directory-marker--pin svg {
-    width: 16px;
-    height: 16px;
-    fill: #fff;
+#cartimar-map-svg.is-dragging { cursor: grabbing; }
+
+/* ── Zoom controls ───────────────────────────────────────────── */
+.svg-map-controls {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 10;
 }
 
-.leaflet-marker-inner {
+.svg-zoom-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.18);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
+    color: #444;
+    transition: background 0.15s, box-shadow 0.15s;
+    padding: 0;
 }
-
-.mall-directory-tooltip {
-    background: rgba(26,26,60,0.95) !important;
-    color: #fff !important;
-    border-radius: 6px !important;
-    padding: 8px 12px !important;
-    font-size: 13px !important;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.2) !important;
-    border: none !important;
-}
-.mall-directory-tooltip strong { display: block; font-size: 14px; margin-bottom: 3px; }
-.mall-directory-tooltip em { display: block; font-size: 12px; color: rgba(255,255,255,0.75); }
+.svg-zoom-btn:hover  { background: #f4f4f4; box-shadow: 0 2px 8px rgba(0,0,0,0.22); }
+.svg-zoom-btn:active { background: #e8e8e8; }
 
 /* ── Store List (right) ─────────────────────────────────────── */
 .stores-list-section {
-    height: 680px;
+    /* Matches the floor plan column height via grid alignment */
+    height: 100%;
+    max-height: 680px;
     overflow-y: auto;
     background: #fff;
 }
@@ -291,8 +248,8 @@
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 1024px) {
     .mall-directory-main { grid-template-columns: 1fr; }
-    .floor-plan-section  { position: static; height: 420px; border-right: none; border-bottom: 1px solid #e8e8ee; }
-    .mall-directory-map  { height: 420px; }
+    .floor-plan-section  { position: static; max-height: 420px; border-right: none; border-bottom: 1px solid #e8e8ee; }
+    .floor-plan-container { max-height: 420px; }
     .stores-list-section { height: auto; max-height: 500px; }
 }
 

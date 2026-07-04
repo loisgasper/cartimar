@@ -1,153 +1,267 @@
 jQuery(document).ready(function ($) {
-    var storesData       = JSON.parse($('#storesData').text());
+
+    // ─────────────────────────────────────────────────────────
+    // DATA
+    // ─────────────────────────────────────────────────────────
+    var storesData = JSON.parse($('#storesData').text());
+
+    // Building bounding boxes (SVG-coordinate space) used for "zoom to area"
+    var areaDefs = {
+        'Aqualand Alley':                           { x1: 820,  y1: 38,  x2: 934,  y2: 130  },
+        'Greenland Plants and Orchids Center':      { x1: 954,  y1: 38,  x2: 1200, y2: 130  },
+        'Cartimar Villa Village 2':                 { x1: 310,  y1: 155, x2: 610,  y2: 258  },
+        'Cartimar Villa Village 3':                 { x1: 636,  y1: 155, x2: 870,  y2: 258  },
+        'Cartimar Villa Village 1 (Pet Shops)':    { x1: 900,  y1: 160, x2: 1188, y2: 228  },
+        'Cartimar Villa Village 4 (Pet Shops)':    { x1: 900,  y1: 246, x2: 1188, y2: 314  },
+        'Plaza (Various Shops)':                    { x1: 300,  y1: 300, x2: 578,  y2: 442  },
+        'Admin':                                    { x1: 594,  y1: 300, x2: 656,  y2: 442  },
+        'Food Court':                               { x1: 680,  y1: 300, x2: 762,  y2: 442  },
+        'Save More Grocery Store':                  { x1: 778,  y1: 300, x2: 1192, y2: 442  },
+        'Grains & Grocery':                         { x1: 300,  y1: 497, x2: 650,  y2: 667  },
+        'Cartimar Main Building':                   { x1: 665,  y1: 497, x2: 1192, y2: 667  },
+        'Cartimar Carpark and Fresh Food Plaza':    { x1: 17,   y1: 498, x2: 258,  y2: 582  },
+        'Gateway (Upper)':                          { x1: 1300, y1: 291, x2: 1416, y2: 442  },
+        'Gateway (Lower)':                          { x1: 1300, y1: 497, x2: 1416, y2: 667  },
+    };
+
+    // ─────────────────────────────────────────────────────────
+    // ZOOM / PAN STATE
+    // ─────────────────────────────────────────────────────────
+    var VB_W = 1672, VB_H = 941;          // original viewBox dimensions
+    var MIN_W = 400;                       // minimum width (≈ max zoom level)
+    var vb = { x: 0, y: 0, w: VB_W, h: VB_H };
+
+    var svgEl  = document.getElementById('cartimar-map-svg');
+    var $svg   = $(svgEl);
+
+    var isDragging     = false;
+    var didDrag        = false;
+    var dragStart      = {};
+    var lastTouchDist  = null;
+    var lastTouchMid   = null;
+
+    function applyViewBox() {
+        svgEl.setAttribute('viewBox', vb.x + ' ' + vb.y + ' ' + vb.w + ' ' + vb.h);
+    }
+
+    function clamp() {
+        // Maintain aspect ratio while constraining zoom level
+        vb.w = Math.max(MIN_W, Math.min(VB_W, vb.w));
+        vb.h = vb.w * (VB_H / VB_W);
+        vb.x = Math.max(0, Math.min(VB_W - vb.w, vb.x));
+        vb.y = Math.max(0, Math.min(VB_H - vb.h, vb.y));
+    }
+
+    // Convert a client-space point to SVG-viewBox coordinates
+    function clientToSvg(cx, cy) {
+        var r = svgEl.getBoundingClientRect();
+        return {
+            x: (cx - r.left) / r.width  * vb.w + vb.x,
+            y: (cy - r.top)  / r.height * vb.h + vb.y
+        };
+    }
+
+    // Zoom centred on a given client-space point
+    function zoomAt(cx, cy, factor) {
+        var p = clientToSvg(cx, cy);
+        vb.w *= factor;
+        vb.h *= factor;
+        var r = svgEl.getBoundingClientRect();
+        vb.x  = p.x - (cx - r.left) / r.width  * vb.w;
+        vb.y  = p.y - (cy - r.top)  / r.height * vb.h;
+        clamp();
+        applyViewBox();
+    }
+
+    // Smooth zoom to a bounding box (for "zoom to area")
+    function zoomToBBox(x1, y1, x2, y2) {
+        var pad = 80;
+        var bw  = (x2 - x1) + pad * 2;
+        var bh  = bw * (VB_H / VB_W);
+        vb.x = Math.max(0, x1 - pad);
+        vb.y = Math.max(0, y1 - pad);
+        vb.w = bw;
+        vb.h = bh;
+        clamp();
+        applyViewBox();
+    }
+
+    // ── Mouse wheel zoom ──────────────────────────────────────
+    svgEl.addEventListener('wheel', function (e) {
+        e.preventDefault();
+        var factor = e.deltaY > 0 ? 1.14 : 1 / 1.14;
+        zoomAt(e.clientX, e.clientY, factor);
+    }, { passive: false });
+
+    // ── Mouse drag-to-pan ─────────────────────────────────────
+    svgEl.addEventListener('mousedown', function (e) {
+        // Don't steal clicks on area zones
+        if (e.target.closest && e.target.closest('.area-zone')) return;
+        isDragging = true;
+        didDrag    = false;
+        dragStart  = { cx: e.clientX, cy: e.clientY, vx: vb.x, vy: vb.y };
+        $svg.addClass('is-dragging');
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function (e) {
+        if (!isDragging) return;
+        var dx = e.clientX - dragStart.cx;
+        var dy = e.clientY - dragStart.cy;
+        if (Math.abs(dx) > 3 || Math.abs(dy) > 3) didDrag = true;
+        var r  = svgEl.getBoundingClientRect();
+        var sx = vb.w / r.width;
+        var sy = vb.h / r.height;
+        vb.x   = Math.max(0, Math.min(VB_W - vb.w, dragStart.vx - dx * sx));
+        vb.y   = Math.max(0, Math.min(VB_H - vb.h, dragStart.vy - dy * sy));
+        applyViewBox();
+    });
+
+    document.addEventListener('mouseup', function () {
+        if (!isDragging) return;
+        isDragging = false;
+        $svg.removeClass('is-dragging');
+    });
+
+    // ── Touch pinch-to-zoom + one-finger pan ──────────────────
+    svgEl.addEventListener('touchstart', function (e) {
+        if (e.touches.length === 2) {
+            var t0 = e.touches[0], t1 = e.touches[1];
+            var dx = t0.clientX - t1.clientX, dy = t0.clientY - t1.clientY;
+            lastTouchDist = Math.sqrt(dx * dx + dy * dy);
+            lastTouchMid  = { x: (t0.clientX + t1.clientX) / 2, y: (t0.clientY + t1.clientY) / 2 };
+        } else if (e.touches.length === 1) {
+            isDragging = true;
+            dragStart  = { cx: e.touches[0].clientX, cy: e.touches[0].clientY, vx: vb.x, vy: vb.y };
+        }
+    }, { passive: true });
+
+    svgEl.addEventListener('touchmove', function (e) {
+        if (e.touches.length === 2) {
+            e.preventDefault();
+            var t0 = e.touches[0], t1 = e.touches[1];
+            var dx   = t0.clientX - t1.clientX, dy = t0.clientY - t1.clientY;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            var mid  = { x: (t0.clientX + t1.clientX) / 2, y: (t0.clientY + t1.clientY) / 2 };
+            if (lastTouchDist) {
+                zoomAt(mid.x, mid.y, lastTouchDist / dist);
+            }
+            lastTouchDist = dist;
+            lastTouchMid  = mid;
+        } else if (e.touches.length === 1 && isDragging) {
+            var r  = svgEl.getBoundingClientRect();
+            var sx = vb.w / r.width, sy = vb.h / r.height;
+            vb.x   = Math.max(0, Math.min(VB_W - vb.w, dragStart.vx - (e.touches[0].clientX - dragStart.cx) * sx));
+            vb.y   = Math.max(0, Math.min(VB_H - vb.h, dragStart.vy - (e.touches[0].clientY - dragStart.cy) * sy));
+            applyViewBox();
+        }
+    }, { passive: false });
+
+    svgEl.addEventListener('touchend', function () {
+        isDragging    = false;
+        lastTouchDist = null;
+        lastTouchMid  = null;
+    });
+
+    // ── Zoom button handlers ──────────────────────────────────
+    $('#svgZoomIn').on('click', function () {
+        var cx = vb.x + vb.w / 2, cy = vb.y + vb.h / 2;
+        vb.w /= 1.3; vb.h /= 1.3;
+        vb.x  = cx - vb.w / 2; vb.y = cy - vb.h / 2;
+        clamp(); applyViewBox();
+    });
+
+    $('#svgZoomOut').on('click', function () {
+        var cx = vb.x + vb.w / 2, cy = vb.y + vb.h / 2;
+        vb.w *= 1.3; vb.h *= 1.3;
+        vb.x  = cx - vb.w / 2; vb.y = cy - vb.h / 2;
+        clamp(); applyViewBox();
+    });
+
+    $('#svgZoomReset').on('click', function () {
+        vb = { x: 0, y: 0, w: VB_W, h: VB_H };
+        applyViewBox();
+    });
+
+    // ─────────────────────────────────────────────────────────
+    // FILTER STATE
+    // ─────────────────────────────────────────────────────────
     var activeFilterType  = 'all';
     var activeFilterValue = '';
     var searchQuery       = '';
-    var map;
-    var imgHeight     = 0;
-    var mapBounds;
-    var floorplanUrl  = $('#mallDirectoryMap').data('floorplan');
 
-    // ── Area definitions ─────────────────────────────────────
-    // Pixel coords measured from top-left of the 1672×941 floor plan image
-    var areaDefs = {
-        'Aqualand Alley':                          { x1: 820,  y1: 38,  x2: 934,  y2: 130, color: '#5aaee0' },
-        'Greenland Plants and Orchids Center':     { x1: 954,  y1: 38,  x2: 1200, y2: 130, color: '#5aae6e' },
-        'Cartimar Villa Village 2':                { x1: 310,  y1: 155, x2: 610,  y2: 258, color: '#e8a030' },
-        'Cartimar Villa Village 3':                { x1: 636,  y1: 155, x2: 870,  y2: 258, color: '#8860d0' },
-        'Cartimar Villa Village 1 (Pet Shops)':   { x1: 900,  y1: 160, x2: 1188, y2: 228, color: '#e0607a' },
-        'Cartimar Villa Village 4 (Pet Shops)':   { x1: 900,  y1: 246, x2: 1188, y2: 314, color: '#e0607a' },
-        'Plaza (Various Shops)':                   { x1: 300,  y1: 300, x2: 578,  y2: 442, color: '#3a72c8' },
-        'Admin':                                   { x1: 594,  y1: 300, x2: 656,  y2: 442, color: '#e06845' },
-        'Food Court':                              { x1: 680,  y1: 300, x2: 762,  y2: 442, color: '#e0607a' },
-        'Save More Grocery Store':                 { x1: 778,  y1: 300, x2: 1192, y2: 442, color: '#7850c8' },
-        'Grains & Grocery':                        { x1: 300,  y1: 497, x2: 650,  y2: 667, color: '#e8a030' },
-        'Cartimar Main Building':                  { x1: 665,  y1: 497, x2: 1192, y2: 667, color: '#28a8a5' },
-        'Cartimar Carpark and Fresh Food Plaza':   { x1: 17,   y1: 498, x2: 258,  y2: 582, color: '#8848b8' },
-        'Gateway (Upper)':                         { x1: 1300, y1: 291, x2: 1416, y2: 442, color: '#9a8040' },
-        'Gateway (Lower)':                         { x1: 1300, y1: 497, x2: 1416, y2: 667, color: '#9a8040' },
-    };
+    // ─────────────────────────────────────────────────────────
+    // HIGHLIGHT
+    // ─────────────────────────────────────────────────────────
+    var highlightedArea = null;
 
-    var areaRects       = {};   // areaName → L.rectangle
-    var highlightedArea = null; // currently highlighted area name
-
-    // ── Helpers ───────────────────────────────────────────────
-    function toLeaflet(x, y) {
-        return [imgHeight - y, x];
-    }
-
-    function getBoundsForArea(def) {
-        return [toLeaflet(def.x1, def.y2), toLeaflet(def.x2, def.y1)];
-    }
-
-    // ── Map init ──────────────────────────────────────────────
-    function initializeMap(imageWidth, imageHeight) {
-        imgHeight = imageHeight;
-        mapBounds = [[0, 0], [imageHeight, imageWidth]];
-
-        map = L.map('mallDirectoryMap', {
-            crs: L.CRS.Simple,
-            minZoom: -2,
-            maxZoom: 2,
-            zoomControl: true,
-            attributionControl: false,
-        });
-
-        L.imageOverlay(floorplanUrl, mapBounds).addTo(map);
-        map.fitBounds(mapBounds);
-        map.setMaxBounds(mapBounds);
-
-        // Coordinate readout — hover the map to see pixel coords
-        var $coords = $('<div class="map-coord-readout">x: — &nbsp; y: —</div>').appendTo('#mallDirectoryMap');
-        map.on('mousemove', function (e) {
-            var x = Math.round(e.latlng.lng);
-            var y = Math.round(imgHeight - e.latlng.lat);
-            $coords.text('x: ' + x + '   y: ' + y);
-        });
-        map.on('mouseleave', function () { $coords.text('x: —   y: —'); });
-
-        createAreaRects();
-        setupInteractions();
-    }
-
-    function createAreaRects() {
-        // Collect which areas have stores
-        var areasWithStores = {};
-        storesData.forEach(function (s) {
-            if (s.map_area) areasWithStores[s.map_area] = true;
-        });
-
-        Object.keys(areaDefs).forEach(function (name) {
-            var def    = areaDefs[name];
-            var bounds = getBoundsForArea(def);
-            var hasStores = !!areasWithStores[name];
-
-            var rect = L.rectangle(bounds, {
-                color:       def.color,
-                weight:      0,
-                fillColor:   def.color,
-                fillOpacity: 0,
-                opacity:     0,
-                interactive: hasStores,
-                className:   'area-rect',
-            }).addTo(map);
-
-            if (hasStores) {
-                rect.bindTooltip('<strong>' + name + '</strong>', {
-                    sticky:    true,
-                    className: 'mall-directory-tooltip',
-                    direction: 'top',
-                });
-
-                rect.on('mouseover', function () { setHighlight(name, true); });
-                rect.on('mouseout',  function () {
-                    // Only un-highlight if no list item is active
-                    if (!$('.store-item.active').length) setHighlight(name, false);
-                });
-                rect.on('click', function () {
-                    filterToArea(name);
-                });
+    function findZone(areaName) {
+        var found = null;
+        $svg.find('.area-zone').each(function () {
+            if ($(this).attr('data-area').toLowerCase() === areaName.toLowerCase()) {
+                found = this; return false;
             }
-
-            areaRects[name] = rect;
         });
+        return found;
     }
 
     function setHighlight(areaName, on) {
-        // Always clear the previously highlighted area first
         if (highlightedArea && highlightedArea !== areaName) {
-            var prev = areaRects[highlightedArea];
-            if (prev) prev.setStyle({ fillOpacity: 0, weight: 0, opacity: 0 });
+            var prev = findZone(highlightedArea);
+            if (prev) $(prev).removeClass('is-highlighted');
             highlightedArea = null;
         }
-
-        var rect = areaRects[areaName];
-        if (!rect) return;
-
+        var zone = findZone(areaName);
+        if (!zone) return;
         if (on) {
-            rect.setStyle({ fillOpacity: 0.52, weight: 2.5, opacity: 0.9 });
+            $(zone).addClass('is-highlighted');
             highlightedArea = areaName;
         } else {
-            rect.setStyle({ fillOpacity: 0, weight: 0, opacity: 0 });
+            $(zone).removeClass('is-highlighted');
             if (highlightedArea === areaName) highlightedArea = null;
         }
     }
 
     function clearAllHighlights() {
-        Object.keys(areaRects).forEach(function (name) {
-            areaRects[name].setStyle({ fillOpacity: 0, weight: 0, opacity: 0 });
-        });
+        $svg.find('.area-zone').removeClass('is-highlighted');
         highlightedArea = null;
     }
 
+    // ─────────────────────────────────────────────────────────
+    // ZOOM TO AREA
+    // ─────────────────────────────────────────────────────────
     function zoomToArea(areaName) {
         var def = areaDefs[areaName];
-        if (!def || !map) return;
-        map.fitBounds(getBoundsForArea(def), { padding: [40, 40], maxZoom: 1 });
+        if (!def) return;
+        zoomToBBox(def.x1, def.y1, def.x2, def.y2);
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // FILTERING
+    // ─────────────────────────────────────────────────────────
+    function filterStores() {
+        var count = 0;
+        $('.store-item').each(function () {
+            var $item     = $(this);
+            var storeName = $item.attr('data-store-name').toLowerCase();
+            var storeArea = ($item.attr('data-map-area') || '').toLowerCase();
+            var locMatch  = activeFilterType === 'all' ||
+                            (activeFilterType === 'location' && storeArea === activeFilterValue.toLowerCase());
+            var srchMatch = searchQuery === '' || storeName.indexOf(searchQuery.toLowerCase()) !== -1;
+            var visible   = locMatch && srchMatch;
+            $item.toggle(visible);
+            if (visible) count++;
+        });
+        if (count === 0) {
+            if (!$('.no-results-found').length) {
+                $('#storesList').append('<p class="no-results-found">No stores match your filters.</p>');
+            }
+        } else {
+            $('.no-results-found').remove();
+        }
     }
 
     function filterToArea(areaName) {
-        // Activate the matching pill
         $('.category-pill').each(function () {
             if ($(this).data('filter-type') === 'location' &&
                 $(this).data('location') === areaName) {
@@ -160,84 +274,78 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    // ── Filtering ─────────────────────────────────────────────
-    function filterStores() {
-        var visibleCount = 0;
+    // ─────────────────────────────────────────────────────────
+    // SVG ZONE INTERACTIONS
+    // ─────────────────────────────────────────────────────────
+    $svg.on('mouseenter', '.area-zone', function () {
+        setHighlight($(this).attr('data-area'), true);
+    });
 
-        $('.store-item').each(function () {
-            var $item     = $(this);
-            var storeName = $item.attr('data-store-name').toLowerCase();
-            var storeArea = ($item.attr('data-map-area') || '').toLowerCase();
+    $svg.on('mouseleave', '.area-zone', function () {
+        if ($('.store-item.active').length) return;
+        setHighlight($(this).attr('data-area'), false);
+    });
 
-            var locationMatch = activeFilterType === 'all' ||
-                (activeFilterType === 'location' && storeArea === activeFilterValue.toLowerCase());
-            var searchMatch   = searchQuery === '' ||
-                storeName.indexOf(searchQuery.toLowerCase()) !== -1;
-            var isVisible     = locationMatch && searchMatch;
+    $svg.on('click', '.area-zone', function () {
+        if (didDrag) return; // ignore mouseup from a drag
+        var area = $(this).attr('data-area');
+        filterToArea(area);
+        setHighlight(area, true);
+        zoomToArea(area);
+    });
 
-            $item.toggle(isVisible);
-            if (isVisible) visibleCount++;
-        });
-
-        if (visibleCount === 0) {
-            if (!$('.no-results-found').length) {
-                $('#storesList').append('<p class="no-results-found">No stores match your filters.</p>');
-            }
-        } else {
-            $('.no-results-found').remove();
+    $svg.on('keydown', '.area-zone', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault(); $(this).trigger('click');
         }
-    }
+    });
 
-    // ── Interactions ──────────────────────────────────────────
-    function setupInteractions() {
-        // Category / location pills
-        $('.category-pill').on('click', function () {
-            $('.category-pill').removeClass('is-active');
-            $(this).addClass('is-active');
-            activeFilterType  = $(this).data('filter-type');
-            activeFilterValue = $(this).data('location') || '';
-            filterStores();
+    // ─────────────────────────────────────────────────────────
+    // CATEGORY PILLS
+    // ─────────────────────────────────────────────────────────
+    $('.category-pill').on('click', function () {
+        $('.category-pill').removeClass('is-active');
+        $(this).addClass('is-active');
+        activeFilterType  = $(this).data('filter-type');
+        activeFilterValue = $(this).data('location') || '';
+        filterStores();
+        clearAllHighlights();
+        if (activeFilterType === 'location') {
+            setHighlight(activeFilterValue, true);
+            zoomToArea(activeFilterValue);
+        } else {
+            vb = { x: 0, y: 0, w: VB_W, h: VB_H };
+            applyViewBox();
+        }
+    });
 
-            clearAllHighlights();
-            if (activeFilterType === 'location') {
-                setHighlight(activeFilterValue, true);
-            } else {
-                map.fitBounds(mapBounds);
-            }
-        });
+    // ─────────────────────────────────────────────────────────
+    // SEARCH
+    // ─────────────────────────────────────────────────────────
+    $('#store-search').on('keyup', function () {
+        searchQuery = $(this).val();
+        filterStores();
+    });
 
-        // Search
-        $('#store-search').on('keyup', function () {
-            searchQuery = $(this).val();
-            filterStores();
-        });
-
-        // Store list ↔ map area cross-link
-        $(document).on('mouseenter', '.store-item', function () {
-            var area = $(this).attr('data-map-area');
-            if (area) setHighlight(area, true);
-            $(this).addClass('active');
-        }).on('mouseleave', '.store-item', function () {
+    // ─────────────────────────────────────────────────────────
+    // STORE LIST ↔ MAP CROSS-LINK
+    // ─────────────────────────────────────────────────────────
+    $(document).on('mouseenter', '.store-item', function () {
+        var area = $(this).attr('data-map-area');
+        if (area) setHighlight(area, true);
+        $(this).addClass('active');
+    }).on('mouseleave', '.store-item', function () {
+        $(this).removeClass('active');
+        if (activeFilterType !== 'location') {
             var area = $(this).attr('data-map-area');
             if (area) setHighlight(area, false);
-            $(this).removeClass('active');
-        }).on('click', '.store-item', function () {
-            var area = $(this).attr('data-map-area');
-            if (area) {
-                setHighlight(area, true);
-                zoomToArea(area);
-            }
-        });
-    }
+        }
+    }).on('click', '.store-item', function () {
+        var area = $(this).attr('data-map-area');
+        if (area) {
+            setHighlight(area, true);
+            zoomToArea(area);
+        }
+    });
 
-    // ── Boot ──────────────────────────────────────────────────
-    function loadFloorplan() {
-        var image = new Image();
-        image.onload = function () {
-            initializeMap(image.naturalWidth, image.naturalHeight);
-        };
-        image.src = floorplanUrl;
-    }
-
-    loadFloorplan();
 });

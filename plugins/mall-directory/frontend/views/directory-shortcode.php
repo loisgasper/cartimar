@@ -90,13 +90,6 @@ $pin_icon = '<svg class="store-pin-svg" viewBox="0 0 24 24" fill="currentColor" 
     <!-- Main: Map (left 70%) | Stores (right 30%) -->
     <div class="mall-directory-main">
 
-        <!-- Floor Plan Map -->
-        <div class="floor-plan-section">
-            <div class="floor-plan-container">
-                <div id="mallDirectoryMap" class="mall-directory-map" data-floorplan="<?php echo esc_url($atts['floorplan']); ?>"></div>
-            </div>
-        </div>
-
         <!-- Store List -->
         <div class="stores-list-section">
             <div class="stores-list" id="storesList">
@@ -137,6 +130,18 @@ $pin_icon = '<svg class="store-pin-svg" viewBox="0 0 24 24" fill="currentColor" 
             <?php if (empty($stores_data)): ?>
                 <p class="no-stores-message"><?php _e('No stores found. Please add some stores first.', 'mall-directory'); ?></p>
             <?php endif; ?>
+        </div>
+
+         <!-- Interactive SVG Map -->
+        <div class="floor-plan-section">
+            <div class="floor-plan-container">
+                <?php include plugin_dir_path(__FILE__) . 'map-svg.php'; ?>
+                <div class="svg-map-controls" aria-label="<?php _e('Map controls', 'mall-directory'); ?>">
+                    <button class="svg-zoom-btn" id="svgZoomIn"    title="<?php _e('Zoom in',    'mall-directory'); ?>">+</button>
+                    <button class="svg-zoom-btn" id="svgZoomOut"   title="<?php _e('Zoom out',   'mall-directory'); ?>">−</button>
+                    <button class="svg-zoom-btn" id="svgZoomReset" title="<?php _e('Reset view', 'mall-directory'); ?>">⊙</button>
+                </div>
+            </div>
         </div>
 
     </div>
