@@ -291,7 +291,6 @@ jQuery(document).ready(function ($) {
         var area = $(this).attr('data-area');
         filterToArea(area);
         setHighlight(area, true);
-        zoomToArea(area);
     });
 
     $svg.on('keydown', '.area-zone', function (e) {
@@ -312,7 +311,6 @@ jQuery(document).ready(function ($) {
         clearAllHighlights();
         if (activeFilterType === 'location') {
             setHighlight(activeFilterValue, true);
-            zoomToArea(activeFilterValue);
         } else {
             vb = { x: 0, y: 0, w: VB_W, h: VB_H };
             applyViewBox();
@@ -342,10 +340,7 @@ jQuery(document).ready(function ($) {
         }
     }).on('click', '.store-item', function () {
         var area = $(this).attr('data-map-area');
-        if (area) {
-            setHighlight(area, true);
-            zoomToArea(area);
-        }
+        if (area) setHighlight(area, true);
     });
 
 });
