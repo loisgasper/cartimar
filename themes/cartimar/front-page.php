@@ -4,7 +4,6 @@
      HERO
 ================================================ -->
 <section class="cart-hero" id="home">
-    <div class="cart-hero__overlay"></div>
     <div class="cart-hero__content">
         <h1 class="cart-hero__heading">Great Finds<br>at Cartimar</h1>
         <form class="cart-hero__search" role="search" method="get" action="<?php echo esc_url(home_url('/#directory')); ?>">

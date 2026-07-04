@@ -11,7 +11,11 @@
 <nav class="cart-nav" id="cartNav">
     <div class="cart-nav__inner">
         <a href="<?php echo esc_url(home_url('/')); ?>" class="cart-nav__logo">
-            <span class="logo-c">c</span>artimar
+            <?php if (has_custom_logo()): ?>
+                <?php the_custom_logo(); ?>
+            <?php else: ?>
+                <span class="logo-c">c</span>artimar
+            <?php endif; ?>
         </a>
         <a href="<?php echo esc_url(home_url('/contact')); ?>" class="cart-nav__cta">Contact us</a>
     </div>

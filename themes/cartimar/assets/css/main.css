@@ -156,7 +156,7 @@ a { color: inherit; text-decoration: none; }
    ============================================================ */
 .cart-hero {
     position: relative;
-    height: 100vh;
+    height: 700px;
     min-height: 600px;
     display: flex;
     align-items: center;
