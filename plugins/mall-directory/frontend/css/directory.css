@@ -89,6 +89,28 @@
 
 .leaflet-container { background: #f9f9fb; }
 
+/* Coordinate readout */
+.map-coord-readout {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    z-index: 1000;
+    background: rgba(0,0,0,0.72);
+    color: #fff;
+    font-size: 12px;
+    font-family: monospace;
+    padding: 4px 10px;
+    border-radius: 4px;
+    pointer-events: none;
+    letter-spacing: 0.03em;
+}
+
+/* ── Area highlight rectangles ──────────────────────────────── */
+.area-rect path,
+.leaflet-interactive {
+    transition: fill-opacity 0.35s ease, stroke-opacity 0.35s ease, stroke-width 0.35s ease;
+}
+
 /* ── Leaflet markers ────────────────────────────────────────── */
 .mall-directory-marker {
     width: 48px;
