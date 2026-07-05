@@ -32,7 +32,7 @@
 <!-- ================================================
      SEE WHAT'S HAPPENING
 ================================================ -->
-<section class="cart-section cart-news" id="news">
+<section class="cart-news" id="news">
     <div class="cart-news__bg"></div>
     <div class="container">
         <div class="cart-news__header">
@@ -49,7 +49,11 @@
             </div>
             <a href="<?php echo esc_url(get_permalink(get_option('page_for_posts'))); ?>" class="btn btn--outline-white">View All Articles</a>
         </div>
+    </div>
+</section>
 
+<section class="cart-section cart-news__cards">
+    <div class="container">
         <div class="cart-news__grid">
             <?php
             $news_query = new WP_Query([
