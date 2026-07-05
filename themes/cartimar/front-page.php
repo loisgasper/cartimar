@@ -5,7 +5,7 @@
 ================================================ -->
 <section class="cart-hero" id="home">
     <div class="cart-hero__content">
-        <h1 class="cart-hero__heading">Great Finds<br>at Cartimar</h1>
+        <h1 class="cart-hero__heading"><?php echo wp_kses_post(get_field('hero_heading')); ?></h1>
         <form class="cart-hero__search" role="search" method="get" action="<?php echo esc_url(home_url('/#directory')); ?>">
             <input type="text" name="store_search" placeholder="Search stores, products, services…" class="cart-hero__search-input">
             <button type="submit" class="btn btn--accent">Find Stores</button>
@@ -94,37 +94,35 @@
         <h2 class="section-title section-title--center">About Us</h2>
 
         <div class="cart-about__story">
-            <div class="cart-about__story-img">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/about-storefront.jpg"
-                     alt="Cartimar historic storefront"
-                     onerror="this.parentElement.classList.add('img-placeholder')">
+            <div class="cart-about__story-img <?php echo esc_attr(cartimar_acf_image_class('about_story_image')); ?>">
+                <?php cartimar_acf_image_tag('about_story_image', 'Cartimar historic storefront'); ?>
             </div>
             <div class="cart-about__story-text">
-                <h3>A Legacy of Great Finds</h3>
-                <p>In the 1940s, you just can't call it life unless you've experienced the thrill of discovering something truly extraordinary. We captured that essence, and the rest, they would say, became history.</p>
-                <p>Cartimar Shopping Complex got its name from its founders — Godless Philippians, Willo(w) and their beloved family. Today, the legacy continues with the third and fourth generation of the Cartimar and Godless families still running this beloved marketplace.</p>
-                <p>For generations, Cartimar has been the destination of choice for shoppers looking for unique products, amazing people, and stories that tell of a life well lived. From exotic animals to automotive parts, Cartimar has always exceeded expectations and continues to amaze the world.</p>
+                <h3><?php echo esc_html(get_field('about_heading')); ?></h3>
+                <p><?php echo esc_html(get_field('about_paragraph_1')); ?></p>
+                <p><?php echo esc_html(get_field('about_paragraph_2')); ?></p>
+                <p><?php echo esc_html(get_field('about_paragraph_3')); ?></p>
             </div>
         </div>
 
         <div class="cart-about__gallery">
-            <div class="cart-about__gallery-item cart-about__gallery-item--tall">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/gallery-1.jpg" alt="Cartimar gallery" onerror="this.parentElement.classList.add('img-placeholder')">
+            <div class="cart-about__gallery-item cart-about__gallery-item--tall <?php echo esc_attr(cartimar_acf_image_class('about_gallery_image_1')); ?>">
+                <?php cartimar_acf_image_tag('about_gallery_image_1', 'Cartimar gallery'); ?>
             </div>
-            <div class="cart-about__gallery-item">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/gallery-2.jpg" alt="Cartimar gallery" onerror="this.parentElement.classList.add('img-placeholder')">
+            <div class="cart-about__gallery-item <?php echo esc_attr(cartimar_acf_image_class('about_gallery_image_2')); ?>">
+                <?php cartimar_acf_image_tag('about_gallery_image_2', 'Cartimar gallery'); ?>
             </div>
-            <div class="cart-about__gallery-item">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/gallery-3.jpg" alt="Cartimar gallery" onerror="this.parentElement.classList.add('img-placeholder')">
+            <div class="cart-about__gallery-item <?php echo esc_attr(cartimar_acf_image_class('about_gallery_image_3')); ?>">
+                <?php cartimar_acf_image_tag('about_gallery_image_3', 'Cartimar gallery'); ?>
             </div>
-            <div class="cart-about__gallery-item cart-about__gallery-item--wide">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/gallery-4.jpg" alt="Cartimar gallery" onerror="this.parentElement.classList.add('img-placeholder')">
+            <div class="cart-about__gallery-item cart-about__gallery-item--wide <?php echo esc_attr(cartimar_acf_image_class('about_gallery_image_4')); ?>">
+                <?php cartimar_acf_image_tag('about_gallery_image_4', 'Cartimar gallery'); ?>
             </div>
-            <div class="cart-about__gallery-item">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/gallery-5.jpg" alt="Cartimar gallery" onerror="this.parentElement.classList.add('img-placeholder')">
+            <div class="cart-about__gallery-item <?php echo esc_attr(cartimar_acf_image_class('about_gallery_image_5')); ?>">
+                <?php cartimar_acf_image_tag('about_gallery_image_5', 'Cartimar gallery'); ?>
             </div>
-            <div class="cart-about__gallery-item">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/gallery-6.jpg" alt="Cartimar gallery" onerror="this.parentElement.classList.add('img-placeholder')">
+            <div class="cart-about__gallery-item <?php echo esc_attr(cartimar_acf_image_class('about_gallery_image_6')); ?>">
+                <?php cartimar_acf_image_tag('about_gallery_image_6', 'Cartimar gallery'); ?>
             </div>
         </div>
     </div>
@@ -136,23 +134,23 @@
 <section class="cart-serve" id="serve">
     <div class="cart-serve__content">
         <div class="cart-serve__text">
-            <h2>Here to Serve<br>Here to Stay</h2>
-            <p>For more than seven decades, Cartimar has stood the test of time. Through the generations we have always found a way to bring you the best this country has to offer.</p>
-            <p>It has always come down to one thing: finding ways to provide things that our communities need — making life a little better, a little more colourful and a little more fun.</p>
-            <p>Cartimar is a destination, a tradition, and a place where generations of Filipinos continue to shop, discover, and connect — a timeless destination for every shopper.</p>
+            <h2><?php echo wp_kses_post(get_field('serve_heading')); ?></h2>
+            <p><?php echo esc_html(get_field('serve_paragraph_1')); ?></p>
+            <p><?php echo esc_html(get_field('serve_paragraph_2')); ?></p>
+            <p><?php echo esc_html(get_field('serve_paragraph_3')); ?></p>
         </div>
         <div class="cart-serve__mosaic">
-            <div class="mosaic-item mosaic-item--1">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/serve-1.jpg" alt="" onerror="this.parentElement.classList.add('img-placeholder')">
+            <div class="mosaic-item mosaic-item--1 <?php echo esc_attr(cartimar_acf_image_class('serve_mosaic_image_1')); ?>">
+                <?php cartimar_acf_image_tag('serve_mosaic_image_1'); ?>
             </div>
-            <div class="mosaic-item mosaic-item--2">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/serve-2.jpg" alt="" onerror="this.parentElement.classList.add('img-placeholder')">
+            <div class="mosaic-item mosaic-item--2 <?php echo esc_attr(cartimar_acf_image_class('serve_mosaic_image_2')); ?>">
+                <?php cartimar_acf_image_tag('serve_mosaic_image_2'); ?>
             </div>
-            <div class="mosaic-item mosaic-item--3">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/serve-3.jpg" alt="" onerror="this.parentElement.classList.add('img-placeholder')">
+            <div class="mosaic-item mosaic-item--3 <?php echo esc_attr(cartimar_acf_image_class('serve_mosaic_image_3')); ?>">
+                <?php cartimar_acf_image_tag('serve_mosaic_image_3'); ?>
             </div>
-            <div class="mosaic-item mosaic-item--4">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/serve-4.jpg" alt="" onerror="this.parentElement.classList.add('img-placeholder')">
+            <div class="mosaic-item mosaic-item--4 <?php echo esc_attr(cartimar_acf_image_class('serve_mosaic_image_4')); ?>">
+                <?php cartimar_acf_image_tag('serve_mosaic_image_4'); ?>
             </div>
         </div>
     </div>
@@ -168,45 +166,25 @@
             <span class="anniversary-badge">75</span>
         </div>
         <h2 class="section-title section-title--center">Celebrating<br>75 Years of Cartimar</h2>
-        <p class="cart-anniversary__intro">From its beginnings in 1946 to becoming one of the Philippines' most enduring specialty shopping destinations, Cartimar has been serving the community for 75 remarkable years.</p>
+        <p class="cart-anniversary__intro"><?php echo esc_html(get_field('anniversary_intro')); ?></p>
 
         <div class="cart-timeline">
-            <div class="cart-timeline__item">
-                <div class="cart-timeline__img">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/timeline-1946.jpg" alt="1946" onerror="this.parentElement.classList.add('img-placeholder')">
+            <?php for ($i = 1; $i <= 4; $i++):
+                $reverse_class = ($i % 2 === 0) ? ' cart-timeline__item--reverse' : '';
+                $image_field   = "timeline_{$i}_image";
+                $year_field    = "timeline_{$i}_year";
+                $body_field    = "timeline_{$i}_body";
+            ?>
+            <div class="cart-timeline__item<?php echo esc_attr($reverse_class); ?>">
+                <div class="cart-timeline__img <?php echo esc_attr(cartimar_acf_image_class($image_field)); ?>">
+                    <?php cartimar_acf_image_tag($image_field, get_field($year_field)); ?>
                 </div>
                 <div class="cart-timeline__body">
-                    <h4 class="cart-timeline__year">1946</h4>
-                    <p>Cartimar opens for business and becomes one of Manila's pioneering post-war shopping centres, offering everything from fresh produce to specialty goods in the heart of Pasay City.</p>
+                    <h4 class="cart-timeline__year"><?php echo esc_html(get_field($year_field)); ?></h4>
+                    <p><?php echo esc_html(get_field($body_field)); ?></p>
                 </div>
             </div>
-            <div class="cart-timeline__item cart-timeline__item--reverse">
-                <div class="cart-timeline__img">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/timeline-1970s.jpg" alt="1970s" onerror="this.parentElement.classList.add('img-placeholder')">
-                </div>
-                <div class="cart-timeline__body">
-                    <h4 class="cart-timeline__year">1970s</h4>
-                    <p>Cartimar grows into a destination market, becoming famous for its wide selection of exotic birds, aquatic pets, and fresh food. Shoppers from across Metro Manila make it a regular weekend stop.</p>
-                </div>
-            </div>
-            <div class="cart-timeline__item">
-                <div class="cart-timeline__img">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/timeline-1980s.jpg" alt="1980s" onerror="this.parentElement.classList.add('img-placeholder')">
-                </div>
-                <div class="cart-timeline__body">
-                    <h4 class="cart-timeline__year">1980s</h4>
-                    <p>The automotive and bike section expands significantly, establishing Cartimar as the go-to hub for cycling enthusiasts and auto parts buyers throughout the Philippines.</p>
-                </div>
-            </div>
-            <div class="cart-timeline__item cart-timeline__item--reverse">
-                <div class="cart-timeline__img">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/timeline-today.jpg" alt="Today" onerror="this.parentElement.classList.add('img-placeholder')">
-                </div>
-                <div class="cart-timeline__body">
-                    <h4 class="cart-timeline__year">Today</h4>
-                    <p>With over 500 merchants across multiple buildings, Cartimar continues to serve as a beloved community landmark — balancing its rich heritage with the needs of modern shoppers.</p>
-                </div>
-            </div>
+            <?php endfor; ?>
         </div>
     </div>
 </section>

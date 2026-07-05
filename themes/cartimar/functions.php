@@ -3,6 +3,8 @@ if (!defined('ABSPATH')) exit;
 
 define('CARTIMAR_VERSION', '1.0.0');
 
+require_once get_template_directory() . '/inc/acf-fields.php';
+
 function cartimar_setup() {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
