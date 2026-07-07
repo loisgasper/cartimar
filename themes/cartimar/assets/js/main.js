@@ -40,6 +40,33 @@ jQuery(function ($) {
         $('html, body').animate({ scrollTop: $(target).offset().top - 70 }, 500);
     });
 
+    // Here to Serve: carousel prev/next
+    $('.cart-serve__carousel').each(function () {
+        var $carousel = $(this);
+        var $track = $carousel.find('.cart-serve__track');
+        var $items = $track.find('.carousel-item');
+        var $prev = $carousel.find('.cart-serve__arrow--prev');
+        var $next = $carousel.find('.cart-serve__arrow--next');
+        var index = 0;
+
+        function itemStep() {
+            return $items.eq(0).outerWidth(true);
+        }
+
+        function update() {
+            var maxIndex = Math.max($items.length - 1, 0);
+            index = Math.min(Math.max(index, 0), maxIndex);
+            $track.css('transform', 'translateX(-' + (index * itemStep()) + 'px)');
+            $prev.prop('disabled', index === 0);
+            $next.prop('disabled', index >= maxIndex);
+        }
+
+        $prev.on('click', function () { index--; update(); });
+        $next.on('click', function () { index++; update(); });
+        $(window).on('resize', update);
+        update();
+    });
+
     // Fade-in sections on scroll
     var $sections = $('section');
     function checkVisible() {
