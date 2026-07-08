@@ -70,7 +70,7 @@ $pin_icon = '<svg class="store-pin-svg" viewBox="0 0 24 24" fill="currentColor" 
 
 <div class="mall-directory-container">
 
-    <!-- Category Pills + Search -->
+    <!-- Category Pills -->
     <div class="mall-directory-filters">
         <div class="category-pills">
             <button class="category-pill is-active" data-filter-type="all">
@@ -82,16 +82,16 @@ $pin_icon = '<svg class="store-pin-svg" viewBox="0 0 24 24" fill="currentColor" 
                 </button>
             <?php endforeach; ?>
         </div>
-        <div class="search-wrapper">
-            <input type="text" id="store-search" class="store-search-input" placeholder="<?php _e('Search directory...', 'mall-directory'); ?>">
-        </div>
     </div>
 
-    <!-- Main: Map (left 70%) | Stores (right 30%) -->
+    <!-- Main: Stores (left 30%) | Map (right 70%) -->
     <div class="mall-directory-main">
 
         <!-- Store List -->
         <div class="stores-list-section">
+            <div class="stores-list-search">
+                <input type="text" id="store-search" class="store-search-input" placeholder="<?php _e('Search directory...', 'mall-directory'); ?>">
+            </div>
             <div class="stores-list" id="storesList">
                 <?php foreach ($stores_data as $store): ?>
                     <div class="store-item"

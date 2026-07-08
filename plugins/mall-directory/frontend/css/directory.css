@@ -17,6 +17,7 @@
 
 .category-pills {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 8px;
     flex: 1;
@@ -25,37 +26,34 @@
 .category-pill {
     display: inline-flex;
     align-items: center;
-    padding: 8px 18px;
-    border-radius: 999px;
+    padding: 9px 18px;
+    border-radius: 8px;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
-    border: 1.5px solid #ddd;
-    background: #fff;
+    border: none;
+    background: #eeeef2;
     color: #333;
     transition: all 0.2s ease;
     white-space: nowrap;
     line-height: 1;
 }
 .category-pill:hover {
-    border-color: #1a1a3c;
+    background: #e2e2ea;
     color: #1a1a3c;
 }
 .category-pill.is-active {
     background: #1a1a3c;
-    border-color: #1a1a3c;
     color: #fff;
 }
 
-.search-wrapper { flex-shrink: 0; }
-
 .store-search-input {
-    padding: 8px 16px;
-    border: 1.5px solid #ddd;
-    border-radius: 999px;
-    font-size: 13px;
+    padding: 10px 16px;
+    border: 1.5px solid #e0e0e6;
+    border-radius: 8px;
+    font-size: 14px;
     outline: none;
-    width: 200px;
+    width: 100%;
     transition: border-color 0.2s ease;
 }
 .store-search-input:focus { border-color: #1a1a3c; }
@@ -133,18 +131,28 @@
 .svg-zoom-btn:hover  { background: #f4f4f4; box-shadow: 0 2px 8px rgba(0,0,0,0.22); }
 .svg-zoom-btn:active { background: #e8e8e8; }
 
-/* ── Store List (right) ─────────────────────────────────────── */
+/* ── Store List (left) ──────────────────────────────────────── */
 .stores-list-section {
     /* Matches the floor plan column height via grid alignment */
     height: 100%;
     max-height: 680px;
-    overflow-y: auto;
     background: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.stores-list-search {
+    flex-shrink: 0;
+    padding: 16px;
+    border-bottom: 1px solid #e8e8ee;
 }
 
 .stores-list {
     display: flex;
     flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
 }
 
 /* ── Store Card ──────────────────────────────────────────────── */
@@ -240,10 +248,10 @@
 }
 
 /* Scrollbar */
-.stores-list-section::-webkit-scrollbar { width: 4px; }
-.stores-list-section::-webkit-scrollbar-track { background: #f5f5f5; }
-.stores-list-section::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-.stores-list-section::-webkit-scrollbar-thumb:hover { background: #aaa; }
+.stores-list::-webkit-scrollbar { width: 4px; }
+.stores-list::-webkit-scrollbar-track { background: #f5f5f5; }
+.stores-list::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+.stores-list::-webkit-scrollbar-thumb:hover { background: #aaa; }
 
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 1024px) {
@@ -255,6 +263,4 @@
 
 @media (max-width: 640px) {
     .mall-directory-filters { padding: 16px; }
-    .store-search-input { width: 100%; }
-    .search-wrapper { width: 100%; }
 }
