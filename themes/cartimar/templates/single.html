@@ -1,15 +1,69 @@
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 
-<!-- wp:group {"tagName":"main","className":"page-content","layout":{"type":"constrained"}} -->
-<main class="wp-block-group page-content">
+<!-- wp:group {"tagName":"main","className":"cart-section","layout":{"type":"constrained"}} -->
+<main class="wp-block-group cart-section">
     <!-- wp:group {"className":"container"} -->
     <div class="wp-block-group container">
-        <!-- wp:post-title {"level":1,"className":"page-title"} /-->
-        <!-- wp:post-featured-image {"style":{"spacing":{"margin":{"bottom":"32px"}}}} /-->
-        <!-- wp:post-content /-->
+        <!-- wp:html --><a class="single-post__back" href="/whats-happening/">&lsaquo; Back</a><!-- /wp:html -->
+
+        <!-- wp:group {"className":"single-post__header"} -->
+        <div class="wp-block-group single-post__header">
+            <!-- wp:group -->
+            <div class="wp-block-group">
+                <!-- wp:post-title {"level":1} /-->
+                <!-- wp:post-date {"className":"single-post__date"} /-->
+                <!-- wp:social-links {"className":"single-post__social","size":"has-small-icon-size"} -->
+                <ul class="wp-block-social-links single-post__social has-small-icon-size">
+                    <!-- wp:social-link {"url":"#","service":"facebook"} /-->
+                    <!-- wp:social-link {"url":"#","service":"tiktok"} /-->
+                </ul>
+                <!-- /wp:social-links -->
+            </div>
+            <!-- /wp:group -->
+
+            <!-- wp:post-featured-image {"className":"single-post__image"} /-->
+        </div>
+        <!-- /wp:group -->
+
+        <!-- wp:group {"className":"single-post__content"} -->
+        <div class="wp-block-group single-post__content">
+            <!-- wp:post-content /-->
+        </div>
+        <!-- /wp:group -->
     </div>
     <!-- /wp:group -->
 </main>
+<!-- /wp:group -->
+
+<!-- wp:group {"className":"further-read"} -->
+<div class="wp-block-group further-read">
+    <!-- wp:group {"className":"container"} -->
+    <div class="wp-block-group container">
+        <!-- wp:heading {"level":2} -->
+        <h2>Further Read</h2>
+        <!-- /wp:heading -->
+
+        <!-- wp:query {"queryId":3,"query":{"perPage":2,"postType":"post","order":"desc","orderBy":"date","inherit":false},"className":"further-read__grid"} -->
+        <div class="wp-block-query further-read__grid">
+            <!-- wp:post-template -->
+                <!-- wp:group {"className":"news-card"} -->
+                <div class="wp-block-group news-card">
+                    <!-- wp:post-featured-image {"isLink":true,"className":"news-card__img-link","height":"200px"} /-->
+                    <!-- wp:group {"className":"news-card__body"} -->
+                    <div class="wp-block-group news-card__body">
+                        <!-- wp:post-title {"level":3,"isLink":true,"className":"news-card__title"} /-->
+                        <!-- wp:post-excerpt {"className":"news-card__excerpt","excerptLength":18} /-->
+                        <!-- wp:read-more {"className":"news-card__read-more","content":"Read More"} /-->
+                    </div>
+                    <!-- /wp:group -->
+                </div>
+                <!-- /wp:group -->
+            <!-- /wp:post-template -->
+        </div>
+        <!-- /wp:query -->
+    </div>
+    <!-- /wp:group -->
+</div>
 <!-- /wp:group -->
 
 <!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

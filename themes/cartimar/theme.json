@@ -65,5 +65,8 @@
     "templateParts": [
         { "name": "header", "area": "header" },
         { "name": "footer", "area": "footer" }
+    ],
+    "customTemplates": [
+        { "name": "page-no-title", "title": "Page (No Title)", "postTypes": ["page"] }
     ]
 }

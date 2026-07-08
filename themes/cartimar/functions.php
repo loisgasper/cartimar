@@ -3,6 +3,8 @@ if (!defined('ABSPATH')) exit;
 
 define('CARTIMAR_VERSION', '1.0.0');
 
+require_once get_template_directory() . '/inc/contact-form.php';
+
 function cartimar_setup() {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
@@ -33,3 +35,13 @@ function cartimar_register_blocks() {
     register_block_type(get_template_directory() . '/inc/blocks/timeline-item');
 }
 add_action('init', 'cartimar_register_blocks');
+
+// The "Further Read" Query Loop on single posts should never show the post you're already reading.
+function cartimar_exclude_current_post_from_further_read($query_vars, $block) {
+    $class_name = $block->attributes['className'] ?? '';
+    if (strpos($class_name, 'further-read__grid') !== false && is_singular('post')) {
+        $query_vars['post__not_in'] = [get_the_ID()];
+    }
+    return $query_vars;
+}
+add_filter('query_loop_block_query_vars', 'cartimar_exclude_current_post_from_further_read', 10, 2);
