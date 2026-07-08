@@ -57,7 +57,7 @@ a { color: inherit; text-decoration: none; }
     align-items: center;
     justify-content: center;
     padding: 11px 28px;
-    border-radius: var(--radius);
+    border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.4px;
@@ -71,7 +71,7 @@ a { color: inherit; text-decoration: none; }
     color: var(--color-white);
     border-color: var(--color-accent);
 }
-.btn--accent:hover { background: var(--color-white); color: var(--color-accent); border-color: var(--color-accent); }
+.btn--accent:hover { background: color-mix(in srgb, var(--color-white) 70%, transparent); color: var(--color-accent); }
 
 .btn--outline-white {
     background: transparent;
@@ -178,12 +178,18 @@ a { color: inherit; text-decoration: none; }
 .cart-nav__cta .wp-block-button__link {
     background: var(--color-white) !important;
     border: 1.5px solid transparent !important;
+    border-radius: 8px !important;
     color: var(--color-dark) !important;
     font-size: 14px;
     font-weight: 600;
     transition: all var(--transition);
 }
-.cart-nav__cta .wp-block-button__link:hover { background: var(--color-dark) !important; color: var(--color-white) !important; border-color: var(--color-white) !important; }
+.cart-nav__cta .wp-block-button__link:hover { background: color-mix(in srgb, var(--color-dark) 70%, transparent) !important; color: var(--color-white) !important; }
+
+.cart-nav.scrolled .cart-nav__cta .wp-block-button__link:hover {
+    background: color-mix(in srgb, var(--color-white) 70%, transparent) !important;
+    color: var(--color-dark) !important;
+}
 
 /* ============================================================
    HERO
@@ -313,10 +319,11 @@ a { color: inherit; text-decoration: none; }
 .cart-news__cta .wp-block-button__link {
     background: var(--color-white) !important;
     border: 1.5px solid transparent !important;
+    border-radius: 8px !important;
     color: var(--color-dark) !important;
     font-weight: 600;
 }
-.cart-news__cta .wp-block-button__link:hover { background: var(--color-dark) !important; color: var(--color-white) !important; border-color: var(--color-white) !important; }
+.cart-news__cta .wp-block-button__link:hover { background: color-mix(in srgb, var(--color-dark) 70%, transparent) !important; color: var(--color-white) !important; }
 
 .social-link {
     display: inline-flex;
@@ -362,6 +369,88 @@ a { color: inherit; text-decoration: none; }
     gap: 4px;
 }
 .news-card__read-more:hover { color: var(--color-accent-lt); }
+
+/* ── Homepage "See What's Happening" featured teaser (1 large + 2 stacked) ── */
+.cart-news__featured-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: stretch;
+    max-height: 553px;
+}
+
+.cart-news__featured .wp-block-post-template,
+.cart-news__secondary .wp-block-post-template { margin: 0; padding: 0; list-style: none; }
+.cart-news__featured .wp-block-post-template > li { list-style: none; }
+
+.cart-news__featured .wp-block-post-template,
+.cart-news__featured .wp-block-post-template > li,
+.news-feature-card__img {
+    height: 100%;
+}
+
+.cart-news__secondary .wp-block-post-template {
+    display: flex;
+    flex-direction: column; 
+    gap: 32px;
+}
+.cart-news__secondary .wp-block-post-template > li { list-style: none; }
+
+.news-feature-card { display: flex; gap: 32px; height: 100%; overflow: hidden; }
+.news-feature-card--sm { height: calc((553px - 32px) / 2); }
+
+.news-feature-card__body {
+    flex: 0 0 36%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+.news-feature-card__title {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-dark);
+    margin: 0 0 14px 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+}
+.news-feature-card__title a { color: inherit; }
+.news-feature-card__title a:hover { color: var(--color-accent); }
+.news-feature-card__excerpt {
+    font-size: 14px;
+    color: var(--color-muted);
+    line-height: 1.6;
+    margin: 0 0 20px 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+}
+.news-feature-card__btn { align-self: flex-start; flex-shrink: 0; }
+
+.news-feature-card--sm .news-feature-card__title { font-size: 18px; margin-bottom: 8px; -webkit-line-clamp: 2; line-clamp: 2; }
+.news-feature-card--sm .news-feature-card__excerpt { margin-bottom: 14px; -webkit-line-clamp: 3; line-clamp: 3; }
+
+.news-feature-card__img { flex: 1; min-width: 0; margin: 0; height: 100%; }
+.news-feature-card__img img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0; }
+
+@media (max-width: 1024px) {
+    .cart-news__featured-grid { grid-template-columns: 1fr; max-height: none; }
+    .news-feature-card { height: auto; flex-direction: column; overflow: visible; }
+    .news-feature-card--sm { height: auto; }
+    .news-feature-card__body { flex: none; overflow: visible; }
+    .news-feature-card__img { height: 240px; }
+}
+
+.cart-news__featured + .cart-news__secondary {
+    margin-top: 0;
+}
 
 /* ============================================================
    ABOUT US
@@ -770,7 +859,7 @@ a { color: inherit; text-decoration: none; }
 .contact-form__notice--error { background: #fbe9e7; color: #a33a2c; }
 
 .btn--dark { background: var(--color-dark); color: var(--color-white); border-color: var(--color-dark); }
-.btn--dark:hover { background: var(--color-white); color: var(--color-dark); }
+.btn--dark:hover { background: color-mix(in srgb, var(--color-white) 70%, transparent); color: var(--color-dark); }
 
 .contact-info__row { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
 .contact-info__icon {
@@ -869,7 +958,7 @@ a { color: inherit; text-decoration: none; }
     .cart-section { padding: 56px 0; }
     .cart-hero__search { flex-direction: column; border-radius: var(--radius); overflow: visible; }
     .cart-hero__search-input { border-radius: var(--radius); }
-    .cart-hero__search .btn { border-radius: var(--radius); width: 100%; }
+    .cart-hero__search .btn { border-radius: 8px; width: 100%; }
     .cart-news__grid .wp-block-post-template { grid-template-columns: 1fr; }
     .cart-news__header { flex-direction: column; }
     .cart-about__gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
