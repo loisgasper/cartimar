@@ -24,8 +24,10 @@ function cartimar_setup() {
 add_action('after_setup_theme', 'cartimar_setup');
 
 function cartimar_enqueue() {
-    wp_enqueue_style('cartimar-main', get_template_directory_uri() . '/assets/css/main.css', [], CARTIMAR_VERSION);
-    wp_enqueue_script('cartimar-main', get_template_directory_uri() . '/assets/js/main.js', ['jquery'], CARTIMAR_VERSION, true);
+    $css_path = get_template_directory() . '/assets/css/main.css';
+    $js_path  = get_template_directory() . '/assets/js/main.js';
+    wp_enqueue_style('cartimar-main', get_template_directory_uri() . '/assets/css/main.css', [], file_exists($css_path) ? filemtime($css_path) : CARTIMAR_VERSION);
+    wp_enqueue_script('cartimar-main', get_template_directory_uri() . '/assets/js/main.js', ['jquery'], file_exists($js_path) ? filemtime($js_path) : CARTIMAR_VERSION, true);
 }
 add_action('wp_enqueue_scripts', 'cartimar_enqueue');
 

@@ -56,7 +56,13 @@ jQuery(function ($) {
         function update() {
             var maxIndex = Math.max($items.length - 1, 0);
             index = Math.min(Math.max(index, 0), maxIndex);
-            $track.css('transform', 'translateX(-' + (index * itemStep()) + 'px)');
+            // At rest (index 0) the first image sits flush — no peek on the left yet.
+            // Once the user moves forward, hold back part of a step so the previous
+            // image's edge peeks in on the left, same as the next image already
+            // peeks in on the right.
+            var peek = itemStep() * 0.25;
+            var offset = index === 0 ? 0 : (index * itemStep() - peek);
+            $track.css('transform', 'translateX(-' + offset + 'px)');
             $prev.prop('disabled', index === 0);
             $next.prop('disabled', index >= maxIndex);
         }
