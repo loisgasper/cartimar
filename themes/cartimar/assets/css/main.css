@@ -2,17 +2,17 @@
    CUSTOM PROPERTIES
    ============================================================ */
 :root {
-    --color-dark:      #0d1b2a;
-    --color-dark-alt:  #1a2a3a;
-    --color-accent:    #c8860a;
-    --color-accent-lt: #e8a012;
-    --color-white:     #ffffff;
-    --color-light:     #f7f7f9;
-    --color-lavender:  #f2f0fb;
-    --color-peach:     #faeada;
-    --color-text:      #2c2c2c;
-    --color-muted:     #666;
-    --color-border:    #e0e0e0;
+    --color-dark:      var(--wp--preset--color--dark, #0d1b2a);
+    --color-dark-alt:  var(--wp--preset--color--dark-alt, #1a2a3a);
+    --color-accent:    var(--wp--preset--color--accent, #c8860a);
+    --color-accent-lt: var(--wp--preset--color--accent-light, #e8a012);
+    --color-white:     var(--wp--preset--color--white, #ffffff);
+    --color-light:     var(--wp--preset--color--light, #f7f7f9);
+    --color-lavender:  var(--wp--preset--color--lavender, #f2f0fb);
+    --color-peach:     var(--wp--preset--color--peach, #faeada);
+    --color-text:      var(--wp--preset--color--text, #2c2c2c);
+    --color-muted:     var(--wp--preset--color--muted, #666);
+    --color-border:    var(--wp--preset--color--border, #e0e0e0);
 
     --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-serif: Georgia, 'Times New Roman', serif;
@@ -146,7 +146,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .cart-nav__menu li a {
-    color: var(--color-white);
+    color: var(--color-white) !important;
     font-size: 14px;
     font-weight: 500;
     padding: 6px 14px;
@@ -174,17 +174,16 @@ a { color: inherit; text-decoration: none; }
     display: block;
 }
 
-.cart-nav__cta {
-    justify-self: end;
-    padding: 8px 22px;
-    border: 1.5px solid rgba(255,255,255,0.7);
-    border-radius: var(--radius);
-    color: var(--color-white);
+.cart-nav__cta { justify-self: end; }
+.cart-nav__cta .wp-block-button__link {
+    background: var(--color-white) !important;
+    border: none !important;
+    color: var(--color-dark) !important;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     transition: all var(--transition);
 }
-.cart-nav__cta:hover { background: var(--color-white); color: var(--color-dark); }
+.cart-nav__cta .wp-block-button__link:hover { background: var(--color-light) !important; color: var(--color-dark) !important; }
 
 /* ============================================================
    HERO
