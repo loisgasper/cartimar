@@ -86,8 +86,13 @@ jQuery(document).ready(function ($) {
         applyViewBox();
     }
 
-    // ── Mouse wheel zoom ──────────────────────────────────────
+    // ── Wheel: pinch-to-zoom only, plain scroll passes through ──
+    // Trackpad pinch gestures (and ctrl+wheel) arrive as wheel events with
+    // ctrlKey set — that's the only case we zoom. Any other wheel/scroll
+    // (mouse wheel, two-finger scroll, horizontal scroll) is left alone so
+    // the page scrolls normally instead of getting trapped by the map.
     svgEl.addEventListener('wheel', function (e) {
+        if (!e.ctrlKey) return;
         e.preventDefault();
         var factor = e.deltaY > 0 ? 1.14 : 1 / 1.14;
         zoomAt(e.clientX, e.clientY, factor);
