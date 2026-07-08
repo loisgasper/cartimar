@@ -324,11 +324,16 @@ a { color: inherit; text-decoration: none; }
 }
 .social-link:hover { background: var(--color-accent); }
 
-.cart-news__grid {
+.cart-news__grid .wp-block-post-template {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
+.cart-news__grid .wp-block-post-template > li { list-style: none; }
+.news-card__img-link img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .news-card {
     background: var(--color-white);
@@ -339,15 +344,6 @@ a { color: inherit; text-decoration: none; }
 .news-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.15); }
 
 .news-card__img-link { display: block; }
-.news-card__img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-.news-card__img--placeholder {
-    height: 200px;
-    background: #ccc;
-}
 
 .news-card__body { padding: 20px; }
 .news-card__date { font-size: 12px; color: var(--color-muted); margin-bottom: 8px; }
@@ -363,8 +359,6 @@ a { color: inherit; text-decoration: none; }
     gap: 4px;
 }
 .news-card__read-more:hover { color: var(--color-accent-lt); }
-
-.no-posts-message { color: rgba(255,255,255,0.6); font-size: 15px; text-align: center; padding: 40px 0; }
 
 /* ============================================================
    ABOUT US
@@ -419,11 +413,13 @@ a { color: inherit; text-decoration: none; }
     grid-template-rows: 1fr 1fr;
     gap: 12px;
 }
+.cart-about__gallery-item { overflow: hidden; border-radius: 8px; }
+.cart-about__gallery-item .wp-block-image { height: 100%; margin: 0; }
 .cart-about__gallery-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px;
+    display: block;
 }
 
 .cart-about-closing { background: var(--color-white); }
@@ -488,17 +484,18 @@ a { color: inherit; text-decoration: none; }
 
 .cart-serve__viewport { overflow: hidden; border-radius: 10px; }
 .cart-serve__track {
-    display: flex;
+    display: flex !important;
     gap: 20px;
     transition: transform 0.4s ease;
 }
-.carousel-item {
-    flex: 0 0 calc((100% - 2 * 20px) / 3.3);
+.cart-serve__track > .wp-block-image {
+    flex: 0 0 calc((100% - 2 * 20px) / 3.3) !important;
     height: 380px;
     border-radius: 10px;
     overflow: hidden;
+    margin: 0;
 }
-.carousel-item img { width: 100%; height: 100%; object-fit: cover; }
+.cart-serve__track > .wp-block-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .cart-serve__closing {
     max-width: 900px;
@@ -688,7 +685,7 @@ a { color: inherit; text-decoration: none; }
     .cart-about__intro { grid-template-columns: 1fr; gap: 24px; }
     .cart-about__gallery { grid-template-columns: 1fr; }
     .cart-serve__header { grid-template-columns: 1fr; gap: 24px; }
-    .carousel-item { flex: 0 0 calc((100% - 20px) / 2.2); }
+    .cart-serve__track > .wp-block-image { flex: 0 0 calc((100% - 20px) / 2.2); }
     .cart-anniversary__intro { grid-template-columns: 1fr; gap: 16px; }
     .cart-timeline { grid-template-columns: 1fr; }
     .cart-timeline__img { position: static; }
@@ -700,10 +697,10 @@ a { color: inherit; text-decoration: none; }
     .cart-hero__search { flex-direction: column; border-radius: var(--radius); overflow: visible; }
     .cart-hero__search-input { border-radius: var(--radius); }
     .cart-hero__search .btn { border-radius: var(--radius); width: 100%; }
-    .cart-news__grid { grid-template-columns: 1fr; }
+    .cart-news__grid .wp-block-post-template { grid-template-columns: 1fr; }
     .cart-news__header { flex-direction: column; }
     .cart-about__gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
-    .carousel-item { flex: 0 0 calc(100% - 20px); }
+    .cart-serve__track > .wp-block-image { flex: 0 0 calc(100% - 20px); }
     .cart-footer__top { flex-direction: column; }
     .cart-footer__nav { align-items: flex-start; gap: 12px; }
     .cart-footer__bottom { flex-direction: column; align-items: flex-start; }

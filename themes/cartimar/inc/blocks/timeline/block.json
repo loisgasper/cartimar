@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "cartimar/timeline",
+    "title": "Cartimar Timeline",
+    "category": "design",
+    "icon": "clock",
+    "description": "A sticky image beside a scrolling list of year/description entries. Add, remove, or reorder entries freely.",
+    "attributes": {
+        "image": { "type": "object", "default": null }
+    },
+    "supports": { "html": false, "align": ["wide", "full"] },
+    "textdomain": "cartimar",
+    "editorScript": "file:./edit.js"
+}

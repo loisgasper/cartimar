@@ -1,0 +1,69 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/theme.json",
+    "version": 2,
+    "settings": {
+        "appearanceTools": true,
+        "layout": {
+            "contentSize": "1280px",
+            "wideSize": "1280px"
+        },
+        "color": {
+            "palette": [
+                { "slug": "dark", "color": "#0d1b2a", "name": "Dark" },
+                { "slug": "dark-alt", "color": "#1a2a3a", "name": "Dark Alt" },
+                { "slug": "accent", "color": "#c8860a", "name": "Accent Gold" },
+                { "slug": "accent-light", "color": "#e8a012", "name": "Accent Gold Light" },
+                { "slug": "white", "color": "#ffffff", "name": "White" },
+                { "slug": "light", "color": "#f7f7f9", "name": "Light Gray" },
+                { "slug": "lavender", "color": "#f2f0fb", "name": "Lavender" },
+                { "slug": "peach", "color": "#faeada", "name": "Peach" },
+                { "slug": "text", "color": "#2c2c2c", "name": "Text" },
+                { "slug": "muted", "color": "#666666", "name": "Muted" },
+                { "slug": "border", "color": "#e0e0e0", "name": "Border" }
+            ]
+        },
+        "typography": {
+            "fontFamilies": [
+                {
+                    "slug": "serif",
+                    "fontFamily": "Georgia, 'Times New Roman', serif",
+                    "name": "Heading Serif"
+                },
+                {
+                    "slug": "sans",
+                    "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    "name": "Body Sans"
+                }
+            ]
+        }
+    },
+    "styles": {
+        "color": {
+            "background": "var(--wp--preset--color--white)",
+            "text": "var(--wp--preset--color--text)"
+        },
+        "typography": {
+            "fontFamily": "var(--wp--preset--font-family--sans)"
+        },
+        "elements": {
+            "heading": {
+                "typography": {
+                    "fontFamily": "var(--wp--preset--font-family--serif)",
+                    "fontWeight": "700"
+                },
+                "color": {
+                    "text": "var(--wp--preset--color--dark)"
+                }
+            },
+            "link": {
+                "color": {
+                    "text": "var(--wp--preset--color--accent)"
+                }
+            }
+        }
+    },
+    "templateParts": [
+        { "name": "header", "area": "header" },
+        { "name": "footer", "area": "footer" }
+    ]
+}

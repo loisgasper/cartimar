@@ -3,17 +3,9 @@ if (!defined('ABSPATH')) exit;
 
 define('CARTIMAR_VERSION', '1.0.0');
 
-require_once get_template_directory() . '/inc/acf-fields.php';
-
 function cartimar_setup() {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
-    add_theme_support('custom-header', [
-        'default-image' => '',
-        'width'         => 1920,
-        'height'        => 1080,
-        'flex-height'   => true,
-    ]);
     add_theme_support('html5', ['search-form', 'comment-form', 'gallery', 'caption']);
     add_theme_support('custom-logo', [
         'height'      => 60,
@@ -22,10 +14,10 @@ function cartimar_setup() {
         'flex-width'  => true,
     ]);
 
-    register_nav_menus([
-        'primary' => __('Primary Menu', 'cartimar'),
-        'footer'  => __('Footer Menu', 'cartimar'),
-    ]);
+    // Load the theme's own stylesheet inside the block editor too, so editing
+    // a page looks like the real front end instead of a plain, unstyled preview.
+    add_theme_support('editor-styles');
+    add_editor_style('assets/css/main.css');
 }
 add_action('after_setup_theme', 'cartimar_setup');
 
@@ -35,12 +27,9 @@ function cartimar_enqueue() {
 }
 add_action('wp_enqueue_scripts', 'cartimar_enqueue');
 
-function cartimar_widgets_init() {
-    register_sidebar([
-        'name'          => __('Sidebar', 'cartimar'),
-        'id'            => 'sidebar-1',
-        'before_widget' => '<div class="widget">',
-        'after_widget'  => '</div>',
-    ]);
+function cartimar_register_blocks() {
+    register_block_type(get_template_directory() . '/inc/blocks/carousel');
+    register_block_type(get_template_directory() . '/inc/blocks/timeline');
+    register_block_type(get_template_directory() . '/inc/blocks/timeline-item');
 }
-add_action('widgets_init', 'cartimar_widgets_init');
+add_action('init', 'cartimar_register_blocks');

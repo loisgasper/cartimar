@@ -44,7 +44,7 @@ jQuery(function ($) {
     $('.cart-serve__carousel').each(function () {
         var $carousel = $(this);
         var $track = $carousel.find('.cart-serve__track');
-        var $items = $track.find('.carousel-item');
+        var $items = $track.find('> .wp-block-image');
         var $prev = $carousel.find('.cart-serve__arrow--prev');
         var $next = $carousel.find('.cart-serve__arrow--next');
         var index = 0;

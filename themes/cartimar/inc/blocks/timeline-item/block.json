@@ -1,0 +1,17 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "cartimar/timeline-item",
+    "title": "Timeline Item",
+    "category": "design",
+    "icon": "calendar-alt",
+    "description": "A single year + description entry in the Cartimar Timeline.",
+    "parent": ["cartimar/timeline"],
+    "attributes": {
+        "year": { "type": "string", "source": "html", "selector": ".cart-timeline__year", "default": "Year" },
+        "body": { "type": "string", "source": "html", "selector": "p", "default": "Description" }
+    },
+    "supports": { "html": false },
+    "textdomain": "cartimar",
+    "editorScript": "file:./edit.js"
+}
