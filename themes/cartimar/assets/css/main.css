@@ -589,7 +589,7 @@ a { color: inherit; text-decoration: none; }
 .cart-serve__arrow:disabled { opacity: 0.3; cursor: default; }
 .cart-serve__arrow:disabled:hover { background: transparent; color: var(--color-dark); }
 
-.cart-serve__viewport { overflow: hidden; border-radius: 0; }
+.cart-serve__viewport { overflow: hidden; border-radius: 0; padding-left: 70px;}
 .cart-serve__track {
     display: flex !important;
     gap: 20px;
