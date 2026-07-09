@@ -39,6 +39,49 @@ $map_img = esc_url(MALL_DIR_PLUGIN_URL . 'assets/images/cartimar-shop-directory-
         stroke-dasharray: 8 4;
       }
       #cartimar-map-svg text { pointer-events: none; user-select: none; }
+
+      /* Pin that drops onto whichever area is currently highlighted
+         (see showPin()/hidePin() in directory.js). Hidden at rest. */
+      #cartimar-map-svg .map-pin { opacity: 0; pointer-events: none; transition: opacity .15s ease; }
+      #cartimar-map-svg .map-pin.is-visible { opacity: 1; }
+
+      #cartimar-map-svg .map-pin__bounce {
+        transform-box: fill-box;
+        transform-origin: 50% 100%; /* pivot from the tip, which touches the map */
+      }
+      #cartimar-map-svg .map-pin.is-visible .map-pin__bounce {
+        animation: map-pin-drop .6s cubic-bezier(.34,1.56,.64,1);
+      }
+
+      #cartimar-map-svg .map-pin__shadow { fill: rgba(0,0,0,.25); }
+      #cartimar-map-svg .map-pin__body {
+        fill: #e8395a;
+        stroke: #ffffff;
+        stroke-width: 2;
+        filter: drop-shadow(0 3px 4px rgba(0,0,0,.3));
+      }
+      #cartimar-map-svg .map-pin__dot { fill: #ffffff; }
+
+      #cartimar-map-svg .map-pin__pulse {
+        fill: #e8395a;
+        opacity: 0;
+        transform-box: fill-box;
+        transform-origin: 50% 50%;
+      }
+      #cartimar-map-svg .map-pin.is-visible .map-pin__pulse {
+        animation: map-pin-pulse 1.6s ease-out .55s infinite;
+      }
+
+      @keyframes map-pin-drop {
+        0%   { transform: translateY(-46px) scale(.4); opacity: 0; }
+        55%  { transform: translateY(6px)   scale(1.08); opacity: 1; }
+        75%  { transform: translateY(-3px)  scale(.96); }
+        100% { transform: translateY(0)     scale(1); }
+      }
+      @keyframes map-pin-pulse {
+        0%   { transform: scale(.5); opacity: .55; }
+        100% { transform: scale(2.4); opacity: 0; }
+      }
     </style>
   </defs>
 
@@ -159,6 +202,20 @@ $map_img = esc_url(MALL_DIR_PLUGIN_URL . 'assets/images/cartimar-shop-directory-
      tabindex="0" role="button" aria-label="Gateway Lower">
     <title>Gateway (Lower)</title>
   <rect class="area-fill" x="1438" y="495" width="54" height="265" rx="7" fill="#9a8040" stroke="#6a5010"></rect>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- ACTIVE-AREA PIN — positioned + shown by directory.js's  -->
+  <!-- showPin()/hidePin(), driven off the same setHighlight() -->
+  <!-- calls that already highlight a zone.                    -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <g id="map-pin" class="map-pin">
+    <g class="map-pin__bounce">
+      <ellipse class="map-pin__shadow" cx="0" cy="3" rx="11" ry="4"></ellipse>
+      <circle class="map-pin__pulse" cx="0" cy="-32" r="14"></circle>
+      <path class="map-pin__body" d="M-18,-32 A18,18 0 1,1 18,-32 C18,-14 0,-14 0,0 C0,-14 -18,-14 -18,-32 Z"></path>
+      <circle class="map-pin__dot" cx="0" cy="-32" r="6"></circle>
+    </g>
   </g>
 
 </svg>

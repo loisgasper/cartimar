@@ -210,6 +210,37 @@ jQuery(document).ready(function ($) {
         return found;
     }
 
+    // ── Map pin — drops onto whichever zone setHighlight() turns on ──
+    var $pin        = $('#map-pin');
+    var pinBounceEl = document.querySelector('#map-pin .map-pin__bounce');
+    var pinArea     = null;
+
+    function showPin(areaName) {
+        var zone = findZone(areaName);
+        var rect = zone && zone.querySelector('.area-fill');
+        if (!rect) return;
+        // getBBox() reads the zone's actual rendered position/size directly,
+        // so the pin always lands dead-centre on it even if the rect's
+        // coordinates ever change — no separate list of positions to keep in sync.
+        var bbox = rect.getBBox();
+        var cx = bbox.x + bbox.width / 2;
+        var cy = bbox.y + bbox.height / 2;
+        $pin.attr('transform', 'translate(' + cx + ',' + cy + ')');
+        // Only replay the drop/bounce when arriving somewhere new — re-hovering
+        // the area it's already sitting on shouldn't make it jitter.
+        if (pinArea !== areaName || !$pin.hasClass('is-visible')) {
+            $pin.removeClass('is-visible');
+            void pinBounceEl.offsetWidth; // force reflow to restart the CSS animation
+            $pin.addClass('is-visible');
+        }
+        pinArea = areaName;
+    }
+
+    function hidePin() {
+        $pin.removeClass('is-visible');
+        pinArea = null;
+    }
+
     function setHighlight(areaName, on) {
         if (highlightedArea && highlightedArea !== areaName) {
             var prev = findZone(highlightedArea);
@@ -221,15 +252,18 @@ jQuery(document).ready(function ($) {
         if (on) {
             $(zone).addClass('is-highlighted');
             highlightedArea = areaName;
+            showPin(areaName);
         } else {
             $(zone).removeClass('is-highlighted');
             if (highlightedArea === areaName) highlightedArea = null;
+            hidePin();
         }
     }
 
     function clearAllHighlights() {
         $svg.find('.area-zone').removeClass('is-highlighted');
         highlightedArea = null;
+        hidePin();
     }
 
     // ─────────────────────────────────────────────────────────
