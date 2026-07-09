@@ -73,25 +73,75 @@ jQuery(function ($) {
         update();
     });
 
-    // 75 Years Timeline: hover a year (desktop) to swap the shared photo pane
-    // and highlight that year; tap a year (mobile, no hover) to expand it as
-    // an accordion instead. Same "active item" state drives both.
+    // 75 Years Timeline: the photo pane stays sticky while you scroll through
+    // the years, and which year is "active" (bold text + matching photo)
+    // tracks whatever year is currently scrolled near the pane — hovering or
+    // tapping a year also jumps straight to it. On desktop the photos are
+    // moved out of their own year row into one shared pane so it can be
+    // truly sticky (released once you scroll past the last year) — reverted
+    // back inline if the viewport narrows to the mobile accordion layout.
     $('.cart-timeline').each(function () {
         var $timeline = $(this);
         var $items = $timeline.find('.cart-timeline__item');
+        var $pane = $('<div class="cart-timeline__img-pane"></div>');
+        var isDesktop = false;
+        var mq = window.matchMedia('(min-width: 1025px)');
+        var observer = null;
 
-        function setActive($item) {
+        $items.each(function (i) {
+            $(this).attr('data-timeline-index', i);
+            $(this).find('.cart-timeline__item-img').attr('data-timeline-index', i);
+        });
+
+        function setActive(index) {
             $items.removeClass('is-active');
-            $item.addClass('is-active');
+            $items.eq(index).addClass('is-active');
+            $timeline.find('.cart-timeline__item-img').removeClass('is-active');
+            $timeline.find('.cart-timeline__item-img[data-timeline-index="' + index + '"]').addClass('is-active');
         }
 
-        setActive($items.first());
+        function startObserving() {
+            if (!('IntersectionObserver' in window)) return;
+            observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        setActive($(entry.target).attr('data-timeline-index'));
+                    }
+                });
+            }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+            $items.each(function () { observer.observe(this); });
+        }
 
-        $items.on('mouseenter', function () { setActive($(this)); });
-        $timeline.on('mouseleave', function () { setActive($items.first()); });
+        function stopObserving() {
+            if (observer) { observer.disconnect(); observer = null; }
+        }
+
+        function layout() {
+            if (mq.matches && !isDesktop) {
+                $items.find('.cart-timeline__item-img').appendTo($pane);
+                $timeline.append($pane);
+                isDesktop = true;
+                startObserving();
+            } else if (!mq.matches && isDesktop) {
+                $pane.find('.cart-timeline__item-img').each(function () {
+                    $items.eq($(this).attr('data-timeline-index')).append($(this));
+                });
+                $pane.detach();
+                isDesktop = false;
+                stopObserving();
+            }
+        }
+
+        layout();
+        setActive(0);
+        mq.addEventListener ? mq.addEventListener('change', layout) : mq.addListener(layout);
+
+        // Hovering lets desktop users jump straight to a year without
+        // needing to scroll to it; scrolling then takes back over naturally.
+        $items.on('mouseenter', function () { setActive($(this).attr('data-timeline-index')); });
 
         $items.find('.cart-timeline__year').on('click', function () {
-            setActive($(this).closest('.cart-timeline__item'));
+            setActive($(this).closest('.cart-timeline__item').attr('data-timeline-index'));
         });
     });
 
