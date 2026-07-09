@@ -43,6 +43,7 @@ jQuery(function ($) {
     // Here to Serve: carousel prev/next
     $('.cart-serve__carousel').each(function () {
         var $carousel = $(this);
+        var $viewport = $carousel.find('.cart-serve__viewport');
         var $track = $carousel.find('.cart-serve__track');
         var $items = $track.find('> .wp-block-image');
         var $prev = $carousel.find('.cart-serve__arrow--prev');
@@ -53,18 +54,28 @@ jQuery(function ($) {
             return $items.eq(0).outerWidth(true);
         }
 
+        // The real ceiling on how far the track can scroll — once the last
+        // image's right edge reaches the viewport's right edge, there's
+        // nothing more to reveal, regardless of how many "steps" of index
+        // are left. On a wide/full-bleed viewport with few images this cap
+        // kicks in well before index reaches items.length - 1.
+        function maxOffset() {
+            return Math.max(0, $track[0].scrollWidth - $viewport.width());
+        }
+
         function update() {
-            var maxIndex = Math.max($items.length - 1, 0);
-            index = Math.min(Math.max(index, 0), maxIndex);
+            index = Math.max(index, 0);
             // At rest (index 0) the first image sits flush — no peek on the left yet.
             // Once the user moves forward, hold back part of a step so the previous
             // image's edge peeks in on the left, same as the next image already
             // peeks in on the right.
             var peek = itemStep() * 0.25;
-            var offset = index === 0 ? 0 : (index * itemStep() - peek);
+            var rawOffset = index === 0 ? 0 : (index * itemStep() - peek);
+            var max = maxOffset();
+            var offset = Math.min(Math.max(rawOffset, 0), max);
             $track.css('transform', 'translateX(-' + offset + 'px)');
-            $prev.prop('disabled', index === 0);
-            $next.prop('disabled', index >= maxIndex);
+            $prev.prop('disabled', offset <= 0);
+            $next.prop('disabled', offset >= max);
         }
 
         $prev.on('click', function () { index--; update(); });
