@@ -53,6 +53,15 @@ $map_img = esc_url(MALL_DIR_PLUGIN_URL . 'assets/images/cartimar-shop-directory-
         animation: map-pin-drop .6s cubic-bezier(.34,1.56,.64,1);
       }
 
+      /* Casual jaunty tilt, like it's been playfully stuck in at an angle —
+         pivots around the same tip point as the bounce, shadow stays flat
+         and untilted underneath it so it still reads as "grounded". */
+      #cartimar-map-svg .map-pin__tilt {
+        transform-box: fill-box;
+        transform-origin: 50% 100%;
+        transform: rotate(-22deg);
+      }
+
       #cartimar-map-svg .map-pin__shadow { fill: rgba(0,0,0,.25); }
       #cartimar-map-svg .map-pin__body {
         fill: #e8395a;
@@ -212,9 +221,11 @@ $map_img = esc_url(MALL_DIR_PLUGIN_URL . 'assets/images/cartimar-shop-directory-
   <g id="map-pin" class="map-pin">
     <g class="map-pin__bounce">
       <ellipse class="map-pin__shadow" cx="0" cy="3" rx="11" ry="4"></ellipse>
-      <circle class="map-pin__pulse" cx="0" cy="-32" r="14"></circle>
-      <path class="map-pin__body" d="M-18,-32 A18,18 0 1,1 18,-32 C18,-14 0,-14 0,0 C0,-14 -18,-14 -18,-32 Z"></path>
-      <circle class="map-pin__dot" cx="0" cy="-32" r="6"></circle>
+      <g class="map-pin__tilt">
+        <circle class="map-pin__pulse" cx="0" cy="-32" r="14"></circle>
+        <path class="map-pin__body" d="M-18,-32 A18,18 0 1,1 18,-32 C18,-14 0,-14 0,0 C0,-14 -18,-14 -18,-32 Z"></path>
+        <circle class="map-pin__dot" cx="0" cy="-32" r="6"></circle>
+      </g>
     </g>
   </g>
 

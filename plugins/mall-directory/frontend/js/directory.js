@@ -220,11 +220,13 @@ jQuery(document).ready(function ($) {
         var rect = zone && zone.querySelector('.area-fill');
         if (!rect) return;
         // getBBox() reads the zone's actual rendered position/size directly,
-        // so the pin always lands dead-centre on it even if the rect's
-        // coordinates ever change — no separate list of positions to keep in sync.
+        // so the pin always lands correctly on it even if the rect's
+        // coordinates ever change — no separate list of positions to keep in
+        // sync. Offset toward the upper-left (rather than dead-centre) so it
+        // doesn't sit on top of the zone's own name label.
         var bbox = rect.getBBox();
-        var cx = bbox.x + bbox.width / 2;
-        var cy = bbox.y + bbox.height / 2;
+        var cx = bbox.x + bbox.width * 0.28;
+        var cy = bbox.y + bbox.height * 0.2;
         $pin.attr('transform', 'translate(' + cx + ',' + cy + ')');
         // Only replay the drop/bounce when arriving somewhere new — re-hovering
         // the area it's already sitting on shouldn't make it jitter.
