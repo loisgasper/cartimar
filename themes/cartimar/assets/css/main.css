@@ -636,16 +636,27 @@ a { color: inherit; text-decoration: none; }
     letter-spacing: 1px;
 }
 
+.cart-anniversary__header {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 24px;
+}
+.cart-anniversary__logo { flex: 0 0 auto; margin: 0; }
+.cart-anniversary__logo img { display: block; width: 220px; height: auto; }
+
 .cart-anniversary__intro {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 48px;
-    max-width: 900px;
-    margin: 16px auto 56px;
+    margin: 16px 0 56px;
     color: var(--color-muted);
     font-size: 16px;
     line-height: 1.7;
 }
+
+.cart-anniversary__photo { margin: 56px 0 0; }
+.cart-anniversary__photo img { display: block; width: 100%; height: 300px; object-fit: cover; border-radius: 0; }
 
 /* Desktop: hovering a year swaps which photo shows in the shared image pane
    and highlights that year's text. The pane sticks in place while you scroll
@@ -658,8 +669,27 @@ a { color: inherit; text-decoration: none; }
 .cart-timeline__item {
     padding: 28px 0;
     border-top: 1px solid var(--color-border);
+    position: relative;
 }
 .cart-timeline__item:last-child { border-bottom: 1px solid var(--color-border); }
+
+/* Dot + connector line pointing at whichever year is currently active
+   (hovered, tapped, or scrolled into focus) — sits in the container's left
+   gutter so it doesn't disturb the text column. */
+.cart-timeline__item::before,
+.cart-timeline__item::after {
+    content: '';
+    position: absolute;
+    top: 46px;
+    transform: translateY(-50%);
+    background: var(--color-dark);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.cart-timeline__item::before { left: -44px; width: 32px; height: 1px; }
+.cart-timeline__item::after { left: -48px; width: 8px; height: 8px; border-radius: 50%; }
+.cart-timeline__item.is-active::before,
+.cart-timeline__item.is-active::after { opacity: 1; }
 
 .cart-timeline__year {
     font-family: var(--font-serif);
@@ -993,11 +1023,15 @@ footer .cart-contact-cta__bg { display: none; }
     .cart-serve__header { grid-template-columns: 1fr; gap: 24px; }
     .cart-serve__track > .wp-block-image { flex: 0 0 calc((100% - 20px) / 2.2) !important; }
     .cart-anniversary__intro { grid-template-columns: 1fr; gap: 16px; }
+    .cart-anniversary__logo img { width: 160px; }
+    .cart-anniversary__photo img { height: 260px; }
     /* Accordion: tapping a year (JS toggles .is-active) expands its own
        description + photo in place; only one year is open at a time.
        (main.js also moves each photo back inline from the desktop sticky
        pane once the viewport drops below this breakpoint.) */
     .cart-timeline { display: block; }
+    .cart-timeline__item::before,
+    .cart-timeline__item::after { display: none; }
 
     .cart-timeline__year { padding-right: 32px; position: relative; }
     .cart-timeline__year::after {
@@ -1050,6 +1084,9 @@ footer .cart-contact-cta__bg { display: none; }
     .cart-about__gallery-row .cart-about__gallery-item,
     .cart-about__gallery-row--reverse .cart-about__gallery-item { flex: none; height: 220px; }
     .cart-serve__track > .wp-block-image { flex: 0 0 calc(100% - 20px) !important; }
+    .cart-anniversary__header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .cart-anniversary__logo img { width: 140px; }
+    .cart-anniversary__photo img { height: 200px; }
     .cart-footer__top { flex-direction: column; }
     .cart-footer__nav { align-items: flex-start; gap: 12px; }
     .cart-footer__bottom { flex-direction: column; align-items: flex-start; }
