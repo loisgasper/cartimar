@@ -727,6 +727,36 @@ a { color: inherit; text-decoration: none; }
     box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
 
+/* The timeline's hover/scroll/sticky behavior above is driven entirely by
+   front-end-only JS (main.js), which never runs inside the block editor —
+   so without an override, every year's photo sits at opacity:0 and every
+   description at a near-white text color, waiting for a JS-toggled
+   .is-active class that will never come, leaving nothing visible or
+   clickable to edit. Scoped to .editor-styles-wrapper so it only affects
+   the admin editor, never the live site: shows every year's text and
+   photo stacked normally, in document order, so the client can see and
+   click any of them directly. */
+.editor-styles-wrapper .cart-timeline { display: block; }
+.editor-styles-wrapper .cart-timeline__year { color: var(--color-dark); }
+.editor-styles-wrapper .cart-timeline__item p { color: var(--color-muted); }
+.editor-styles-wrapper .cart-timeline__item-img {
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+    margin-top: 16px;
+}
+.editor-styles-wrapper .cart-timeline__item-img img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    /* The block editor sets plain <img> elements to pointer-events:none by
+       default so clicks on them select the block instead of the image —
+       this one is the actual click target for changing the photo, so it
+       needs pointer events back. */
+    pointer-events: auto;
+    cursor: pointer;
+}
+
 
 /* ============================================================
    GET IN TOUCH (pre-footer CTA)
