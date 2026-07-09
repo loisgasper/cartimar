@@ -54,11 +54,13 @@ jQuery(function ($) {
             return $items.eq(0).outerWidth(true);
         }
 
-        // The real ceiling on how far the track can scroll — once the last
-        // image's right edge reaches the viewport's right edge, there's
-        // nothing more to reveal, regardless of how many "steps" of index
-        // are left. On a wide/full-bleed viewport with few images this cap
-        // kicks in well before index reaches items.length - 1.
+        // The real ceiling on how far the track can scroll, i.e. how far past
+        // the viewport's content edge the track's true content extends.
+        // scrollWidth is used because — unlike offsetLeft or a live
+        // getBoundingClientRect() read — it reflects the track's real content
+        // width regardless of any transform (or in-progress transform
+        // transition) currently applied to it, so it can't be thrown off by
+        // either of those.
         function maxOffset() {
             return Math.max(0, $track[0].scrollWidth - $viewport.width());
         }
@@ -69,10 +71,19 @@ jQuery(function ($) {
             // Once the user moves forward, hold back part of a step so the previous
             // image's edge peeks in on the left, same as the next image already
             // peeks in on the right.
-            var peek = itemStep() * 0.25;
-            var rawOffset = index === 0 ? 0 : (index * itemStep() - peek);
+            var step = itemStep();
+            var peek = step * 0.25;
+            var rawOffset = index === 0 ? 0 : (index * step - peek);
             var max = maxOffset();
             var offset = Math.min(Math.max(rawOffset, 0), max);
+            // itemStep (read via outerWidth) and the flex layout engine's own
+            // internal item widths round differently, so the last real step
+            // can land a few px short of max even though there's nothing left
+            // to actually reveal. Snap flush once inside that noise margin —
+            // well under any gap that reflects a real additional slice of
+            // image (tens of px or more) — so the click that visually
+            // finishes the carousel always disables Next.
+            if (max - offset < 10) offset = max;
             $track.css('transform', 'translateX(-' + offset + 'px)');
             $prev.prop('disabled', offset <= 0);
             $next.prop('disabled', offset >= max);
