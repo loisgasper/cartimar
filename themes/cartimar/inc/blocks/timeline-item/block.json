@@ -9,7 +9,8 @@
     "parent": ["cartimar/timeline"],
     "attributes": {
         "year": { "type": "string", "source": "html", "selector": ".cart-timeline__year", "default": "Year" },
-        "body": { "type": "string", "source": "html", "selector": "p", "default": "Description" }
+        "body": { "type": "string", "source": "html", "selector": "p", "default": "Description" },
+        "image": { "type": "object", "default": null }
     },
     "supports": { "html": false },
     "textdomain": "cartimar",

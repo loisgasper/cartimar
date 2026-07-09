@@ -648,13 +648,11 @@ a { color: inherit; text-decoration: none; }
     line-height: 1.7;
 }
 
-.cart-timeline {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px;
-    align-items: start;
-}
-
+/* Desktop: hovering a year swaps which photo shows in the shared image pane
+   (all photos share the same absolute position, stacked, and cross-fade via
+   opacity) and highlights that year's text. Mobile switches to a tap-driven
+   accordion instead — see the max-width:1024px block below. */
+.cart-timeline { position: relative; min-height: 480px; }
 .cart-timeline__years { display: flex; flex-direction: column; }
 .cart-timeline__item {
     padding: 28px 0;
@@ -662,24 +660,42 @@ a { color: inherit; text-decoration: none; }
 }
 .cart-timeline__item:last-child { border-bottom: 1px solid var(--color-border); }
 
+.cart-timeline__item-body { max-width: calc(50% - 24px); }
+
 .cart-timeline__year {
     font-family: var(--font-serif);
     font-size: 36px;
     font-weight: 700;
-    color: var(--color-dark);
+    color: var(--color-muted);
     margin-bottom: 12px;
     line-height: 1;
+    cursor: pointer;
+    transition: color 0.3s ease;
 }
-.cart-timeline__item p { color: var(--color-muted); line-height: 1.8; font-size: 15px; }
+.cart-timeline__item p { color: var(--color-border); line-height: 1.8; font-size: 15px; transition: color 0.3s ease; }
 
-.cart-timeline__img { position: sticky; top: calc(var(--nav-h) + 24px); align-self: start; }
-.cart-timeline__img img {
-    width: 100%;
+.cart-timeline__item.is-active .cart-timeline__year { color: var(--color-dark); }
+.cart-timeline__item.is-active p { color: var(--color-muted); }
+
+.cart-timeline__item-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: calc(50% - 24px);
     height: 480px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+.cart-timeline__item.is-active .cart-timeline__item-img { opacity: 1; }
+.cart-timeline__item-img img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     border-radius: 10px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
+
 
 /* ============================================================
    GET IN TOUCH (pre-footer CTA)
@@ -976,8 +992,44 @@ footer .cart-contact-cta__bg { display: none; }
     .cart-serve__header { grid-template-columns: 1fr; gap: 24px; }
     .cart-serve__track > .wp-block-image { flex: 0 0 calc((100% - 20px) / 2.2) !important; }
     .cart-anniversary__intro { grid-template-columns: 1fr; gap: 16px; }
-    .cart-timeline { grid-template-columns: 1fr; }
-    .cart-timeline__img { position: static; }
+    /* Accordion: tapping a year (JS toggles .is-active) expands its own
+       description + photo in place; only one year is open at a time. */
+    .cart-timeline { position: static; min-height: 0; }
+    .cart-timeline__item-body { max-width: 100%; }
+
+    .cart-timeline__year { padding-right: 32px; position: relative; }
+    .cart-timeline__year::after {
+        content: '+';
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-size: 26px;
+        font-weight: 400;
+        color: var(--color-muted);
+        transition: color 0.3s ease;
+    }
+    .cart-timeline__item.is-active .cart-timeline__year::after { content: '\2212'; color: var(--color-dark); }
+
+    .cart-timeline__item p {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        margin-top: 0;
+        transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.4s ease;
+    }
+    .cart-timeline__item.is-active p { max-height: 300px; opacity: 1; margin-top: 8px; }
+
+    .cart-timeline__item-img {
+        position: static;
+        width: 100%;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        margin-top: 0;
+        transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.4s ease;
+    }
+    .cart-timeline__item.is-active .cart-timeline__item-img { max-height: 260px; opacity: 1; margin-top: 16px; }
+    .cart-timeline__item-img img { height: 260px; }
     .contact-layout { grid-template-columns: 1fr; gap: 40px; }
     .single-post__header { grid-template-columns: 1fr; gap: 24px; }
     .further-read__grid .wp-block-post-template { grid-template-columns: 1fr; }

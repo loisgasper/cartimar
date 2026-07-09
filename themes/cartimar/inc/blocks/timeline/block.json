@@ -5,10 +5,7 @@
     "title": "Cartimar Timeline",
     "category": "design",
     "icon": "clock",
-    "description": "A sticky image beside a scrolling list of year/description entries. Add, remove, or reorder entries freely.",
-    "attributes": {
-        "image": { "type": "object", "default": null }
-    },
+    "description": "A scrolling list of year/description entries, each with its own sticky photo. Add, remove, or reorder entries freely.",
     "supports": { "html": false, "align": ["wide", "full"] },
     "textdomain": "cartimar",
     "editorScript": "file:./edit.js"

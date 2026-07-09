@@ -1,8 +1,5 @@
 (function (blocks, element, blockEditor) {
     var el = element.createElement;
-    var InnerBlocks = blockEditor.InnerBlocks;
-    var MediaPlaceholder = blockEditor.MediaPlaceholder;
-    var MediaUpload = blockEditor.MediaUpload;
     var useBlockProps = blockEditor.useBlockProps;
     var useInnerBlocksProps = blockEditor.useInnerBlocksProps;
 
@@ -14,69 +11,20 @@
     ];
 
     blocks.registerBlockType('cartimar/timeline', {
-        edit: function (props) {
-            var attributes = props.attributes;
-            var setAttributes = props.setAttributes;
-            var image = attributes.image;
+        edit: function () {
             var blockProps = useBlockProps({ className: 'cart-timeline' });
             var innerBlocksProps = useInnerBlocksProps(
                 { className: 'cart-timeline__years' },
                 { allowedBlocks: ['cartimar/timeline-item'], template: TEMPLATE, templateLock: false }
             );
 
-            return el(
-                'div',
-                blockProps,
-                el('div', innerBlocksProps),
-                el(
-                    'div',
-                    { className: 'cart-timeline__img' + (image && image.url ? '' : ' img-placeholder') },
-                    image && image.url
-                        ? el(MediaUpload, {
-                              onSelect: function (media) {
-                                  setAttributes({ image: { id: media.id, url: media.url, alt: media.alt || '' } });
-                              },
-                              allowedTypes: ['image'],
-                              value: image.id,
-                              render: function (obj) {
-                                  return el('img', {
-                                      src: image.url,
-                                      alt: image.alt || '',
-                                      style: { cursor: 'pointer' },
-                                      title: 'Click to change the sticky timeline image',
-                                      onClick: obj.open,
-                                  });
-                              },
-                          })
-                        : el(MediaPlaceholder, {
-                              accept: 'image/*',
-                              allowedTypes: ['image'],
-                              multiple: false,
-                              labels: { title: 'Sticky Timeline Image' },
-                              onSelect: function (media) {
-                                  setAttributes({ image: { id: media.id, url: media.url, alt: media.alt || '' } });
-                              },
-                          })
-                )
-            );
+            return el('div', blockProps, el('div', innerBlocksProps));
         },
-        save: function (props) {
-            var attributes = props.attributes;
-            var image = attributes.image;
+        save: function () {
             var blockProps = blockEditor.useBlockProps.save({ className: 'cart-timeline' });
             var innerBlocksProps = blockEditor.useInnerBlocksProps.save({ className: 'cart-timeline__years' });
-            var hasImage = image && image.url;
 
-            return el(
-                'div',
-                blockProps,
-                el('div', innerBlocksProps),
-                el(
-                    'div',
-                    { className: 'cart-timeline__img' + (hasImage ? '' : ' img-placeholder') },
-                    hasImage ? el('img', { src: image.url, alt: image.alt || '' }) : null
-                )
-            );
+            return el('div', blockProps, el('div', innerBlocksProps));
         },
     });
 })(window.wp.blocks, window.wp.element, window.wp.blockEditor);

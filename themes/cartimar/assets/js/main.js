@@ -73,6 +73,28 @@ jQuery(function ($) {
         update();
     });
 
+    // 75 Years Timeline: hover a year (desktop) to swap the shared photo pane
+    // and highlight that year; tap a year (mobile, no hover) to expand it as
+    // an accordion instead. Same "active item" state drives both.
+    $('.cart-timeline').each(function () {
+        var $timeline = $(this);
+        var $items = $timeline.find('.cart-timeline__item');
+
+        function setActive($item) {
+            $items.removeClass('is-active');
+            $item.addClass('is-active');
+        }
+
+        setActive($items.first());
+
+        $items.on('mouseenter', function () { setActive($(this)); });
+        $timeline.on('mouseleave', function () { setActive($items.first()); });
+
+        $items.find('.cart-timeline__year').on('click', function () {
+            setActive($(this).closest('.cart-timeline__item'));
+        });
+    });
+
     // Fade-in sections on scroll
     var $sections = $('section');
     function checkVisible() {
