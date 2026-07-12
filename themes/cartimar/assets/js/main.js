@@ -95,6 +95,59 @@ jQuery(function ($) {
         update();
     });
 
+    // What's Happening: the article grid always fetches every post (see the
+    // query's perPage in templates/home.html) and this pages through it 3 at
+    // a time via transform, rather than a full-page-reload pagination click.
+    // The nav is hidden entirely whenever everything already fits on one
+    // page (3 or fewer posts) — no controls needed if there's nothing to page to.
+    $('.cart-news__slideshow').each(function () {
+        var $slideshow = $(this);
+        var $viewport = $slideshow.find('.cart-news__viewport');
+        var $track = $viewport.find('.wp-block-post-template');
+        var $cards = $track.children();
+        var $nav = $slideshow.find('.cart-news__slideshow-nav');
+        var $prev = $nav.find('.cart-news__slideshow-arrow--prev');
+        var $next = $nav.find('.cart-news__slideshow-arrow--next');
+        var $count = $nav.find('.cart-news__slideshow-count');
+        var page = 0;
+
+        if ($cards.length === 0) return;
+
+        function perPage() {
+            if (window.matchMedia('(max-width: 768px)').matches) return 1;
+            if (window.matchMedia('(max-width: 1024px)').matches) return 2;
+            return 3;
+        }
+
+        // Card width is derived from the *viewport's* width, not the track's —
+        // a CSS percentage set directly on the cards would resolve against the
+        // track instead, which is as wide as every post laid out in a row.
+        function layout() {
+            var n = perPage();
+            var totalPages = Math.ceil($cards.length / n);
+            page = Math.min(page, totalPages - 1);
+
+            var gap = parseFloat($track.css('gap')) || 0;
+            var cardWidth = ($viewport.width() - gap * (n - 1)) / n;
+            $cards.css('flex', '0 0 ' + cardWidth + 'px');
+
+            var pageWidth = cardWidth * n + gap * n;
+            $track.css('transform', 'translateX(-' + (page * pageWidth) + 'px)');
+            $prev.prop('disabled', page <= 0);
+            $next.prop('disabled', page >= totalPages - 1);
+            $count.text((page + 1) + ' / ' + totalPages);
+            $nav.toggleClass('is-active', totalPages > 1);
+        }
+
+        $prev.on('click', function () { page = Math.max(page - 1, 0); layout(); });
+        $next.on('click', function () {
+            page = Math.min(page + 1, Math.ceil($cards.length / perPage()) - 1);
+            layout();
+        });
+        $(window).on('resize', layout);
+        layout();
+    });
+
     // 75 Years Timeline: the photo pane stays sticky while you scroll through
     // the years, and which year is "active" (bold text + matching photo)
     // tracks whatever year is currently scrolled near the pane — hovering or

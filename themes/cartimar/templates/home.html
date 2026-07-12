@@ -24,37 +24,47 @@
     <div class="wp-block-group cart-section cart-news__cards">
         <!-- wp:group {"className":"container"} -->
         <div class="wp-block-group container">
-            <!-- wp:query {"queryId":1,"query":{"perPage":3,"postType":"post","order":"desc","orderBy":"date","inherit":true},"className":"cart-news__grid"} -->
-            <div class="wp-block-query cart-news__grid">
-                <!-- wp:post-template -->
-                    <!-- wp:group {"className":"news-card"} -->
-                    <div class="wp-block-group news-card">
-                        <!-- wp:post-featured-image {"isLink":true,"className":"news-card__img-link","height":"200px"} /-->
-                        <!-- wp:group {"className":"news-card__body"} -->
-                        <div class="wp-block-group news-card__body">
-                            <!-- wp:post-date {"className":"news-card__date"} /-->
-                            <!-- wp:post-title {"level":3,"isLink":true,"className":"news-card__title"} /-->
-                            <!-- wp:post-excerpt {"className":"news-card__excerpt","excerptLength":18} /-->
-                            <!-- wp:read-more {"className":"news-card__read-more","content":"Read More"} /-->
-                        </div>
-                        <!-- /wp:group -->
+            <!-- wp:group {"className":"cart-news__slideshow"} -->
+            <div class="wp-block-group cart-news__slideshow">
+                <!-- wp:group {"className":"cart-news__viewport"} -->
+                <div class="wp-block-group cart-news__viewport">
+                    <!-- wp:query {"queryId":1,"query":{"perPage":30,"postType":"post","order":"desc","orderBy":"date","inherit":false},"className":"cart-news__grid"} -->
+                    <div class="wp-block-query cart-news__grid">
+                        <!-- wp:post-template -->
+                            <!-- wp:group {"className":"news-card"} -->
+                            <div class="wp-block-group news-card">
+                                <!-- wp:post-featured-image {"isLink":true,"className":"news-card__img-link","height":"200px"} /-->
+                                <!-- wp:group {"className":"news-card__body"} -->
+                                <div class="wp-block-group news-card__body">
+                                    <!-- wp:post-date {"className":"news-card__date"} /-->
+                                    <!-- wp:post-title {"level":3,"isLink":true,"className":"news-card__title"} /-->
+                                    <!-- wp:post-excerpt {"className":"news-card__excerpt","excerptLength":18} /-->
+                                    <!-- wp:read-more {"className":"news-card__read-more","content":"Read More"} /-->
+                                </div>
+                                <!-- /wp:group -->
+                            </div>
+                            <!-- /wp:group -->
+                        <!-- /wp:post-template -->
+
+                        <!-- wp:query-no-results -->
+                            <!-- wp:paragraph -->
+                            <p>No articles yet. Check back soon.</p>
+                            <!-- /wp:paragraph -->
+                        <!-- /wp:query-no-results -->
                     </div>
-                    <!-- /wp:group -->
-                <!-- /wp:post-template -->
+                    <!-- /wp:query -->
+                </div>
+                <!-- /wp:group -->
 
-                <!-- wp:query-pagination -->
-                    <!-- wp:query-pagination-previous /-->
-                    <!-- wp:query-pagination-numbers /-->
-                    <!-- wp:query-pagination-next /-->
-                <!-- /wp:query-pagination -->
-
-                <!-- wp:query-no-results -->
-                    <!-- wp:paragraph -->
-                    <p>No articles yet. Check back soon.</p>
-                    <!-- /wp:paragraph -->
-                <!-- /wp:query-no-results -->
+                <!-- wp:group {"className":"cart-news__slideshow-nav"} -->
+                <div class="wp-block-group cart-news__slideshow-nav">
+                    <!-- wp:html --><button type="button" class="cart-news__slideshow-arrow cart-news__slideshow-arrow--prev" aria-label="Previous articles">&lsaquo;</button><!-- /wp:html -->
+                    <!-- wp:html --><span class="cart-news__slideshow-count"></span><!-- /wp:html -->
+                    <!-- wp:html --><button type="button" class="cart-news__slideshow-arrow cart-news__slideshow-arrow--next" aria-label="Next articles">&rsaquo;</button><!-- /wp:html -->
+                </div>
+                <!-- /wp:group -->
             </div>
-            <!-- /wp:query -->
+            <!-- /wp:group -->
         </div>
         <!-- /wp:group -->
     </div>
