@@ -25,9 +25,39 @@
         "typography": {
             "fontFamilies": [
                 {
-                    "slug": "serif",
-                    "fontFamily": "Georgia, 'Times New Roman', serif",
-                    "name": "Heading Serif"
+                    "slug": "display",
+                    "fontFamily": "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    "name": "Display (Poppins)",
+                    "fontFace": [
+                        {
+                            "fontFamily": "Poppins",
+                            "fontStyle": "normal",
+                            "fontWeight": "400",
+                            "fontDisplay": "swap",
+                            "src": ["file:./assets/fonts/poppins-400.woff2"]
+                        },
+                        {
+                            "fontFamily": "Poppins",
+                            "fontStyle": "normal",
+                            "fontWeight": "500",
+                            "fontDisplay": "swap",
+                            "src": ["file:./assets/fonts/poppins-500.woff2"]
+                        },
+                        {
+                            "fontFamily": "Poppins",
+                            "fontStyle": "normal",
+                            "fontWeight": "600",
+                            "fontDisplay": "swap",
+                            "src": ["file:./assets/fonts/poppins-600.woff2"]
+                        },
+                        {
+                            "fontFamily": "Poppins",
+                            "fontStyle": "normal",
+                            "fontWeight": "700",
+                            "fontDisplay": "swap",
+                            "src": ["file:./assets/fonts/poppins-700.woff2"]
+                        }
+                    ]
                 },
                 {
                     "slug": "sans",
@@ -48,7 +78,7 @@
         "elements": {
             "heading": {
                 "typography": {
-                    "fontFamily": "var(--wp--preset--font-family--serif)",
+                    "fontFamily": "var(--wp--preset--font-family--display)",
                     "fontWeight": "700"
                 },
                 "color": {
