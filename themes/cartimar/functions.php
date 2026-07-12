@@ -57,6 +57,28 @@ function cartimar_nav_banner_body_class($classes) {
 }
 add_filter('body_class', 'cartimar_nav_banner_body_class');
 
+// The What's Happening banner lives in the home template, not in editable page
+// content, so its photo can't be swapped from the page editor like the
+// homepage's. Instead the banner uses the Featured Image set on the posts page
+// (Pages → What's Happening → Featured image in the sidebar); the theme's
+// bundled photo in main.css stays as the fallback when none is set.
+function cartimar_archive_hero_featured_image($block_content, $block) {
+    if (($block['attrs']['className'] ?? '') !== 'archive-hero' || !is_home()) {
+        return $block_content;
+    }
+    $banner = get_the_post_thumbnail_url(get_option('page_for_posts'), 'full');
+    if (!$banner) {
+        return $block_content;
+    }
+    return preg_replace(
+        '/<div\b/',
+        '<div style="background-image: url(' . esc_url($banner) . ')"',
+        $block_content,
+        1
+    );
+}
+add_filter('render_block_core/group', 'cartimar_archive_hero_featured_image', 10, 2);
+
 // The "Further Read" Query Loop on single posts should never show the post you're already reading.
 function cartimar_exclude_current_post_from_further_read($query_vars, $block) {
     $class_name = $block->attributes['className'] ?? '';

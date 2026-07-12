@@ -1023,12 +1023,12 @@ footer .cart-contact-cta__bg { display: none; }
 .archive-hero {
     position: relative;
     padding: 80px 0;
-    height: 420px;
+    height: 700px;
     display: flex;
     align-items: center;
     background: var(--color-dark-alt) url('../images/whats-happening-bg.jpg') center/cover no-repeat;
 }
-.archive-hero__bg { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(13,27,42,0.55), rgba(13,27,42,0.7)); }
+.archive-hero__bg { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(13,27,42,0.55), rgba(13,27,42,0.7)); display: none;}
 .archive-hero .container { position: relative; z-index: 1; text-align: center; }
 .archive-hero h1 { font-family: var(--font-display); font-size: clamp(32px, 5vw, 52px); color: var(--color-white); margin-bottom: 12px; }
 .archive-hero p { color: rgba(255,255,255,0.85); font-size: 16px; }
