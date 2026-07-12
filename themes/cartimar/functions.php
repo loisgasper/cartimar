@@ -38,6 +38,25 @@ function cartimar_register_blocks() {
 }
 add_action('init', 'cartimar_register_blocks');
 
+// Pages whose content opens with a full-bleed banner keep the transparent nav
+// with white text; every other page gets a "no-banner-nav" body class so the
+// CSS can flip to a white bar with dark links and the blue logo — white text
+// would vanish against the page background.
+function cartimar_nav_banner_body_class($classes) {
+    $has_banner = is_home(); // the What's Happening template carries its own archive-hero banner
+    if (!$has_banner && is_singular()) {
+        $content = get_post()->post_content ?? '';
+        $has_banner = strpos($content, 'cart-hero') !== false
+            || strpos($content, 'page-hero-split') !== false
+            || strpos($content, 'archive-hero') !== false;
+    }
+    if (!$has_banner) {
+        $classes[] = 'no-banner-nav';
+    }
+    return $classes;
+}
+add_filter('body_class', 'cartimar_nav_banner_body_class');
+
 // The "Further Read" Query Loop on single posts should never show the post you're already reading.
 function cartimar_exclude_current_post_from_further_read($query_vars, $block) {
     $class_name = $block->attributes['className'] ?? '';

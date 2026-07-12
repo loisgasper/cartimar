@@ -13,6 +13,8 @@
     --color-text:      var(--wp--preset--color--text, #2c2c2c);
     --color-muted:     var(--wp--preset--color--muted, #666);
     --color-border:    var(--wp--preset--color--border, #e0e0e0);
+    --color-navy:      #15005D;
+    --color-dark-blue: #0D0038;
 
     --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-display: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -189,6 +191,35 @@ a { color: inherit; text-decoration: none; }
 .cart-nav.scrolled .cart-nav__cta .wp-block-button__link:hover {
     background: color-mix(in srgb, var(--color-white) 70%, transparent) !important;
     color: var(--color-dark) !important;
+}
+
+/* Pages without a banner after the header (Find a Store, legal pages,
+   single posts…): the transparent white-text nav would vanish against the
+   page background, so flip to a solid white bar with dark links, the blue
+   logo, and a navy CTA. The body class comes from functions.php. */
+.no-banner-nav .cart-nav { background: var(--color-white); }
+/* The no-title template has no top padding of its own (banner pages want the
+   content flush behind the nav), so without a banner the now-opaque nav bar
+   would sit on top of the first block. Other templates already pad past it. */
+.no-banner-nav.page-template-page-no-title main { padding-top: var(--nav-h); }
+.no-banner-nav .cart-nav.scrolled {
+    background: var(--color-white);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.no-banner-nav .cart-nav__menu li a { color: #212121 !important; }
+.no-banner-nav .cart-nav__menu li a:hover,
+.no-banner-nav .cart-nav__menu li.current-menu-item a { background: rgba(0,0,0,0.06); }
+.no-banner-nav .cart-nav__logo { color: #212121; }
+.no-banner-nav .cart-nav__logo .custom-logo-link img { content: url('../images/cartimar-logo-blue.png'); }
+.no-banner-nav .cart-nav .wp-block-navigation__responsive-container-open { color: #212121; }
+.no-banner-nav .cart-nav__cta .wp-block-button__link {
+    background: var(--color-navy) !important;
+    color: var(--color-white) !important;
+}
+.no-banner-nav .cart-nav .cart-nav__cta .wp-block-button__link:hover,
+.no-banner-nav .cart-nav.scrolled .cart-nav__cta .wp-block-button__link:hover {
+    background: color-mix(in srgb, var(--color-navy) 70%, transparent) !important;
+    color: var(--color-white) !important;
 }
 
 /* ============================================================
@@ -432,7 +463,7 @@ a { color: inherit; text-decoration: none; }
     line-clamp: 4;
     overflow: hidden;
 }
-.news-feature-card__btn { align-self: flex-start; flex-shrink: 0; background: #15005D; color: #fff;}
+.news-feature-card__btn { align-self: flex-start; flex-shrink: 0; background: var(--color-navy); color: #fff;}
 
 .news-feature-card--sm .news-feature-card__title { font-size: 18px; margin-bottom: 8px; -webkit-line-clamp: 2; line-clamp: 2; }
 .news-feature-card--sm .news-feature-card__excerpt { margin-bottom: 14px; -webkit-line-clamp: 3; line-clamp: 3; }
@@ -866,12 +897,12 @@ footer .cart-contact-cta__bg { display: none; }
 
 /* ============================================================
    GENERIC PAGE
-   ============================================================ */
+   ================================================.page-banner__title============ */
 .page-content { padding: 120px 0 80px; }
 .page-title {
     font-family: var(--font-display);
     font-size: 40px;
-    font-weight: 700;
+    font-weight: 600;
     margin-bottom: 32px;
 }
 
@@ -879,13 +910,13 @@ footer .cart-contact-cta__bg { display: none; }
    SOLID PAGE BANNER (Privacy Policy, Terms and Conditions)
    ============================================================ */
 .page-banner {
-    background: var(--color-dark);
+    background: var(--color-dark-blue);
     padding: 160px 0 40px;
 }
 .page-banner__title {
     font-family: var(--font-display);
     font-size: clamp(28px, 4vw, 40px);
-    font-weight: 700;
+    font-weight: 600;
     color: var(--color-white);
     margin-bottom: 8px;
 }
