@@ -79,6 +79,22 @@ function cartimar_archive_hero_featured_image($block_content, $block) {
 }
 add_filter('render_block_core/group', 'cartimar_archive_hero_featured_image', 10, 2);
 
+// Every social icon link (Facebook, TikTok, Instagram, etc.) should open in a
+// new tab rather than navigate away from the site — the core Social Links
+// block has no built-in toggle for this, so add it to every link it renders.
+function cartimar_social_link_new_tab($block_content) {
+    if (strpos($block_content, 'target=') !== false) {
+        return $block_content;
+    }
+    return preg_replace(
+        '/<a\s+href="([^"]*)"/',
+        '<a href="$1" target="_blank" rel="noopener noreferrer"',
+        $block_content,
+        1
+    );
+}
+add_filter('render_block_core/social-link', 'cartimar_social_link_new_tab');
+
 // The "Further Read" Query Loop on single posts should never show the post you're already reading.
 function cartimar_exclude_current_post_from_further_read($query_vars, $block) {
     $class_name = $block->attributes['className'] ?? '';

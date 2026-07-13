@@ -16,6 +16,7 @@
                 <ul class="wp-block-social-links single-post__social has-small-icon-size">
                     <!-- wp:social-link {"url":"#","service":"facebook"} /-->
                     <!-- wp:social-link {"url":"#","service":"tiktok"} /-->
+                    <!-- wp:social-link {"url":"https://www.instagram.com/cartimar.ph/","service":"instagram"} /-->
                 </ul>
                 <!-- /wp:social-links -->
             </div>
@@ -46,14 +47,14 @@
         <!-- wp:query {"queryId":3,"query":{"perPage":2,"postType":"post","order":"desc","orderBy":"date","inherit":false},"className":"further-read__grid"} -->
         <div class="wp-block-query further-read__grid">
             <!-- wp:post-template -->
-                <!-- wp:group {"className":"news-card"} -->
-                <div class="wp-block-group news-card">
-                    <!-- wp:post-featured-image {"isLink":true,"className":"news-card__img-link","height":"200px"} /-->
-                    <!-- wp:group {"className":"news-card__body"} -->
-                    <div class="wp-block-group news-card__body">
-                        <!-- wp:post-title {"level":3,"isLink":true,"className":"news-card__title"} /-->
-                        <!-- wp:post-excerpt {"className":"news-card__excerpt","excerptLength":18} /-->
-                        <!-- wp:read-more {"className":"news-card__read-more","content":"Read More"} /-->
+                <!-- wp:group {"className":"news-feature-card"} -->
+                <div class="wp-block-group news-feature-card">
+                    <!-- wp:post-featured-image {"isLink":true,"className":"news-feature-card__img"} /-->
+                    <!-- wp:group {"className":"news-feature-card__body"} -->
+                    <div class="wp-block-group news-feature-card__body">
+                        <!-- wp:post-title {"level":3,"isLink":true,"className":"news-feature-card__title"} /-->
+                        <!-- wp:post-excerpt {"className":"news-feature-card__excerpt","excerptLength":18} /-->
+                        <!-- wp:read-more {"className":"btn btn--dark news-feature-card__btn","content":"Read More"} /-->
                     </div>
                     <!-- /wp:group -->
                 </div>

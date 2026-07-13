@@ -122,7 +122,7 @@ a { color: inherit; text-decoration: none; }
     transition: background var(--transition), box-shadow var(--transition);
 }
 .cart-nav.scrolled {
-    background: var(--color-dark);
+    background: #0D0038;
     box-shadow: 0 2px 12px rgba(0,0,0,0.25);
 }
 
@@ -687,7 +687,7 @@ body.blog .wp-block-post-featured-image a {
 }
 .cart-serve__track > .wp-block-image {
     flex: 0 0 calc((100% - 2 * 20px) / 3.3) !important;
-    height: 600px;
+    height: auto;
     border-radius: 0;
     overflow: hidden;
     margin: 0;
@@ -895,7 +895,7 @@ footer .cart-contact-cta__bg { display: none; }
    FOOTER
    ============================================================ */
 .cart-footer {
-    background: #07111c;
+    background: #0D0038;
     padding: 48px 70px 32px;
     color: rgba(255,255,255,0.6);
 }
@@ -1132,7 +1132,24 @@ footer .cart-contact-cta__bg { display: none; }
     margin: 0;
     padding: 0;
 }
-.further-read__grid .wp-block-post-template > li { list-style: none; }
+.further-read__grid .wp-block-post-template > li { list-style: none; margin-top: 0;}
+
+/* Further Read reuses the homepage's image+text "feature card" pattern, but
+   at its own proportions (a compact, roughly square photo beside the text)
+   rather than the homepage's tall, image-dominant layout — scoped here so it
+   doesn't touch the homepage's existing feature cards. */
+.further-read__grid .news-feature-card { height: auto; overflow: visible; }
+.further-read__grid .news-feature-card__img {
+    flex: 0 0 267px;
+    height: 267px;
+}
+.further-read__grid .news-feature-card__body { flex: 1; overflow: visible; margin-top:0;}
+.further-read__grid .news-feature-card__title { -webkit-line-clamp: 2; line-clamp: 2; }
+
+@media (max-width: 640px) {
+    .further-read__grid .news-feature-card { flex-direction: column; }
+    .further-read__grid .news-feature-card__img { flex: none; width: 100%; height: 200px; }
+}
 
 /* ============================================================
    RESPONSIVE
