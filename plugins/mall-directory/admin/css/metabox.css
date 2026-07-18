@@ -74,23 +74,8 @@
     max-width: 100%;
 }
 
-.mall-dir-floorplan-wrapper img {
+.mall-dir-floorplan-wrapper svg {
     display: block;
     width: 100%;
     height: auto;
-    cursor: default;
-}
-
-.mall-dir-floorplan-marker {
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    margin-left: -9px;
-    margin-top: -9px;
-    background: rgba(0, 115, 170, 0.9);
-    border: 2px solid #fff;
-    border-radius: 50%;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s ease;
 }

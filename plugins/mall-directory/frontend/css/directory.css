@@ -4,48 +4,18 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* ── Category Pills + Search ────────────────────────────────── */
+/* ── Search + Category Filter ───────────────────────────────── */
 .mall-directory-filters {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
     gap: 16px;
     padding: 20px 32px;
     border-bottom: 1px solid #e8e8ee;
     margin-bottom: 0;
 }
 
-.category-pills {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    flex: 1;
-}
-
-.category-pill {
-    display: inline-flex;
-    align-items: center;
-    padding: 9px 18px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    background: #eeeef2;
-    color: #333;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-    line-height: 1;
-}
-.category-pill:hover {
-    background: #e2e2ea;
-    color: #1a1a3c;
-}
-.category-pill.is-active {
-    background: #1a1a3c;
-    color: #fff;
-}
+.mall-directory-search { flex: 1; min-width: 0; }
+.mall-directory-category { flex-shrink: 0; }
 
 .store-search-input {
     padding: 10px 16px;
@@ -57,6 +27,24 @@
     transition: border-color 0.2s ease;
 }
 .store-search-input:focus { border-color: #1a1a3c; }
+
+.store-category-select {
+    padding: 10px 40px 10px 16px;
+    border: 1.5px solid #e0e0e6;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a3c;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 12px center;
+    background-size: 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    outline: none;
+    min-width: 180px;
+    transition: border-color 0.2s ease;
+}
+.store-category-select:focus { border-color: #1a1a3c; }
 
 /* ── Main grid: map 70% | list 30% ──────────────────────────── */
 .mall-directory-main {
@@ -139,12 +127,6 @@
     background: #fff;
     display: flex;
     flex-direction: column;
-}
-
-.stores-list-search {
-    flex-shrink: 0;
-    padding: 16px;
-    border-bottom: 1px solid #e8e8ee;
 }
 
 .stores-list {
@@ -262,5 +244,6 @@
 }
 
 @media (max-width: 640px) {
-    .mall-directory-filters { padding: 16px; }
+    .mall-directory-filters { padding: 16px; flex-direction: column; align-items: stretch; }
+    .store-category-select { width: 100%; }
 }

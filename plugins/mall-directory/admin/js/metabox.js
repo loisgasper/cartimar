@@ -44,39 +44,67 @@ jQuery(document).ready(function($) {
         $(this).remove();
     });
 
-    // Area Dropdown → hidden X/Y + floor plan marker
+    // Area Dropdown → hidden X/Y + highlighted zone + pin on the embedded map
+    //
+    // The floor plan preview is the exact same SVG partial (map, zones, pin,
+    // and their CSS) the live site's interactive map uses, included directly
+    // by metabox.php — so picking a location here reuses the same
+    // findZone/showPin/setHighlight approach as frontend/js/directory.js,
+    // instead of a separate placeholder-dot implementation to keep in sync.
     var areas = (typeof mallDirData !== 'undefined') ? mallDirData.areas : [];
-    var floorplan = $('#mall-dir-floorplan-preview')[0];
-    var marker    = $('#mall-dir-floorplan-marker');
+    var $svg  = $('#cartimar-map-svg');
+    var $pin  = $('#map-pin');
+    var pinBounceEl  = document.querySelector('#map-pin .map-pin__bounce');
+    var pinArea      = null;
+    var highlightedArea = null;
 
-    function placeMarker(naturalX, naturalY) {
-        if (!floorplan || !floorplan.complete || !floorplan.naturalWidth) return;
-        var scaleX = floorplan.clientWidth  / floorplan.naturalWidth;
-        var scaleY = floorplan.clientHeight / floorplan.naturalHeight;
-        marker.css({
-            left:    (naturalX * scaleX) + 'px',
-            top:     (naturalY * scaleY) + 'px',
-            opacity: 1,
+    function findZone(areaName) {
+        var found = null;
+        $svg.find('.area-zone').each(function () {
+            if ($(this).attr('data-area').toLowerCase() === areaName.toLowerCase()) {
+                found = this; return false;
+            }
         });
+        return found;
     }
 
-    function clearMarker() {
-        marker.css('opacity', 0);
+    function showPin(areaName) {
+        var zone = findZone(areaName);
+        var rect = zone && zone.querySelector('.area-fill');
+        if (!rect) return;
+        var bbox = rect.getBBox();
+        var cx = bbox.x + bbox.width * 0.28;
+        var cy = bbox.y + bbox.height * 0.2;
+        $pin.attr('transform', 'translate(' + cx + ',' + cy + ')');
+        if (pinArea !== areaName || !$pin.hasClass('is-visible')) {
+            $pin.removeClass('is-visible');
+            void pinBounceEl.offsetWidth; // force reflow to restart the CSS animation
+            $pin.addClass('is-visible');
+        }
+        pinArea = areaName;
+    }
+
+    function hidePin() {
+        $pin.removeClass('is-visible');
+        pinArea = null;
+    }
+
+    function setHighlight(areaName) {
+        if (highlightedArea) {
+            var prev = findZone(highlightedArea);
+            if (prev) $(prev).removeClass('is-highlighted');
+            highlightedArea = null;
+        }
+        if (!areaName) { hidePin(); return; }
+        var zone = findZone(areaName);
+        if (!zone) { hidePin(); return; }
+        $(zone).addClass('is-highlighted');
+        highlightedArea = areaName;
+        showPin(areaName);
     }
 
     function applyStoredArea() {
-        var selectedName = $('#md_store_map_area').val();
-        if (!selectedName) {
-            clearMarker();
-            return;
-        }
-        var area = null;
-        for (var i = 0; i < areas.length; i++) {
-            if (areas[i].name === selectedName) { area = areas[i]; break; }
-        }
-        if (area) {
-            placeMarker(area.x, area.y);
-        }
+        setHighlight($('#md_store_map_area').val());
     }
 
     $('#md_store_map_area').on('change', function() {
@@ -85,21 +113,22 @@ jQuery(document).ready(function($) {
         for (var i = 0; i < areas.length; i++) {
             if (areas[i].name === selectedName) { area = areas[i]; break; }
         }
-        if (area) {
-            $('#md_store_map_x').val(area.x);
-            $('#md_store_map_y').val(area.y);
-            placeMarker(area.x, area.y);
-        } else {
-            $('#md_store_map_x').val('');
-            $('#md_store_map_y').val('');
-            clearMarker();
+        $('#md_store_map_x').val(area ? area.x : '');
+        $('#md_store_map_y').val(area ? area.y : '');
+        setHighlight(selectedName);
+    });
+
+    // Clicking a zone directly on the preview selects it in the dropdown too
+    $svg.on('click', '.area-zone', function () {
+        var areaName = $(this).attr('data-area');
+        $('#md_store_map_area').val(areaName).trigger('change');
+    });
+    $svg.on('keydown', '.area-zone', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault(); $(this).trigger('click');
         }
     });
 
-    // Place marker on load if an area is already saved
-    if ($('#mall-dir-floorplan-preview').complete) {
-        applyStoredArea();
-    } else {
-        $('#mall-dir-floorplan-preview').on('load', applyStoredArea);
-    }
+    // Highlight + drop the pin on load if an area is already saved
+    applyStoredArea();
 });

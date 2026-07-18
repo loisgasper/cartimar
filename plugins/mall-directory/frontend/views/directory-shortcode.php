@@ -56,31 +56,23 @@ if ($stores->have_posts()) {
     wp_reset_postdata();
 }
 
-// Collect unique map areas that have at least one store (preserving map order)
-$area_order = array_column(mall_dir_get_map_areas(), 'name');
-$used_areas = array_filter(array_unique(array_column($stores_data, 'map_area')));
-usort($used_areas, function($a, $b) use ($area_order) {
-    $ai = array_search($a, $area_order);
-    $bi = array_search($b, $area_order);
-    return ($ai === false ? 999 : $ai) - ($bi === false ? 999 : $bi);
-});
-
 $pin_icon = '<svg class="store-pin-svg" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>';
 ?>
 
 <div class="mall-directory-container">
 
-    <!-- Category Pills -->
+    <!-- Search + Category Filter -->
     <div class="mall-directory-filters">
-        <div class="category-pills">
-            <button class="category-pill is-active" data-filter-type="all">
-                <?php _e('All Shops', 'mall-directory'); ?>
-            </button>
-            <?php foreach ($used_areas as $area): ?>
-                <button class="category-pill" data-filter-type="location" data-location="<?php echo esc_attr($area); ?>">
-                    <?php echo esc_html($area); ?>
-                </button>
-            <?php endforeach; ?>
+        <div class="mall-directory-search">
+            <input type="text" id="store-search" class="store-search-input" placeholder="<?php _e('Search directory...', 'mall-directory'); ?>">
+        </div>
+        <div class="mall-directory-category">
+            <select id="store-category-filter" class="store-category-select">
+                <option value=""><?php _e('All Shops', 'mall-directory'); ?></option>
+                <?php foreach ($categories as $category): ?>
+                    <option value="<?php echo esc_attr($category->term_id); ?>"><?php echo esc_html($category->name); ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
     </div>
 
@@ -89,9 +81,6 @@ $pin_icon = '<svg class="store-pin-svg" viewBox="0 0 24 24" fill="currentColor" 
 
         <!-- Store List -->
         <div class="stores-list-section">
-            <div class="stores-list-search">
-                <input type="text" id="store-search" class="store-search-input" placeholder="<?php _e('Search directory...', 'mall-directory'); ?>">
-            </div>
             <div class="stores-list" id="storesList">
                 <?php foreach ($stores_data as $store): ?>
                     <div class="store-item"

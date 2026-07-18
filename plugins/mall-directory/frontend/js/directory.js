@@ -286,10 +286,15 @@ jQuery(document).ready(function ($) {
             var $item     = $(this);
             var storeName = $item.attr('data-store-name').toLowerCase();
             var storeArea = ($item.attr('data-map-area') || '').toLowerCase();
-            var locMatch  = activeFilterType === 'all' ||
-                            (activeFilterType === 'location' && storeArea === activeFilterValue.toLowerCase());
+            var storeCategories = [];
+            try { storeCategories = JSON.parse($item.attr('data-categories') || '[]'); } catch (e) {}
+
+            var filterMatch = activeFilterType === 'all' ||
+                (activeFilterType === 'location' && storeArea === activeFilterValue.toLowerCase()) ||
+                (activeFilterType === 'category' && storeCategories.indexOf(parseInt(activeFilterValue, 10)) !== -1);
+
             var srchMatch = searchQuery === '' || storeName.indexOf(searchQuery.toLowerCase()) !== -1;
-            var visible   = locMatch && srchMatch;
+            var visible   = filterMatch && srchMatch;
             $item.toggle(visible);
             if (visible) count++;
         });
@@ -302,17 +307,15 @@ jQuery(document).ready(function ($) {
         }
     }
 
+    // Clicking a building on the map still filters the list down to that
+    // location — unrelated to the category dropdown above the list, which is
+    // a separate filter axis. Selecting a location this way resets the
+    // dropdown back to "All Shops" since the two aren't shown combined.
     function filterToArea(areaName) {
-        $('.category-pill').each(function () {
-            if ($(this).data('filter-type') === 'location' &&
-                $(this).data('location') === areaName) {
-                $('.category-pill').removeClass('is-active');
-                $(this).addClass('is-active');
-                activeFilterType  = 'location';
-                activeFilterValue = areaName;
-                filterStores();
-            }
-        });
+        activeFilterType  = 'location';
+        activeFilterValue = areaName;
+        $('#store-category-filter').val('');
+        filterStores();
     }
 
     // ─────────────────────────────────────────────────────────
@@ -341,21 +344,16 @@ jQuery(document).ready(function ($) {
     });
 
     // ─────────────────────────────────────────────────────────
-    // CATEGORY PILLS
+    // CATEGORY FILTER
     // ─────────────────────────────────────────────────────────
-    $('.category-pill').on('click', function () {
-        $('.category-pill').removeClass('is-active');
-        $(this).addClass('is-active');
-        activeFilterType  = $(this).data('filter-type');
-        activeFilterValue = $(this).data('location') || '';
+    $('#store-category-filter').on('change', function () {
+        var val = $(this).val();
+        activeFilterType  = val === '' ? 'all' : 'category';
+        activeFilterValue = val;
         filterStores();
         clearAllHighlights();
-        if (activeFilterType === 'location') {
-            setHighlight(activeFilterValue, true);
-        } else {
-            vb = { x: 0, y: 0, w: VB_W, h: VB_H };
-            applyViewBox();
-        }
+        vb = { x: 0, y: 0, w: VB_W, h: VB_H };
+        applyViewBox();
     });
 
     // ─────────────────────────────────────────────────────────

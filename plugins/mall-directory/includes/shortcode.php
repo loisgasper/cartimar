@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
 
 function mall_dir_directory_shortcode($atts) {
     $atts = shortcode_atts([
-        'floorplan' => MALL_DIR_PLUGIN_URL . 'assets/images/cartimar-shop-directory-map.jpg',
+        'floorplan' => get_template_directory_uri() . '/assets/images/cartimar-map-final-cropped.jpg',
     ], $atts);
 
     ob_start();

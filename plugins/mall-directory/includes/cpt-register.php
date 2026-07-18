@@ -63,3 +63,33 @@ function mall_dir_register_cpt() {
 }
 
 add_action('init', 'mall_dir_register_cpt');
+
+// Seed the default store categories once. This is code (not a manual DB
+// edit), so it runs the same way on any environment the plugin is deployed
+// to — no separate step needed to keep local/staging/live in sync. Admins
+// can still add more afterward via Stores → Store Categories.
+function mall_dir_seed_default_categories() {
+    $existing = get_terms([
+        'taxonomy'   => 'md_store_category',
+        'hide_empty' => false,
+        'fields'     => 'ids',
+    ]);
+    if (!empty($existing)) {
+        return;
+    }
+
+    $defaults = [
+        'Apparel',
+        'Bikes & Accessories',
+        'Fresh Food & Grains',
+        'Parking',
+        'Pets',
+        'Plants',
+        'Restaurants & Groceries',
+        'Specialty Stores & Services',
+    ];
+    foreach ($defaults as $name) {
+        wp_insert_term($name, 'md_store_category');
+    }
+}
+add_action('init', 'mall_dir_seed_default_categories', 20);

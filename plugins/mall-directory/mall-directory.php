@@ -40,7 +40,27 @@ function mall_dir_get_map_areas() {
         ['name' => 'Cartimar Carpark and Fresh Food Plaza', 'x' => 179,  'y' => 630],
         ['name' => 'Gateway (Upper)',                       'x' => 1390, 'y' => 362],
         ['name' => 'Gateway (Lower)',                       'x' => 1390, 'y' => 592],
+        // Parking / road / hallway areas — plain text labels on the map, not
+        // a distinct shop, but still selectable here in case a store (e.g. a
+        // stall in a transitional space) ever needs to be placed at one.
+        ['name' => 'Road Lot & Parking (Open)',              'x' => 1151, 'y' => 164],
+        ['name' => 'Road Lot & Parking (Roofed)',            'x' => 860,  'y' => 310],
+        ['name' => 'Hallway',                                'x' => 1200, 'y' => 268],
+        ['name' => 'Cartimar Road & Parking (Open)',         'x' => 540,  'y' => 310],
+        ['name' => 'Cartimar Ave & Parking (Open) (Left)',   'x' => 567,  'y' => 523],
+        ['name' => 'Cartimar Ave & Parking (Open) (Right)',  'x' => 1090, 'y' => 523],
+        ['name' => 'Existing Road',                          'x' => 180,  'y' => 684],
     ];
+}
+
+// A file's last-modified time as its cache-busting version — unlike the
+// static MALL_DIR_VERSION constant, this changes automatically the moment
+// the file is edited, so browsers (and any host-level page cache) can never
+// keep serving a stale copy after a deploy the way the old hardcoded version
+// let them.
+function mall_dir_asset_version($relative_path) {
+    $full_path = MALL_DIR_PLUGIN_DIR . $relative_path;
+    return file_exists($full_path) ? filemtime($full_path) : MALL_DIR_VERSION;
 }
 
 // Enqueue admin scripts and styles
@@ -52,18 +72,18 @@ function mall_dir_admin_enqueue_scripts($hook) {
     }
 
     wp_enqueue_media();
-    wp_enqueue_script('mall-dir-metabox', MALL_DIR_PLUGIN_URL . 'admin/js/metabox.js', ['jquery'], MALL_DIR_VERSION, true);
+    wp_enqueue_script('mall-dir-metabox', MALL_DIR_PLUGIN_URL . 'admin/js/metabox.js', ['jquery'], mall_dir_asset_version('admin/js/metabox.js'), true);
     wp_localize_script('mall-dir-metabox', 'mallDirData', [
         'areas' => mall_dir_get_map_areas(),
     ]);
-    wp_enqueue_style('mall-dir-admin-css', MALL_DIR_PLUGIN_URL . 'admin/css/metabox.css', [], MALL_DIR_VERSION);
+    wp_enqueue_style('mall-dir-admin-css', MALL_DIR_PLUGIN_URL . 'admin/css/metabox.css', [], mall_dir_asset_version('admin/css/metabox.css'));
 }
 add_action('admin_enqueue_scripts', 'mall_dir_admin_enqueue_scripts');
 
 // Enqueue frontend scripts and styles
 function mall_dir_frontend_enqueue_scripts() {
-    wp_enqueue_script('mall-dir-frontend', MALL_DIR_PLUGIN_URL . 'frontend/js/directory.js', ['jquery'], MALL_DIR_VERSION, true);
-    wp_enqueue_style('mall-dir-frontend-css', MALL_DIR_PLUGIN_URL . 'frontend/css/directory.css', [], MALL_DIR_VERSION);
+    wp_enqueue_script('mall-dir-frontend', MALL_DIR_PLUGIN_URL . 'frontend/js/directory.js', ['jquery'], mall_dir_asset_version('frontend/js/directory.js'), true);
+    wp_enqueue_style('mall-dir-frontend-css', MALL_DIR_PLUGIN_URL . 'frontend/css/directory.css', [], mall_dir_asset_version('frontend/css/directory.css'));
 }
 add_action('wp_enqueue_scripts', 'mall_dir_frontend_enqueue_scripts');
 

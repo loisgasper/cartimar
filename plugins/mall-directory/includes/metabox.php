@@ -32,6 +32,10 @@ function mall_dir_metabox_callback($post) {
     $map_y          = get_post_meta($post->ID, '_md_store_map_y', true);
     $map_area       = get_post_meta($post->ID, '_md_store_map_area', true);
 
+    $assigned_terms    = wp_get_post_terms($post->ID, 'md_store_category', ['fields' => 'ids']);
+    $selected_category = !empty($assigned_terms) ? $assigned_terms[0] : '';
+    $all_categories     = get_terms(['taxonomy' => 'md_store_category', 'hide_empty' => false]);
+
     ?>
     <div class="mall-dir-metabox">
 
@@ -45,6 +49,28 @@ function mall_dir_metabox_callback($post) {
         <div class="mall-dir-field">
             <label for="md_store_location"><strong><?php _e('Shop Location', 'mall-directory'); ?></strong></label>
             <input type="text" id="md_store_location" name="md_store_location" value="<?php echo esc_attr($store_location); ?>" placeholder="<?php _e('e.g. 2nd Floor, Section A', 'mall-directory'); ?>" class="mall-dir-text-input">
+        </div>
+
+        <!-- Store Category -->
+        <div class="mall-dir-field">
+            <label for="md_store_category"><strong><?php _e('Store Category', 'mall-directory'); ?></strong></label>
+            <select id="md_store_category" name="md_store_category" class="mall-dir-area-select">
+                <option value=""><?php _e('-- Select a Category --', 'mall-directory'); ?></option>
+                <?php foreach ($all_categories as $category): ?>
+                    <option value="<?php echo esc_attr($category->term_id); ?>" <?php selected($selected_category, $category->term_id); ?>>
+                        <?php echo esc_html($category->name); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <p style="color: #999; font-size: 12px; margin-top: 8px; margin-bottom: 0;">
+                <?php
+                printf(
+                    /* translators: %s: link to the taxonomy admin screen */
+                    __('Need a new category? Add it under %s — it will show up here automatically.', 'mall-directory'),
+                    '<a href="' . esc_url(admin_url('edit-tags.php?taxonomy=md_store_category&post_type=md_store')) . '">' . __('Stores → Store Categories', 'mall-directory') . '</a>'
+                );
+                ?>
+            </p>
         </div>
 
         <!-- Contact Number -->
@@ -90,12 +116,18 @@ function mall_dir_metabox_callback($post) {
 
             <div class="mall-dir-map-picker">
                 <label><strong><?php _e('Floor Plan Preview', 'mall-directory'); ?></strong></label>
-                <div class="mall-dir-floorplan-wrapper">
-                    <img id="mall-dir-floorplan-preview" src="<?php echo esc_url(MALL_DIR_PLUGIN_URL . 'assets/images/cartimar-shop-directory-map.jpg'); ?>" alt="<?php _e('Floor Plan Preview', 'mall-directory'); ?>">
-                    <div id="mall-dir-floorplan-marker" class="mall-dir-floorplan-marker"></div>
+                <div class="mall-dir-floorplan-wrapper" id="mall-dir-floorplan-wrapper">
+                    <?php
+                    // Reuses the exact same SVG partial (map, zones, pin, and
+                    // their CSS) that the live site's interactive map renders
+                    // — so selecting a location here highlights it and drops
+                    // the pin identically to how clicking that zone looks on
+                    // the frontend, instead of a plain placeholder dot.
+                    include MALL_DIR_PLUGIN_DIR . 'frontend/views/map-svg.php';
+                    ?>
                 </div>
                 <p style="color: #999; font-size: 12px; margin-top: 8px;">
-                    <?php _e('The marker updates automatically when you select a location above.', 'mall-directory'); ?>
+                    <?php _e('The map updates automatically when you select a location above — you can also click a highlighted area directly.', 'mall-directory'); ?>
                 </p>
             </div>
         </div>
@@ -130,6 +162,13 @@ function mall_dir_save_metabox($post_id) {
     }
     if (isset($_POST['md_store_location'])) {
         update_post_meta($post_id, '_md_store_location', sanitize_text_field($_POST['md_store_location']));
+    }
+
+    // Save category (single-select, same UX as the Location dropdown above)
+    if (isset($_POST['md_store_category']) && $_POST['md_store_category'] !== '') {
+        wp_set_object_terms($post_id, [(int) $_POST['md_store_category']], 'md_store_category', false);
+    } else {
+        wp_set_object_terms($post_id, [], 'md_store_category', false);
     }
     if (isset($_POST['md_store_phone'])) {
         update_post_meta($post_id, '_md_store_phone', sanitize_text_field($_POST['md_store_phone']));
