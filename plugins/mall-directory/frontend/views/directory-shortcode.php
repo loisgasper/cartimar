@@ -86,6 +86,8 @@ $pin_icon = '<svg class="store-pin-svg" viewBox="0 0 24 24" fill="currentColor" 
                     <div class="store-item"
                          data-store-id="<?php echo esc_attr($store['id']); ?>"
                          data-store-name="<?php echo esc_attr($store['title']); ?>"
+                         data-store-location="<?php echo esc_attr($store['location']); ?>"
+                         data-store-phone="<?php echo esc_attr($store['phone']); ?>"
                          data-map-area="<?php echo esc_attr($store['map_area']); ?>"
                          data-categories="<?php echo esc_attr(json_encode(array_column($store['categories'], 'id'))); ?>">
 
