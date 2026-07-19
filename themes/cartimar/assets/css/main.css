@@ -222,6 +222,46 @@ a { color: inherit; text-decoration: none; }
     color: var(--color-white) !important;
 }
 
+/* Nav on tablet/mobile: logo + hamburger only, nothing else.
+   WordPress core hard-codes its own nav breakpoint at 600px
+   (wp-includes/blocks/navigation/style.css) — below 1024px but above
+   that, the full desktop nav (links + Contact button) no longer fit but
+   core's hamburger hadn't appeared yet, breaking the layout. This block
+   takes over that decision for the whole 1024px-and-down range instead,
+   so the header is logo + hamburger consistently down to phone width.
+   Scoped entirely inside this media query — desktop above 1024px is
+   untouched. */
+@media (max-width: 1024px) {
+    /* The base rule's 70px side padding is a desktop-width value with no
+       existing mobile override — on a narrow phone it was eating enough
+       width to push the hamburger button past the viewport edge entirely. */
+    .cart-nav__inner { grid-template-columns: auto 1fr; padding: 0 20px; }
+    .cart-nav__inner .wp-block-buttons { display: none; }
+
+    /* The button was never given a colour on the transparent (photo-banner)
+       nav — it fell back to the dark body-text colour and was nearly
+       invisible against the photo. Only ever shown below 1024px, so this
+       can't affect anything on desktop. no-banner-nav already sets its own
+       dark colour for the white-bar variant, further down the cascade. */
+    .cart-nav .wp-block-navigation__responsive-container-open {
+        display: flex !important;
+        color: var(--color-white);
+    }
+    .cart-nav .wp-block-navigation__responsive-container:not(.is-menu-open) {
+        display: none !important;
+    }
+    .cart-nav__menu { justify-content: flex-end !important; }
+
+    /* The opened mobile panel gets WordPress's own white background by
+       default, but the links were still inheriting the white text meant
+       for the dark desktop nav bar — invisible white-on-white. Scoped to
+       .is-menu-open only, so the desktop inline nav (dark photo behind it,
+       needs white text) is untouched — same elements, different context. */
+    .cart-nav .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content.wp-block-navigation-item__content {
+        color: #000 !important;
+    }
+}
+
 /* ============================================================
    HERO
    ============================================================ */
@@ -317,6 +357,34 @@ a { color: inherit; text-decoration: none; }
 /* Mall directory plugin handles its own layout — only site-level overrides here */
 .cart-directory .mall-directory-container { max-width: 100%; }
 .cart-directory .floor-plan-section { top: var(--nav-h); }
+
+/* Heading + search/filter bar in one row — the bar itself is relocated here
+   via JS (main.js), since the plugin shortcode renders it as a sibling
+   further down the DOM. Explicit grid placement (rather than plain flex)
+   keeps the title+subtitle stacked as their own column while the bar sits
+   beside them, since they're three separate direct children once relocated. */
+#directory .section-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 32px;
+}
+#directory .section-header .section-title { grid-column: 1; grid-row: 1; }
+#directory .section-header .section-subtitle { grid-column: 1; grid-row: 2; }
+#directory .section-header .mall-directory-filters {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    padding: 0;
+    border-bottom: none;
+    margin: 0;
+}
+@media (max-width: 768px) {
+    /* Not enough room for heading + full-width search + dropdown side by
+       side on a phone — revert to plain stacked flow (DOM order: title,
+       subtitle, then the bar, since that's the order it was relocated into). */
+    #directory .section-header { display: block; }
+    #directory .section-header .mall-directory-filters { margin-top: 20px; }
+}
 
 /* ============================================================
    SEE WHAT'S HAPPENING

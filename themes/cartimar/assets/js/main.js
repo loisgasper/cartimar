@@ -10,6 +10,17 @@ jQuery(function ($) {
         }
     });
 
+    // Shop Directory (homepage section only): visually align the heading
+    // with the search/filter bar into one row by relocating the bar —
+    // rendered by the mall-directory plugin's shortcode further down the
+    // DOM — into the heading block itself. Scoped to #directory so the
+    // standalone Find a Store page's own heading is untouched.
+    var $directoryHeader  = $('#directory .section-header');
+    var $directoryFilters = $('#directory .mall-directory-filters');
+    if ($directoryHeader.length && $directoryFilters.length) {
+        $directoryHeader.append($directoryFilters);
+    }
+
     // Category pill active state (visual only — the checkbox still drives filtering)
     $(document).on('change', '.store-category-filter', function () {
         var $label = $(this).closest('.category-checkbox');

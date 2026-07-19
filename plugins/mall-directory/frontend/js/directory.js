@@ -354,6 +354,83 @@ jQuery(document).ready(function ($) {
     });
 
     // ─────────────────────────────────────────────────────────
+    // CATEGORY DROPDOWN (custom-styled button + listbox)
+    // ─────────────────────────────────────────────────────────
+    // Purely a visual replacement for the native <select> below — every
+    // selection here just sets that <select>'s value and fires its native
+    // 'change' event, so the actual filtering logic right after this block
+    // needs no changes at all.
+    var $categoryDropdown = $('#storeCategoryDropdown');
+    var $categoryToggle   = $('#storeCategoryToggle');
+    var $categoryMenu     = $('#storeCategoryMenu');
+    var $categoryNative   = $('#store-category-filter');
+
+    function closeCategoryDropdown() {
+        $categoryDropdown.removeClass('is-open');
+        $categoryToggle.attr('aria-expanded', 'false');
+    }
+
+    function openCategoryDropdown() {
+        $categoryDropdown.addClass('is-open');
+        $categoryToggle.attr('aria-expanded', 'true');
+    }
+
+    $categoryToggle.on('click', function (e) {
+        e.stopPropagation();
+        $categoryDropdown.hasClass('is-open') ? closeCategoryDropdown() : openCategoryDropdown();
+    });
+
+    $categoryMenu.on('click', '.store-category-dropdown__option', function () {
+        var $option = $(this);
+        var value   = $option.data('value') || '';
+
+        $categoryMenu.find('.store-category-dropdown__option')
+            .removeClass('is-selected').attr('aria-selected', 'false');
+        $option.addClass('is-selected').attr('aria-selected', 'true');
+        $categoryToggle.find('.store-category-dropdown__label').text($option.text());
+
+        $categoryNative.val(value).trigger('change');
+        closeCategoryDropdown();
+        $categoryToggle.trigger('focus');
+    });
+
+    // Click anywhere outside closes it
+    $(document).on('click', function (e) {
+        if ($categoryDropdown.hasClass('is-open') && !$(e.target).closest($categoryDropdown).length) {
+            closeCategoryDropdown();
+        }
+    });
+
+    // Minimal keyboard support: the button opens the list and hands focus to
+    // it; arrow keys move between options; Enter/Space selects; Escape closes.
+    $categoryToggle.on('keydown', function (e) {
+        if (e.key === 'Escape') { closeCategoryDropdown(); return; }
+        if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openCategoryDropdown();
+            $categoryMenu.find('.store-category-dropdown__option').first().trigger('focus');
+        }
+    });
+
+    $categoryMenu.on('keydown', '.store-category-dropdown__option', function (e) {
+        var $options = $categoryMenu.find('.store-category-dropdown__option');
+        var index    = $options.index(this);
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            $options.eq(Math.min(index + 1, $options.length - 1)).trigger('focus');
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            $options.eq(Math.max(index - 1, 0)).trigger('focus');
+        } else if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            $(this).trigger('click');
+        } else if (e.key === 'Escape') {
+            closeCategoryDropdown();
+            $categoryToggle.trigger('focus');
+        }
+    });
+
+    // ─────────────────────────────────────────────────────────
     // CATEGORY FILTER
     // ─────────────────────────────────────────────────────────
     $('#store-category-filter').on('change', function () {

@@ -67,12 +67,29 @@ $pin_icon = '<svg class="store-pin-svg" viewBox="0 0 24 24" fill="currentColor" 
             <input type="text" id="store-search" class="store-search-input" placeholder="<?php _e('Search directory...', 'mall-directory'); ?>">
         </div>
         <div class="mall-directory-category">
-            <select id="store-category-filter" class="store-category-select">
-                <option value=""><?php _e('All Shops', 'mall-directory'); ?></option>
-                <?php foreach ($categories as $category): ?>
-                    <option value="<?php echo esc_attr($category->term_id); ?>"><?php echo esc_html($category->name); ?></option>
-                <?php endforeach; ?>
-            </select>
+            <!-- Custom-styled dropdown. The real <select> below still drives
+                 all filtering (see directory.js) and is kept for form
+                 semantics — it's visually hidden, and this button+listbox
+                 pair is the actual visible/interactive UI, kept in sync
+                 with it on every selection. -->
+            <div class="store-category-dropdown" id="storeCategoryDropdown">
+                <button type="button" class="store-category-dropdown__toggle" id="storeCategoryToggle" aria-haspopup="listbox" aria-expanded="false" aria-controls="storeCategoryMenu">
+                    <span class="store-category-dropdown__label"><?php _e('All Shops', 'mall-directory'); ?></span>
+                    <svg class="store-category-dropdown__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <ul class="store-category-dropdown__menu" role="listbox" id="storeCategoryMenu" aria-labelledby="storeCategoryToggle" tabindex="-1">
+                    <li class="store-category-dropdown__option is-selected" role="option" data-value="" aria-selected="true" tabindex="-1"><?php _e('All Shops', 'mall-directory'); ?></li>
+                    <?php foreach ($categories as $category): ?>
+                        <li class="store-category-dropdown__option" role="option" data-value="<?php echo esc_attr($category->term_id); ?>" aria-selected="false" tabindex="-1"><?php echo esc_html($category->name); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+                <select id="store-category-filter" class="store-category-select-native" tabindex="-1" aria-hidden="true">
+                    <option value=""><?php _e('All Shops', 'mall-directory'); ?></option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?php echo esc_attr($category->term_id); ?>"><?php echo esc_html($category->name); ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
         </div>
     </div>
 
