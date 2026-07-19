@@ -365,7 +365,6 @@ a { color: inherit; text-decoration: none; }
    beside them, since they're three separate direct children once relocated. */
 #directory .section-header {
     display: grid;
-    grid-template-columns: 1fr auto;
     align-items: center;
     column-gap: 32px;
 }

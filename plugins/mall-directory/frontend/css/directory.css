@@ -14,7 +14,10 @@
     margin-bottom: 0;
 }
 
-.mall-directory-search { flex: 1; min-width: 0; }
+.mall-directory-search {  
+    flex: 1; 
+    min-width: 0; 
+}
 .mall-directory-category { flex-shrink: 0; }
 
 .store-search-input {
@@ -94,6 +97,7 @@
     transition: background 0.12s ease;
     white-space: nowrap;
     outline: none;
+    text-align: left;
 }
 .store-category-dropdown__option:hover,
 .store-category-dropdown__option:focus-visible { background: #f3f3f7; }
@@ -128,7 +132,6 @@
     /* height auto — follows the SVG's natural aspect ratio */
     max-height: 680px;
     overflow: hidden;
-    border-right: 1px solid #e8e8ee;
 }
 
 .floor-plan-container {
