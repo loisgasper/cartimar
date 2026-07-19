@@ -369,6 +369,9 @@ a { color: inherit; text-decoration: none; }
     align-items: center;
     column-gap: 32px;
 }
+#directory > .container.wp-block-group {
+    padding: 0 20px;
+}
 #directory .section-header .section-title { grid-column: 1; grid-row: 1; }
 #directory .section-header .section-subtitle { grid-column: 1; grid-row: 2; }
 #directory .section-header .mall-directory-filters {
