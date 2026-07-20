@@ -51,6 +51,51 @@ jQuery(function ($) {
         $('html, body').animate({ scrollTop: $(target).offset().top - 70 }, 500);
     });
 
+    // Hero carousel: auto-cycling crossfade between image/video slides.
+    // Images hold for a fixed dwell time; videos hold for their own
+    // duration (muted/looped playback, but the carousel still advances
+    // once through so a mixed image+video hero keeps a steady rhythm).
+    $('.cart-hero__slides').each(function () {
+        var $slides = $(this).children();
+        if ($slides.length < 2) {
+            $slides.addClass('is-active');
+            var $onlyVideo = $slides.find('video');
+            if ($onlyVideo.length) $onlyVideo[0].play();
+            return;
+        }
+
+        var IMAGE_DWELL_MS = 6000;
+        var index = 0;
+        var timer = null;
+
+        function showSlide(i) {
+            var $current = $slides.eq(index);
+            var $video = $current.find('video')[0];
+            if ($video) { $video.pause(); $video.currentTime = 0; }
+
+            index = i;
+            $slides.removeClass('is-active');
+            var $next = $slides.eq(index).addClass('is-active');
+
+            var video = $next.find('video')[0];
+            if (video) {
+                video.currentTime = 0;
+                video.play();
+                clearTimeout(timer);
+                timer = setTimeout(advance, (video.duration && isFinite(video.duration) ? video.duration * 1000 : IMAGE_DWELL_MS));
+            } else {
+                clearTimeout(timer);
+                timer = setTimeout(advance, IMAGE_DWELL_MS);
+            }
+        }
+
+        function advance() {
+            showSlide((index + 1) % $slides.length);
+        }
+
+        showSlide(0);
+    });
+
     // Here to Serve: carousel prev/next
     $('.cart-serve__carousel').each(function () {
         var $carousel = $(this);

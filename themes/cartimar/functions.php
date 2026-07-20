@@ -35,6 +35,8 @@ function cartimar_register_blocks() {
     register_block_type(get_template_directory() . '/inc/blocks/carousel');
     register_block_type(get_template_directory() . '/inc/blocks/timeline');
     register_block_type(get_template_directory() . '/inc/blocks/timeline-item');
+    register_block_type(get_template_directory() . '/inc/blocks/hero-carousel');
+    register_block_type(get_template_directory() . '/inc/blocks/hero-carousel-slides');
 }
 add_action('init', 'cartimar_register_blocks');
 
@@ -78,6 +80,22 @@ function cartimar_archive_hero_featured_image($block_content, $block) {
     );
 }
 add_filter('render_block_core/group', 'cartimar_archive_hero_featured_image', 10, 2);
+
+// Hero carousel video slides must behave like a silent background loop
+// regardless of whether the editor remembered to enable Muted/Loop/Autoplay/
+// Plays inline on the block — force them so a client forgetting a toggle
+// doesn't ship a video with audio or visible controls.
+function cartimar_hero_carousel_force_video_attrs($block_content, $block) {
+    if (($block['blockName'] ?? '') !== 'cartimar/hero-carousel-slides') {
+        return $block_content;
+    }
+    return preg_replace(
+        '/<video\b(?![^>]*\bmuted\b)/i',
+        '<video muted loop playsinline autoplay',
+        $block_content
+    );
+}
+add_filter('render_block_cartimar/hero-carousel-slides', 'cartimar_hero_carousel_force_video_attrs', 10, 2);
 
 // Every social icon link (Facebook, TikTok, Instagram, etc.) should open in a
 // new tab rather than navigate away from the site — the core Social Links
