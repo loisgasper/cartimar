@@ -1104,7 +1104,7 @@ footer .cart-contact-cta__bg { display: none; }
     font-weight: 600;
     color: var(--color-white);
 }
-.cart-footer__logo img { height: 44px; width: auto; }
+.cart-footer__logo img { height: 60px; width: auto; }
 .cart-footer__stay-connected { font-size: 14px; font-weight: 600; color: var(--color-white); }
 .cart-footer__social { display: flex; gap: 14px; }
 
