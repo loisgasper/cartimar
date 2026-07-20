@@ -578,7 +578,7 @@ body.blog .news-card:hover {
 }
 
 body.blog figure.news-card__img-link.wp-block-post-featured-image {
-    height: 320px !important;
+    height: 288px !important;
 }
 
 body.blog .news-card__img-link img,
