@@ -1243,15 +1243,11 @@ footer .cart-contact-cta__bg { display: none; }
 
 .further-read { background: var(--color-lavender); padding: 56px 0; margin-top: 56px; }
 .further-read h2 { font-family: var(--font-display); font-size: 28px; margin-bottom: 32px; }
-.further-read__grid .wp-block-post-template {
+.further-read__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
 }
-.further-read__grid .wp-block-post-template > li { list-style: none; margin-top: 0;}
 
 /* Further Read reuses the homepage's image+text "feature card" pattern, but
    at its own proportions (a compact, roughly square photo beside the text)

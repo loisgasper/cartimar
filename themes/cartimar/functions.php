@@ -113,12 +113,58 @@ function cartimar_social_link_new_tab($block_content) {
 }
 add_filter('render_block_core/social-link', 'cartimar_social_link_new_tab');
 
-// The "Further Read" Query Loop on single posts should never show the post you're already reading.
-function cartimar_exclude_current_post_from_further_read($query_vars, $block) {
-    $class_name = $block->attributes['className'] ?? '';
-    if (strpos($class_name, 'further-read__grid') !== false && is_singular('post')) {
-        $query_vars['post__not_in'] = [get_the_ID()];
-    }
-    return $query_vars;
+// "Further Read" on single posts should show the true previous/next post (by publish date),
+// not just the site's latest posts — a Query Loop can't express that, so render the two
+// cards manually via shortcode, reusing the same news-feature-card markup/styling.
+function cartimar_further_read_card($post) {
+    $permalink = get_permalink($post);
+    $title = get_the_title($post);
+    $excerpt = wp_trim_words(get_the_excerpt($post), 18);
+    $thumb = get_the_post_thumbnail($post, 'medium_large', ['class' => 'news-feature-card__img-el']);
+
+    ob_start();
+    ?>
+    <div class="wp-block-group news-feature-card">
+        <figure class="news-feature-card__img"><a href="<?php echo esc_url($permalink); ?>"><?php echo $thumb; ?></a></figure>
+        <div class="news-feature-card__body">
+            <h3 class="news-feature-card__title"><a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($title); ?></a></h3>
+            <p class="news-feature-card__excerpt"><?php echo esc_html($excerpt); ?></p>
+            <a class="btn btn--dark news-feature-card__btn" href="<?php echo esc_url($permalink); ?>">Read More</a>
+        </div>
+    </div>
+    <?php
+    return ob_get_clean();
 }
-add_filter('query_loop_block_query_vars', 'cartimar_exclude_current_post_from_further_read', 10, 2);
+
+function cartimar_further_read_shortcode() {
+    if (!is_singular('post')) {
+        return '';
+    }
+
+    $prev = get_adjacent_post(false, '', true);
+    $next = get_adjacent_post(false, '', false);
+
+    $cards = '';
+    if ($prev) {
+        setup_postdata($prev);
+        $cards .= cartimar_further_read_card($prev);
+    }
+    if ($next) {
+        setup_postdata($next);
+        $cards .= cartimar_further_read_card($next);
+    }
+    wp_reset_postdata();
+
+    return $cards;
+}
+
+// Rendered via a group block with this className rather than a shortcode block:
+// core/shortcode's render pipeline runs output through wpautop(), which mangles
+// hand-written block-level markup into stray/unbalanced <p> tags.
+add_filter('render_block_core/group', function ($block_content, $block) {
+    $class_name = $block['attrs']['className'] ?? '';
+    if (strpos($class_name, 'further-read__grid') === false) {
+        return $block_content;
+    }
+    return '<div class="wp-block-group further-read__grid">' . cartimar_further_read_shortcode() . '</div>';
+}, 10, 2);
