@@ -57,12 +57,27 @@ jQuery(function ($) {
     // once through so a mixed image+video hero keeps a steady rhythm).
     $('.cart-hero__slides').each(function () {
         var $slides = $(this).children();
+        var $hero = $(this).closest('.cart-hero');
         if ($slides.length < 2) {
             $slides.addClass('is-active');
             var $onlyVideo = $slides.find('video');
             if ($onlyVideo.length) $onlyVideo[0].play();
             return;
         }
+
+        // Prev/next arrows + dot pagination, built here rather than in the
+        // block's saved markup since this is the code that already owns the
+        // active slide index.
+        var $arrowPrev = $('<button type="button" class="cart-hero__arrow cart-hero__arrow--prev" aria-label="Previous slide">' +
+            '<svg width="12" height="20" viewBox="0 0 12 20" fill="none"><path d="M10 2L2 10L10 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>');
+        var $arrowNext = $('<button type="button" class="cart-hero__arrow cart-hero__arrow--next" aria-label="Next slide">' +
+            '<svg width="12" height="20" viewBox="0 0 12 20" fill="none"><path d="M2 2L10 10L2 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>');
+        var $dots = $('<div class="cart-hero__dots"></div>');
+        $slides.each(function (i) {
+            $dots.append('<button type="button" class="cart-hero__dot" aria-label="Go to slide ' + (i + 1) + '"></button>');
+        });
+        $hero.append($arrowPrev, $arrowNext, $dots);
+        var $dot = $dots.find('.cart-hero__dot');
 
         var IMAGE_DWELL_MS = 6000;
         var index = 0;
@@ -76,6 +91,7 @@ jQuery(function ($) {
             index = i;
             $slides.removeClass('is-active');
             var $next = $slides.eq(index).addClass('is-active');
+            $dot.removeClass('is-active').eq(index).addClass('is-active');
 
             var video = $next.find('video')[0];
             if (video) {
@@ -92,6 +108,16 @@ jQuery(function ($) {
         function advance() {
             showSlide((index + 1) % $slides.length);
         }
+
+        $arrowPrev.on('click', function () {
+            showSlide((index - 1 + $slides.length) % $slides.length);
+        });
+        $arrowNext.on('click', function () {
+            showSlide((index + 1) % $slides.length);
+        });
+        $dot.on('click', function () {
+            showSlide($dot.index(this));
+        });
 
         showSlide(0);
     });

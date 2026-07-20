@@ -317,6 +317,7 @@ a { color: inherit; text-decoration: none; }
     height: 100%;
     object-fit: cover;
     display: block;
+    object-position: top;
 }
 
 .cart-hero--carousel .cart-hero__content { z-index: 2; }
@@ -375,6 +376,61 @@ a { color: inherit; text-decoration: none; }
     border-radius: 0;
     padding: 16px 28px;
     font-size: 15px;
+}
+
+/* Hero carousel controls: minimalist prev/next arrows + dot pagination.
+   Arrows are unobtrusive (transparent, low-opacity icon) until hovered so
+   they don't compete with the heading/search on top of the slides. */
+.cart-hero__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+.cart-hero__arrow:hover,
+.cart-hero__arrow:focus-visible { color: #fff; }
+.cart-hero__arrow--prev { left: 16px; }
+.cart-hero__arrow--next { right: 16px; }
+
+@media (max-width: 640px) {
+    .cart-hero__arrow { display: none; }
+}
+
+.cart-hero__dots {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cart-hero__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    padding: 0;
+    border: none;
+    background: rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.cart-hero__dot:hover { background: rgba(255,255,255,0.7); }
+.cart-hero__dot.is-active {
+    background: #fff;
+    transform: scale(1.2);
 }
 
 .cart-hero__search .btn:hover {
