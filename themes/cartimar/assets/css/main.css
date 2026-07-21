@@ -692,7 +692,7 @@ body.blog .wp-block-post-featured-image a {
     line-clamp: 3;
     overflow: hidden;
 }
-.news-feature-card__title a { color: inherit; }
+.news-feature-card__title a { color: inherit; font-size: 20px; line-height: 26px; }
 .news-feature-card__title a:hover { color: var(--color-accent); }
 .news-feature-card__excerpt {
     font-size: 14px;
@@ -1324,7 +1324,7 @@ footer .cart-contact-cta__bg { display: none; }
     height: 267px;
 }
 .further-read__grid .news-feature-card__body { flex: 1; overflow: visible; margin-top:0;}
-.further-read__grid .news-feature-card__title { -webkit-line-clamp: 2; line-clamp: 2; }
+.further-read__grid .news-feature-card__title { -webkit-line-clamp: unset; line-clamp: unset; width: 75%}
 
 @media (max-width: 640px) {
     .further-read__grid .news-feature-card { flex-direction: column; }
