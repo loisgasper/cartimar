@@ -1108,6 +1108,30 @@ footer .cart-contact-cta__bg { display: none; }
 .cart-footer__stay-connected { font-size: 14px; font-weight: 600; color: var(--color-white); }
 .cart-footer__social { display: flex; gap: 14px; }
 
+/* Footer nav is a wp:navigation block, which ships its own responsive
+   collapse into a hamburger below 600px core-side — unwanted here, since
+   the footer nav is a short vertical link list, not a header menu. Force
+   the responsive container to always render open/inline regardless of
+   viewport, and hide the toggle button core would otherwise inject. */
+.cart-footer__nav .wp-block-navigation__responsive-container {
+    display: block !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    background: transparent !important;
+}
+.cart-footer__nav .wp-block-navigation__responsive-container-open,
+.cart-footer__nav .wp-block-navigation__responsive-container-close { display: none !important; }
+.cart-footer__legal .wp-block-navigation__responsive-container {
+    display: flex !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    background: transparent !important;
+}
+.cart-footer__legal .wp-block-navigation__responsive-container-open,
+.cart-footer__legal .wp-block-navigation__responsive-container-close { display: none !important; }
+
 .cart-footer__nav {
     display: flex;
     flex-direction: column;
@@ -1390,24 +1414,90 @@ footer .cart-contact-cta__bg { display: none; }
     .further-read__grid .wp-block-post-template { grid-template-columns: 1fr; }
 }
 
+@media (max-width: 1024px) {
+    .cart-hero { height: auto; min-height: 560px; padding: 140px 0 60px; }
+    .cart-directory { padding: 32px 20px; }
+    .cart-news { height: auto; padding: 60px 0; }
+    .cart-anniversary__intro { gap: 16px; }
+    .contact-layout { padding-bottom: 48px; }
+    .page-hero-split { height: 480px; }
+    .further-read__grid { grid-template-columns: 1fr; }
+    .cart-footer { padding: 40px 40px 24px; }
+    .cart-serve__viewport { padding-left: 40px; padding-right: 40px; }
+    .cart-serve__nav { padding: 0 40px; }
+}
+
 @media (max-width: 768px) {
     .container { padding: 0 20px; }
     .cart-section { padding: 56px 0; }
     .cart-serve__nav { padding: 0 20px; }
-    .cart-hero__search { flex-direction: column; border-radius: var(--radius); overflow: visible; }
-    .cart-hero__search-input { border-radius: var(--radius); }
-    .cart-hero__search .btn { border-radius: 8px; width: 100%; }
-    .cart-news__header { flex-direction: column; }
+    .cart-serve__viewport { padding-left: 20px; padding-right: 20px; }
+    /* Keep the search bar as a single row on mobile instead of stacking —
+       the "Find Stores" button collapses to a square icon-only button so
+       the input keeps most of the width for typing. Button label text is
+       visually hidden (not display:none) so it stays in the accessible
+       name for screen readers. */
+    .cart-hero__search { flex-direction: row; border-radius: var(--radius); overflow: hidden; }
+    .cart-hero__search-input { border-radius: 0; min-width: 0; }
+    .cart-hero__search .btn {
+        flex: 0 0 auto;
+        width: 52px;
+        padding: 0;
+        border-radius: 0;
+        position: relative;
+        font-size: 0;
+        line-height: 0;
+        color: transparent;
+    }
+    .cart-hero__search .btn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 18px;
+        height: 18px;
+        background: var(--color-white);
+        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") center/contain no-repeat;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") center/contain no-repeat;
+    }
+    .cart-news__header { flex-direction: column; align-items: flex-start; }
+    .cart-news__cta { align-self: stretch; }
+    .cart-news__cta .wp-block-button__link { width: 100%; }
     .cart-about__gallery-row { flex-direction: column; height: auto; }
     .cart-about__gallery-row .cart-about__gallery-item,
     .cart-about__gallery-row--reverse .cart-about__gallery-item { flex: none; height: 220px; }
+    .cart-about__gallery-stack { grid-template-rows: 240px 200px; }
+    .cart-about__story-img { height: auto; }
+    .cart-about__story-img img { height: 260px; }
     .cart-serve__track > .wp-block-image { flex: 0 0 calc(100% - 20px) !important; }
     .cart-anniversary__header { flex-direction: column; align-items: flex-start; gap: 16px; }
     .cart-anniversary__logo img { width: 140px; }
     .cart-anniversary__photo img { height: 200px; }
-    .cart-footer__top { flex-direction: column; }
-    .cart-footer__nav { align-items: flex-start; gap: 12px; }
-    .cart-footer__bottom { flex-direction: column; align-items: flex-start; }
+
+    .cart-contact-cta { height: auto; padding: 64px 0; }
+    .cart-contact-cta__btn { width: 100%; }
+    .cart-contact-cta__btn .wp-block-button__link { width: 100%; }
+
+    .cart-footer { padding: 40px 20px 24px; }
+    .cart-footer__top { flex-direction: column; align-items: flex-start; gap: 28px; }
+    .cart-footer__brand { width: 100%; }
+    .cart-footer__nav { align-items: flex-start; gap: 12px; width: 100%; }
+    .cart-footer__bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .cart-footer__legal { flex-wrap: wrap; gap: 16px; }
+
     .contact-form__row { grid-template-columns: 1fr; }
     .page-hero-split { height: 320px; flex-direction: column; }
+    .single-post__image img { height: 240px; }
+    .archive-hero { height: auto; padding: 140px 0 48px; }
+
+    body.blog figure.news-card__img-link.wp-block-post-featured-image { height: 220px !important; }
+}
+
+@media (max-width: 480px) {
+    .cart-hero__heading { margin-bottom: 24px; }
+    .cart-footer__top,
+    .cart-footer__bottom { gap: 20px; }
+    .cart-anniversary__brand { flex-direction: column; gap: 8px; }
+    .cart-timeline__year { font-size: 28px; }
 }
