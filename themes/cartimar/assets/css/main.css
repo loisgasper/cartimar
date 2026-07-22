@@ -119,10 +119,11 @@ a { color: inherit; text-decoration: none; }
     right: 0;
     z-index: 1000;
     height: var(--nav-h);
+    background: #313981;
     transition: background var(--transition), box-shadow var(--transition);
 }
 .cart-nav.scrolled {
-    background: #0D0038;
+    background: #313981;
     box-shadow: 0 2px 12px rgba(0,0,0,0.25);
 }
 
@@ -194,33 +195,13 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* Pages without a banner after the header (Find a Store, legal pages,
-   single posts…): the transparent white-text nav would vanish against the
-   page background, so flip to a solid white bar with dark links, the blue
-   logo, and a navy CTA. The body class comes from functions.php. */
-.no-banner-nav .cart-nav { background: var(--color-white); }
+   single posts…): the nav is solid #313981 on every page now, so no color
+   override is needed here — just keep the content from sitting under it.
+   The body class comes from functions.php. */
 /* The no-title template has no top padding of its own (banner pages want the
-   content flush behind the nav), so without a banner the now-opaque nav bar
+   content flush behind the nav), so without a banner the opaque nav bar
    would sit on top of the first block. Other templates already pad past it. */
 .no-banner-nav.page-template-page-no-title main { padding-top: var(--nav-h); }
-.no-banner-nav .cart-nav.scrolled {
-    background: var(--color-white);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-}
-.no-banner-nav .cart-nav__menu li a { color: #212121 !important; }
-.no-banner-nav .cart-nav__menu li a:hover,
-.no-banner-nav .cart-nav__menu li.current-menu-item a { background: rgba(0,0,0,0.06); }
-.no-banner-nav .cart-nav__logo { color: #212121; }
-.no-banner-nav .cart-nav__logo .custom-logo-link img { content: url('../images/cartimar-logo-blue.png'); }
-.no-banner-nav .cart-nav .wp-block-navigation__responsive-container-open { color: #212121; }
-.no-banner-nav .cart-nav__cta .wp-block-button__link {
-    background: var(--color-navy) !important;
-    color: var(--color-white) !important;
-}
-.no-banner-nav .cart-nav .cart-nav__cta .wp-block-button__link:hover,
-.no-banner-nav .cart-nav.scrolled .cart-nav__cta .wp-block-button__link:hover {
-    background: color-mix(in srgb, var(--color-navy) 70%, transparent) !important;
-    color: var(--color-white) !important;
-}
 
 /* Nav on tablet/mobile: logo + hamburger only, nothing else.
    WordPress core hard-codes its own nav breakpoint at 600px
@@ -238,11 +219,9 @@ a { color: inherit; text-decoration: none; }
     .cart-nav__inner { grid-template-columns: auto 1fr; padding: 0 20px; }
     .cart-nav__inner .wp-block-buttons { display: none; }
 
-    /* The button was never given a colour on the transparent (photo-banner)
-       nav — it fell back to the dark body-text colour and was nearly
-       invisible against the photo. Only ever shown below 1024px, so this
-       can't affect anything on desktop. no-banner-nav already sets its own
-       dark colour for the white-bar variant, further down the cascade. */
+    /* The button was never given a colour of its own — it fell back to the
+       dark body-text colour and was nearly invisible against the navy nav.
+       Only ever shown below 1024px, so this can't affect anything on desktop. */
     .cart-nav .wp-block-navigation__responsive-container-open {
         display: flex !important;
         color: var(--color-white);
@@ -1077,7 +1056,7 @@ footer .cart-contact-cta__bg { display: none; }
    FOOTER
    ============================================================ */
 .cart-footer {
-    background: #0D0038;
+    background: #313981;
     padding: 48px 70px 32px;
     color: rgba(255,255,255,0.6);
 }
