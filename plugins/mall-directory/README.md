@@ -101,7 +101,8 @@ Tell them to provide:
    - Category (e.g., Cafe, Fashion, Services, Restaurant)
    - Store Logo/Image
    - Brief Description (optional)
-   - Floor/Unit Location (e.g., "Level 2, Unit 15") OR X,Y coordinates
+   - Building (e.g., "Level 2, Section A") OR X,Y coordinates
+   - Stall Number (optional — for stores occupying multiple or specific stalls, e.g. "Stall # 4 & 5 – 18")
 
 3. **Optional:**
    - Store website/links

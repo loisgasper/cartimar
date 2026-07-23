@@ -286,6 +286,7 @@ jQuery(document).ready(function ($) {
             var $item     = $(this);
             var storeName     = $item.attr('data-store-name').toLowerCase();
             var storeLocation = ($item.attr('data-store-location') || '').toLowerCase();
+            var storeStall    = ($item.attr('data-store-stall') || '').toLowerCase();
             var storePhone    = ($item.attr('data-store-phone') || '').toLowerCase();
             var storeArea = ($item.attr('data-map-area') || '').toLowerCase();
             var storeCategories = [];
@@ -295,14 +296,16 @@ jQuery(document).ready(function ($) {
                 (activeFilterType === 'location' && storeArea === activeFilterValue.toLowerCase()) ||
                 (activeFilterType === 'category' && storeCategories.indexOf(parseInt(activeFilterValue, 10)) !== -1);
 
-            // Search matches the shop name, its Shop Location text (e.g.
-            // "Stall # 4 & 5 – 18"), or its phone number — not the map area,
-            // which is the physical building/section used by the filters
-            // above, a different thing from the free-text location field.
+            // Search matches the shop name, its Building text, its Stall
+            // Number (e.g. "Stall # 4 & 5 – 18"), or its phone number — not
+            // the map area, which is the physical building/section used by
+            // the filters above, a different thing from the free-text
+            // Building/Stall Number fields.
             var q = searchQuery.toLowerCase();
             var srchMatch = q === '' ||
                 storeName.indexOf(q) !== -1 ||
                 storeLocation.indexOf(q) !== -1 ||
+                storeStall.indexOf(q) !== -1 ||
                 storePhone.indexOf(q) !== -1;
             var visible   = filterMatch && srchMatch;
             $item.toggle(visible);

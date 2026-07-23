@@ -25,6 +25,7 @@ function mall_dir_metabox_callback($post) {
     // Get existing values
     $store_name     = get_post_meta($post->ID, '_md_store_name', true);
     $store_location = get_post_meta($post->ID, '_md_store_location', true);
+    $store_stall    = get_post_meta($post->ID, '_md_store_stall', true);
     $store_phone    = get_post_meta($post->ID, '_md_store_phone', true);
     $logo_id        = get_post_meta($post->ID, '_md_store_logo', true);
     $logo_url       = $logo_id ? wp_get_attachment_url($logo_id) : '';
@@ -45,10 +46,19 @@ function mall_dir_metabox_callback($post) {
             <input type="text" id="md_store_name" name="md_store_name" value="<?php echo esc_attr($store_name); ?>" placeholder="<?php _e('e.g. Manila Aquarium & Pet Shop', 'mall-directory'); ?>" class="mall-dir-text-input">
         </div>
 
-        <!-- Shop Location -->
+        <!-- Building -->
         <div class="mall-dir-field">
-            <label for="md_store_location"><strong><?php _e('Shop Location', 'mall-directory'); ?></strong></label>
+            <label for="md_store_location"><strong><?php _e('Building', 'mall-directory'); ?></strong></label>
             <input type="text" id="md_store_location" name="md_store_location" value="<?php echo esc_attr($store_location); ?>" placeholder="<?php _e('e.g. 2nd Floor, Section A', 'mall-directory'); ?>" class="mall-dir-text-input">
+        </div>
+
+        <!-- Stall Number -->
+        <div class="mall-dir-field">
+            <label for="md_store_stall"><strong><?php _e('Stall Number', 'mall-directory'); ?></strong></label>
+            <input type="text" id="md_store_stall" name="md_store_stall" value="<?php echo esc_attr($store_stall); ?>" placeholder="<?php _e('e.g. Stall # 4 & 5 – 18', 'mall-directory'); ?>" class="mall-dir-text-input">
+            <p style="color: #999; font-size: 12px; margin-top: 8px; margin-bottom: 0;">
+                <?php _e('Optional. Use this for stores that occupy multiple or specific stall numbers, so it can show on its own line instead of being crammed into Building.', 'mall-directory'); ?>
+            </p>
         </div>
 
         <!-- Store Category -->
@@ -162,6 +172,9 @@ function mall_dir_save_metabox($post_id) {
     }
     if (isset($_POST['md_store_location'])) {
         update_post_meta($post_id, '_md_store_location', sanitize_text_field($_POST['md_store_location']));
+    }
+    if (isset($_POST['md_store_stall'])) {
+        update_post_meta($post_id, '_md_store_stall', sanitize_text_field($_POST['md_store_stall']));
     }
 
     // Save category (single-select, same UX as the Location dropdown above)

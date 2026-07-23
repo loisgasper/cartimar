@@ -48,6 +48,7 @@ if ($stores->have_posts()) {
             'x'          => (int) $map_x,
             'y'          => (int) $map_y,
             'location'   => get_post_meta($store_id, '_md_store_location', true),
+            'stall'      => get_post_meta($store_id, '_md_store_stall', true),
             'phone'      => get_post_meta($store_id, '_md_store_phone', true),
             'map_area'   => get_post_meta($store_id, '_md_store_map_area', true),
             'categories' => $categories_list,
@@ -104,6 +105,7 @@ $pin_icon = '<svg class="store-pin-svg" viewBox="0 0 24 24" fill="currentColor" 
                          data-store-id="<?php echo esc_attr($store['id']); ?>"
                          data-store-name="<?php echo esc_attr($store['title']); ?>"
                          data-store-location="<?php echo esc_attr($store['location']); ?>"
+                         data-store-stall="<?php echo esc_attr($store['stall']); ?>"
                          data-store-phone="<?php echo esc_attr($store['phone']); ?>"
                          data-map-area="<?php echo esc_attr($store['map_area']); ?>"
                          data-categories="<?php echo esc_attr(json_encode(array_column($store['categories'], 'id'))); ?>">
@@ -122,6 +124,12 @@ $pin_icon = '<svg class="store-pin-svg" viewBox="0 0 24 24" fill="currentColor" 
                                 <p class="store-item-location">
                                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                                     <?php echo esc_html($store['location']); ?>
+                                </p>
+                            <?php endif; ?>
+                            <?php if (!empty($store['stall'])): ?>
+                                <p class="store-item-stall">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v6H3V3zm0 8h8v10H3V11zm10 0h8v10h-8V11z"/></svg>
+                                    <?php echo esc_html($store['stall']); ?>
                                 </p>
                             <?php endif; ?>
                             <?php if (!empty($store['phone'])): ?>
