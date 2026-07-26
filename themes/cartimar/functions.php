@@ -179,6 +179,27 @@ function cartimar_further_read_shortcode() {
     $prev = get_adjacent_post(false, '', true);
     $next = get_adjacent_post(false, '', false);
 
+    // On the oldest/newest post one side has no chronological neighbor —
+    // wrap around to the first/last post instead of showing only one card.
+    if (!$prev) {
+        $prev = get_posts([
+            'numberposts' => 1,
+            'orderby'     => 'date',
+            'order'       => 'DESC',
+            'post__not_in' => [get_the_ID()],
+        ]);
+        $prev = $prev ? $prev[0] : null;
+    }
+    if (!$next) {
+        $next = get_posts([
+            'numberposts' => 1,
+            'orderby'     => 'date',
+            'order'       => 'ASC',
+            'post__not_in' => [get_the_ID()],
+        ]);
+        $next = $next ? $next[0] : null;
+    }
+
     $cards = '';
     if ($prev) {
         setup_postdata($prev);
