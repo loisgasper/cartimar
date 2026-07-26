@@ -104,26 +104,31 @@ function cartimar_hero_carousel_force_original_video_src($block_content, $block)
     if (($block['blockName'] ?? '') !== 'cartimar/hero-carousel-slides') {
         return $block_content;
     }
+    $original_urls = array();
     foreach (($block['innerBlocks'] ?? []) as $inner_block) {
         if (($inner_block['blockName'] ?? '') !== 'core/video') {
             continue;
         }
         $attachment_id = $inner_block['attrs']['id'] ?? 0;
-        if (!$attachment_id) {
-            continue;
-        }
-        $original_url = wp_get_attachment_url($attachment_id);
-        if (!$original_url) {
-            continue;
-        }
-        $block_content = preg_replace(
-            '/(<video\b[^>]*\bsrc=")[^"]*(")/i',
-            '${1}' . esc_url($original_url) . '${2}',
-            $block_content,
-            1
-        );
+        $original_url = $attachment_id ? wp_get_attachment_url($attachment_id) : false;
+        $original_urls[] = $original_url ?: null;
     }
-    return $block_content;
+    if (empty($original_urls)) {
+        return $block_content;
+    }
+    $video_index = 0;
+    return preg_replace_callback(
+        '/(<video\b[^>]*\bsrc=")[^"]*(")/i',
+        function ($matches) use (&$video_index, $original_urls) {
+            $url = $original_urls[$video_index] ?? null;
+            $video_index++;
+            if (!$url) {
+                return $matches[0];
+            }
+            return $matches[1] . esc_url($url) . $matches[2];
+        },
+        $block_content
+    );
 }
 add_filter('render_block_cartimar/hero-carousel-slides', 'cartimar_hero_carousel_force_original_video_src', 10, 2);
 
