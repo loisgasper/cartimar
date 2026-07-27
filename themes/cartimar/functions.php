@@ -132,6 +132,45 @@ function cartimar_hero_carousel_force_original_video_src($block_content, $block)
 }
 add_filter('render_block_cartimar/hero-carousel-slides', 'cartimar_hero_carousel_force_original_video_src', 10, 2);
 
+// Hero carousel images must always render at full resolution — core/image
+// defaults to whichever size the editor had selected (often a scaled-down
+// "large" size) and adds a srcset that lets the browser pick something even
+// smaller, so force both back to the original uploaded file per image.
+function cartimar_hero_carousel_force_full_size_images($block_content, $block) {
+    if (($block['blockName'] ?? '') !== 'cartimar/hero-carousel-slides') {
+        return $block_content;
+    }
+    $original_urls = array();
+    foreach (($block['innerBlocks'] ?? []) as $inner_block) {
+        if (($inner_block['blockName'] ?? '') !== 'core/image') {
+            continue;
+        }
+        $attachment_id = $inner_block['attrs']['id'] ?? 0;
+        $original_url = $attachment_id ? wp_get_attachment_url($attachment_id) : false;
+        $original_urls[] = $original_url ?: null;
+    }
+    if (empty($original_urls)) {
+        return $block_content;
+    }
+    $image_index = 0;
+    return preg_replace_callback(
+        '/<img\b[^>]*>/i',
+        function ($matches) use (&$image_index, $original_urls) {
+            $url = $original_urls[$image_index] ?? null;
+            $image_index++;
+            if (!$url) {
+                return $matches[0];
+            }
+            $tag = preg_replace('/\ssrcset="[^"]*"/i', '', $matches[0]);
+            $tag = preg_replace('/\ssizes="[^"]*"/i', '', $tag);
+            $tag = preg_replace('/(\bsrc=")[^"]*(")/i', '${1}' . esc_url($url) . '${2}', $tag);
+            return $tag;
+        },
+        $block_content
+    );
+}
+add_filter('render_block_cartimar/hero-carousel-slides', 'cartimar_hero_carousel_force_full_size_images', 10, 2);
+
 // Every social icon link (Facebook, TikTok, Instagram, etc.) should open in a
 // new tab rather than navigate away from the site — the core Social Links
 // block has no built-in toggle for this, so add it to every link it renders.
