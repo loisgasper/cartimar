@@ -52,7 +52,13 @@ a { color: inherit; text-decoration: none; }
     max-width: var(--max-w);
     margin: 0 auto;
     padding: 0 70px;
+
+    @media (max-width: 1024px) {
+        padding: 0 20px !important;
+    }
 }
+
+
 
 .btn {
     display: inline-flex;
@@ -569,7 +575,7 @@ a { color: inherit; text-decoration: none; }
     transition: all var(--transition);
 }
 .cart-news__slideshow-arrow:hover:not(:disabled) { background: var(--color-dark); color: var(--color-white); border-color: var(--color-dark); }
-.cart-news__slideshow-arrow:disabled { opacity: 0.35; cursor: default; }
+.cart-news__slideshow-arrow:disabled { opacity: 0.35; cursor: default; margin-block-start: 24px;}
 .cart-news__slideshow-count { font-size: 14px; color: var(--color-muted); min-width: 48px; text-align: center; }
 
 .news-card {
@@ -773,7 +779,7 @@ body.blog .wp-block-post-featured-image a {
     gap: 12px;
     margin-top: 0;
 }
-.cart-about__gallery-item { overflow: hidden; border-radius: 0; margin-top: 0;}
+.cart-about__gallery-item { overflow: hidden; border-radius: 0; margin-top: 0; min-height: 0; min-width: 0;}
 .cart-about__gallery-item .wp-block-image { height: 100%; margin: 0; }
 .cart-about__gallery-item img {
     width: 100%;
@@ -1066,6 +1072,9 @@ footer .cart-contact-cta__bg { display: none; }
     max-width: 1440px;
     width: 100%;
     padding: 0 60px;
+    @media (max-width: 1024px) {
+        padding: 0 20px !important;
+    }
 }
 .cart-footer__top {
     display: flex;
@@ -1086,9 +1095,13 @@ footer .cart-contact-cta__bg { display: none; }
     font-weight: 600;
     color: var(--color-white);
 }
-.cart-footer__logo img { height: 60px; width: auto; }
+.cart-footer__logo img { 
+    height: 60px; 
+    width: auto; 
+}
 .cart-footer__stay-connected { font-size: 14px; font-weight: 600; color: var(--color-white); }
 .cart-footer__social { display: flex; gap: 14px; }
+
 
 /* Footer nav is a wp:navigation block, which ships its own responsive
    collapse into a hamburger below 600px core-side — unwanted here, since
@@ -1405,7 +1418,7 @@ footer .cart-contact-cta__bg { display: none; }
     .contact-layout { padding-bottom: 48px; }
     .page-hero-split { height: 480px; }
     .further-read__grid { grid-template-columns: 1fr; }
-    .cart-footer { padding: 40px 40px 24px; }
+    .cart-footer { padding: 40px 0 24px; }
     .cart-serve__viewport { padding-left: 40px; padding-right: 40px; }
     .cart-serve__nav { padding: 0 40px; }
 }
@@ -1449,8 +1462,9 @@ footer .cart-contact-cta__bg { display: none; }
     .cart-news__cta .wp-block-button__link { width: 100%; }
     .cart-about__gallery-row { flex-direction: column; height: auto; }
     .cart-about__gallery-row .cart-about__gallery-item,
-    .cart-about__gallery-row--reverse .cart-about__gallery-item { flex: none; height: 220px; }
+    .cart-about__gallery-row--reverse .cart-about__gallery-item { flex: none; height: 220px; min-height: 220px; }
     .cart-about__gallery-stack { grid-template-rows: 240px 200px; }
+    .cart-about__gallery-stack .cart-about__gallery-item { height: 100%; min-height: 0; }
     .cart-about__story-img { height: auto; }
     .cart-about__story-img img { height: 260px; }
     .cart-serve__track > .wp-block-image { flex: 0 0 calc(100% - 20px) !important; }
