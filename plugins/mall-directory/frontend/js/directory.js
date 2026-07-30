@@ -472,4 +472,13 @@ jQuery(document).ready(function ($) {
         if (area) setHighlight(area, true);
     });
 
+    // ─────────────────────────────────────────────────────────
+    // IMAGE PROTECTION — block right-click save and drag on store
+    // logos and the floor plan map (delegated so it still applies
+    // after the store list re-renders on search/filter)
+    // ─────────────────────────────────────────────────────────
+    $(document).on('contextmenu dragstart', '.mall-directory-container img, .mall-directory-container svg image', function (e) {
+        e.preventDefault();
+    });
+
 });

@@ -321,6 +321,14 @@
     .stores-list-section { height: auto; max-height: 500px; }
 }
 
+/* Image protection: deter casual right-click/drag saving of store logos and floor plan map */
+.mall-directory-container img,
+.mall-directory-container svg image {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
 @media (max-width: 640px) {
     .mall-directory-filters { padding: 16px; flex-direction: column; align-items: stretch; }
     .store-category-dropdown__toggle { width: 100%; }
