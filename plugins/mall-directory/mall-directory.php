@@ -25,18 +25,19 @@ require_once MALL_DIR_PLUGIN_DIR . 'includes/shortcode.php';
 
 function mall_dir_get_map_areas() {
     return [
-        ['name' => 'Plaza (Various Shops)',               'x' => 514,  'y' => 450],
+        ['name' => 'Plaza',                               'x' => 514,  'y' => 450],
         ['name' => 'Admin',                               'x' => 714,  'y' => 450],
         ['name' => 'Food Court',                          'x' => 832,  'y' => 450],
         ['name' => 'Save More Grocery Store',             'x' => 1127, 'y' => 450],
         ['name' => 'Grains & Grocery',                    'x' => 526,  'y' => 703],
         ['name' => 'Cartimar Main Building',              'x' => 1127, 'y' => 703],
-        ['name' => 'Cartimar Villa Village 1 (Pet Shops)', 'x' => 1219, 'y' => 242],
+        ['name' => 'Cartimar Villa Village 1 (Right)',    'x' => 1219, 'y' => 242],
         ['name' => 'Cartimar Villa Village 2',            'x' => 526,  'y' => 251],
-        ['name' => 'Cartimar Villa Village 3',            'x' => 867,  'y' => 251],
-        ['name' => 'Cartimar Villa Village 4 (Pet Shops)', 'x' => 1219, 'y' => 330],
+        ['name' => 'Cartimar Villa Village 1 (Left)',     'x' => 867,  'y' => 251],
+        ['name' => 'Pet Center',                          'x' => 1219, 'y' => 330],
         ['name' => 'Aqualand Alley',                      'x' => 988,  'y' => 98],
         ['name' => 'Greenland Plants and Orchids Center', 'x' => 1260, 'y' => 98],
+        ['name' => 'Aqualand Center',                     'x' => 1295, 'y' => 402],
         ['name' => 'Cartimar Carpark and Fresh Food Plaza', 'x' => 179,  'y' => 630],
         ['name' => 'Gateway (Upper)',                       'x' => 1390, 'y' => 362],
         ['name' => 'Gateway (Lower)',                       'x' => 1390, 'y' => 592],

@@ -132,7 +132,7 @@ $map_img = esc_url(get_template_directory_uri() . '/assets/images/cartimar-map-f
   <g class="area-zone" data-area="Aqualand Alley"
      tabindex="0" role="button" aria-label="Aqualand Alley">
     <title>Aqualand Alley</title>
-  <rect class="area-fill" x="935" y="25" width="155" height="104" rx="8" fill="#5aaee0" stroke="#2a7eb0"></rect>
+  <path class="area-fill" d="M 935.0,33.0 L 935.0,33.0 Q 935.0,25.0 943.0,25.0 L 1082.0,25.0 Q 1090.0,25.0 1090.0,33.0 L 1090.0,121.0 Q 1090.0,129.0 1082.0,129.0 L 985.5,129.0 Q 979.0,129.0 979.0,135.5 L 979.0,135.5 Q 979.0,142.0 972.5,142.0 L 943.0,142.0 Q 935.0,142.0 935.0,134.0 Z" fill="#5aaee0" stroke="#2a7eb0"></path>
   </g>
 
   <!-- GREENLAND PLANTS AND ORCHIDS CENTER -->
@@ -149,31 +149,31 @@ $map_img = esc_url(get_template_directory_uri() . '/assets/images/cartimar-map-f
 <rect class="area-fill" x="355" y="165" width="345" height="112" rx="8" fill="#e8a030" stroke="#b87010"></rect>
   </g>
 
-  <!-- CARTIMAR VILLA VILLAGE 3 -->
-  <g class="area-zone" data-area="Cartimar Villa Village 3"
-     tabindex="0" role="button" aria-label="Cartimar Villa Village 3">
-    <title>Cartimar Villa Village 3</title>
+  <!-- CARTIMAR VILLA VILLAGE 1 (LEFT) -->
+  <g class="area-zone" data-area="Cartimar Villa Village 1 (Left)"
+     tabindex="0" role="button" aria-label="Cartimar Villa Village 1 Left">
+    <title>Cartimar Villa Village 1 (Left)</title>
 <rect class="area-fill" x="720" y="165" width="270" height="115" rx="8" fill="#8860d0" stroke="#5830a0"></rect>
   </g>
 
-  <!-- CARTIMAR VILLA VILLAGE 1 — PET SHOPS -->
-  <g class="area-zone" data-area="Cartimar Villa Village 1 (Pet Shops)"
-     tabindex="0" role="button" aria-label="Cartimar Villa Village 1 Pet Shops">
-    <title>Cartimar Villa Village 1 (Pet Shops)</title>
+  <!-- CARTIMAR VILLA VILLAGE 1 (RIGHT) -->
+  <g class="area-zone" data-area="Cartimar Villa Village 1 (Right)"
+     tabindex="0" role="button" aria-label="Cartimar Villa Village 1 Right">
+    <title>Cartimar Villa Village 1 (Right)</title>
     <rect class="area-fill" x="1030" y="185" width="350" height="75" rx="7" fill="#e0607a" stroke="#b03050"></rect>
   </g>
 
-  <!-- CARTIMAR VILLA VILLAGE 4 — PET SHOPS -->
-  <g class="area-zone" data-area="Cartimar Villa Village 4 (Pet Shops)"
-     tabindex="0" role="button" aria-label="Cartimar Villa Village 4 Pet Shops">
-    <title>Cartimar Villa Village 4 (Pet Shops)</title>
+  <!-- PET CENTER -->
+  <g class="area-zone" data-area="Pet Center"
+     tabindex="0" role="button" aria-label="Pet Center">
+    <title>Pet Center</title>
     <rect class="area-fill" x="1030" y="280" width="350" height="80" rx="7" fill="#e0607a" stroke="#b03050"></rect>
   </g>
 
-  <!-- PLAZA — VARIOUS SHOPS -->
-  <g class="area-zone" data-area="Plaza (Various Shops)"
-     tabindex="0" role="button" aria-label="Plaza - Various Shops">
-    <title>Plaza (Various Shops)</title>
+  <!-- PLAZA -->
+  <g class="area-zone" data-area="Plaza"
+     tabindex="0" role="button" aria-label="Plaza">
+    <title>Plaza</title>
 <rect class="area-fill" x="355" y="360" width="300" height="160" rx="8" fill="#3a72c8" stroke="#1a4298"></rect>
   </g>
 
@@ -190,10 +190,17 @@ $map_img = esc_url(get_template_directory_uri() . '/assets/images/cartimar-map-f
 <rect class="area-fill" x="805" y="375" width="85" height="145" rx="6" fill="#e0607a" stroke="#b03050"></rect>  </g>
 
   <!-- SAVE MORE GROCERY STORE -->
+  <!-- AQUALAND CENTER -->
+  <g class="area-zone" data-area="Aqualand Center"
+     tabindex="0" role="button" aria-label="Aqualand Center">
+    <title>Aqualand Center</title>
+    <rect class="area-fill" x="1210" y="375" width="170" height="55" rx="8" fill="#7850c8" stroke="#4820a0"></rect>
+  </g>
+
   <g class="area-zone" data-area="Save More Grocery Store"
      tabindex="0" role="button" aria-label="Save More Grocery Store">
     <title>Save More Grocery Store</title>
-<rect class="area-fill" x="910" y="375" width="470" height="148" rx="8" fill="#7850c8" stroke="#4820a0"></rect>
+    <path class="area-fill" d="M 910.0,383.0 L 910.0,383.0 Q 910.0,375.0 918.0,375.0 L 1202.0,375.0 Q 1210.0,375.0 1210.0,383.0 L 1210.0,422.0 Q 1210.0,430.0 1218.0,430.0 L 1372.0,430.0 Q 1380.0,430.0 1380.0,438.0 L 1380.0,515.0 Q 1380.0,523.0 1372.0,523.0 L 918.0,523.0 Q 910.0,523.0 910.0,515.0 Z" fill="#7850c8" stroke="#4820a0"></path>
   </g>
 
   <!-- GRAINS & GROCERY -->
