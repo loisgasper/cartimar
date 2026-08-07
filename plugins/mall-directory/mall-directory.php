@@ -18,6 +18,11 @@ define('MALL_DIR_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('MALL_DIR_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('MALL_DIR_VERSION', '1.0.1');
 
+// How many store cards render server-side on first load; directory.js
+// renders the rest (and all search/filter results) on demand so 800+ store
+// cards and logo images aren't all pushed into the DOM up front.
+define('MALL_DIR_INITIAL_BATCH', 50);
+
 // Include required files
 require_once MALL_DIR_PLUGIN_DIR . 'includes/cpt-register.php';
 require_once MALL_DIR_PLUGIN_DIR . 'includes/metabox.php';

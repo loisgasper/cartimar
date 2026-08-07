@@ -5,6 +5,56 @@ jQuery(document).ready(function ($) {
     // ─────────────────────────────────────────────────────────
     var storesData = JSON.parse($('#storesData').text());
 
+    // How many of these were already rendered server-side (see
+    // MALL_DIR_INITIAL_BATCH in mall-directory.php) — that batch already
+    // exists as real .store-item DOM nodes, so rendering starts after it
+    // instead of duplicating them.
+    var initialRenderedCount = $('#storesList .store-item').length;
+    var BATCH_SIZE = 50;
+
+    var pinIconSVG = '<svg class="store-pin-svg" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>';
+
+    function escapeHtml(str) {
+        return String(str == null ? '' : str)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+
+    // Mirrors store-item.php — kept in sync manually since PHP renders the
+    // first batch and this renders everything after it (see
+    // initialRenderedCount above).
+    function renderStoreItem(store) {
+        var categoryIds = (store.categories || []).map(function (c) { return c.id; });
+        var thumb = store.logo
+            ? '<img src="' + escapeHtml(store.logo) + '" alt="' + escapeHtml(store.title) + '" loading="lazy" width="56" height="56">'
+            : '<div class="store-item-thumb--pin">' + pinIconSVG + '</div>';
+
+        var locationHtml = store.location
+            ? '<p class="store-item-location"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>' + escapeHtml(store.location) + '</p>'
+            : '';
+        var stallHtml = store.stall
+            ? '<p class="store-item-stall"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v6H3V3zm0 8h8v10H3V11zm10 0h8v10h-8V11z"/></svg>' + escapeHtml(store.stall) + '</p>'
+            : '';
+        var phoneHtml = store.phone
+            ? '<p class="store-item-phone"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>' + escapeHtml(store.phone) + '</p>'
+            : '';
+
+        var $item = $(
+            '<div class="store-item" ' +
+                'data-store-id="' + escapeHtml(store.id) + '" ' +
+                'data-store-name="' + escapeHtml(store.title) + '" ' +
+                'data-store-location="' + escapeHtml(store.location) + '" ' +
+                'data-store-stall="' + escapeHtml(store.stall) + '" ' +
+                'data-store-phone="' + escapeHtml(store.phone) + '" ' +
+                'data-map-area="' + escapeHtml(store.map_area) + '" ' +
+                'data-categories="' + escapeHtml(JSON.stringify(categoryIds)) + '">' +
+                '<div class="store-item-thumb">' + thumb + '</div>' +
+                '<div class="store-item-info"><h4>' + escapeHtml(store.title) + '</h4>' + locationHtml + stallHtml + phoneHtml + '</div>' +
+            '</div>'
+        );
+        return $item;
+    }
+
     // Building bounding boxes (SVG-coordinate space) used for "zoom to area"
     var areaDefs = {
         'Aqualand Alley':                           { x1: 820,  y1: 38,  x2: 934,  y2: 130  },
@@ -291,45 +341,74 @@ jQuery(document).ready(function ($) {
     }
 
     // ─────────────────────────────────────────────────────────
-    // FILTERING
+    // FILTERING + INCREMENTAL RENDER
     // ─────────────────────────────────────────────────────────
+    // With 800+ stores, keeping every card in the DOM and toggling
+    // visibility (the old approach) means 800 image requests and 800 DOM
+    // nodes on every page load. Instead: filtering runs against the
+    // storesData array (not the DOM), and only a batch of matches is
+    // rendered at a time — more render in as the user scrolls the list
+    // (see the IntersectionObserver below) or as a new filter/search runs.
+    var $storesList     = $('#storesList');
+    var $sentinel       = $('#storesListSentinel');
+    var filteredStores  = null; // null = "showing the default unfiltered/unsearched list"
+    // The initial batch already exists as server-rendered DOM nodes (see
+    // initialRenderedCount above) — start counting from there instead of
+    // re-rendering/duplicating them on first load.
+    var renderedCount   = initialRenderedCount;
+
+    function storeMatches(store) {
+        var storeArea = (store.map_area || '').toLowerCase();
+        var storeCategories = (store.categories || []).map(function (c) { return c.id; });
+
+        var filterMatch = activeFilterType === 'all' ||
+            (activeFilterType === 'location' && storeArea === activeFilterValue.toLowerCase()) ||
+            (activeFilterType === 'category' && storeCategories.indexOf(parseInt(activeFilterValue, 10)) !== -1);
+
+        // Search matches the shop name, its Building text, its Stall
+        // Number (e.g. "Stall # 4 & 5 – 18"), or its phone number — not
+        // the map area, which is the physical building/section used by
+        // the filters above, a different thing from the free-text
+        // Building/Stall Number fields.
+        var q = searchQuery.toLowerCase();
+        var srchMatch = q === '' ||
+            (store.title    || '').toLowerCase().indexOf(q) !== -1 ||
+            (store.location || '').toLowerCase().indexOf(q) !== -1 ||
+            (store.stall    || '').toLowerCase().indexOf(q) !== -1 ||
+            (store.phone    || '').toLowerCase().indexOf(q) !== -1;
+
+        return filterMatch && srchMatch;
+    }
+
+    // Renders the next BATCH_SIZE not-yet-rendered items from the active
+    // list (filteredStores when a search/filter is active, otherwise the
+    // full storesData) and appends them before the scroll sentinel.
+    function renderNextBatch() {
+        var source = filteredStores !== null ? filteredStores : storesData;
+        if (renderedCount >= source.length) return;
+
+        var next = source.slice(renderedCount, renderedCount + BATCH_SIZE);
+        var $frag = $(document.createDocumentFragment());
+        next.forEach(function (store) { $frag.append(renderStoreItem(store)); });
+        $sentinel.before($frag);
+        renderedCount += next.length;
+    }
+
+    // Re-runs the active filter/search from scratch: clears rendered cards
+    // and renders just the first batch of matches, ready to grow via
+    // renderNextBatch() as the user scrolls.
     function filterStores() {
-        var count = 0;
-        $('.store-item').each(function () {
-            var $item     = $(this);
-            var storeName     = $item.attr('data-store-name').toLowerCase();
-            var storeLocation = ($item.attr('data-store-location') || '').toLowerCase();
-            var storeStall    = ($item.attr('data-store-stall') || '').toLowerCase();
-            var storePhone    = ($item.attr('data-store-phone') || '').toLowerCase();
-            var storeArea = ($item.attr('data-map-area') || '').toLowerCase();
-            var storeCategories = [];
-            try { storeCategories = JSON.parse($item.attr('data-categories') || '[]'); } catch (e) {}
+        var isDefault = activeFilterType === 'all' && searchQuery === '';
+        filteredStores = isDefault ? null : storesData.filter(storeMatches);
 
-            var filterMatch = activeFilterType === 'all' ||
-                (activeFilterType === 'location' && storeArea === activeFilterValue.toLowerCase()) ||
-                (activeFilterType === 'category' && storeCategories.indexOf(parseInt(activeFilterValue, 10)) !== -1);
+        $storesList.find('.store-item').remove();
+        $('.no-results-found').remove();
+        renderedCount = 0;
+        renderNextBatch();
 
-            // Search matches the shop name, its Building text, its Stall
-            // Number (e.g. "Stall # 4 & 5 – 18"), or its phone number — not
-            // the map area, which is the physical building/section used by
-            // the filters above, a different thing from the free-text
-            // Building/Stall Number fields.
-            var q = searchQuery.toLowerCase();
-            var srchMatch = q === '' ||
-                storeName.indexOf(q) !== -1 ||
-                storeLocation.indexOf(q) !== -1 ||
-                storeStall.indexOf(q) !== -1 ||
-                storePhone.indexOf(q) !== -1;
-            var visible   = filterMatch && srchMatch;
-            $item.toggle(visible);
-            if (visible) count++;
-        });
-        if (count === 0) {
-            if (!$('.no-results-found').length) {
-                $('#storesList').append('<p class="no-results-found">No stores match your filters.</p>');
-            }
-        } else {
-            $('.no-results-found').remove();
+        var total = filteredStores !== null ? filteredStores.length : storesData.length;
+        if (total === 0) {
+            $storesList.append('<p class="no-results-found">No stores match your filters.</p>');
         }
     }
 
@@ -342,6 +421,15 @@ jQuery(document).ready(function ($) {
         activeFilterValue = areaName;
         $('#store-category-filter').val('');
         filterStores();
+    }
+
+    // Grow the visible list as the user scrolls near the bottom, instead of
+    // rendering all 800+ cards up front.
+    if ('IntersectionObserver' in window) {
+        var loadMoreObserver = new IntersectionObserver(function (entries) {
+            if (entries[0].isIntersecting) renderNextBatch();
+        }, { root: $storesList[0], rootMargin: '200px' });
+        loadMoreObserver.observe($sentinel[0]);
     }
 
     // ─────────────────────────────────────────────────────────

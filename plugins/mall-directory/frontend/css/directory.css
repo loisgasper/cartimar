@@ -300,6 +300,12 @@
     top: 2px;
 }
 
+/* Scroll sentinel — invisible marker the IntersectionObserver in
+   directory.js watches to load the next batch of store cards. */
+.stores-list-sentinel {
+    height: 1px;
+}
+
 /* Empty states */
 .no-stores-message,
 .no-results-found {
