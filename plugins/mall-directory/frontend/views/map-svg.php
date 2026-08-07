@@ -196,13 +196,13 @@ $map_img = esc_url(get_template_directory_uri() . '/assets/images/cartimar-map-f
   <g class="area-zone" data-area="Aqualand Center"
      tabindex="0" role="button" aria-label="Aqualand Center">
     <title>Aqualand Center</title>
-    <rect class="area-fill" x="1084" y="405" width="330" height="60" rx="8" fill="#7850c8" stroke="#4820a0"></rect>
+    <rect class="area-fill" x="1086" y="408" width="325" height="55" rx="8" fill="#7850c8" stroke="#4820a0"></rect>
   </g>
 
   <g class="area-zone" data-area="Save More Grocery Store"
      tabindex="0" role="button" aria-label="Save More Grocery Store">
     <title>Save More Grocery Store</title>
-    <path class="area-fill" d="M 910.0,383.0 L 910.0,383.0 Q 910.0,375.0 918.0,375.0 L 1202.0,375.0 Q 1210.0,375.0 1210.0,383.0 L 1210.0,422.0 Q 1210.0,430.0 1218.0,430.0 L 1372.0,430.0 Q 1380.0,430.0 1380.0,438.0 L 1380.0,515.0 Q 1380.0,523.0 1372.0,523.0 L 918.0,523.0 Q 910.0,523.0 910.0,515.0 Z" fill="#7850c8" stroke="#4820a0"></path>
+    <path class="area-fill" transform="translate(33,35)" d="M 910.0,383.0 L 910.0,383.0 Q 910.0,375.0 918.0,375.0 L 1037.0,375.0 Q 1045.0,375.0 1045.0,383.0 L 1045.0,432.0 Q 1045.0,440.0 1053.0,440.0 L 1372.0,440.0 Q 1380.0,440.0 1380.0,448.0 L 1380.0,515.0 Q 1380.0,523.0 1372.0,523.0 L 918.0,523.0 Q 910.0,523.0 910.0,515.0 Z" fill="#7850c8" stroke="#4820a0"></path>
   </g>
 
   <!-- GRAINS & GROCERY -->
