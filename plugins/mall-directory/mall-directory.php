@@ -35,7 +35,7 @@ function mall_dir_get_map_areas() {
         ['name' => 'Cartimar Villa Village 2',            'x' => 526,  'y' => 251],
         ['name' => 'Cartimar Villa Village 1 (Left)',     'x' => 867,  'y' => 251],
         ['name' => 'Pet Center',                          'x' => 1219, 'y' => 330],
-        ['name' => 'Aqualand Alley',                      'x' => 988,  'y' => 98],
+        ['name' => 'Aqualand Alley',                      'x' => 1063, 'y' => 123],
         ['name' => 'Greenland Plants and Orchids Center', 'x' => 1260, 'y' => 98],
         ['name' => 'Aqualand Center',                     'x' => 1295, 'y' => 402],
         ['name' => 'Cartimar Carpark and Fresh Food Plaza', 'x' => 179,  'y' => 630],

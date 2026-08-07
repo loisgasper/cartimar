@@ -132,7 +132,7 @@ $map_img = esc_url(get_template_directory_uri() . '/assets/images/cartimar-map-f
   <g class="area-zone" data-area="Aqualand Alley"
      tabindex="0" role="button" aria-label="Aqualand Alley">
     <title>Aqualand Alley</title>
-  <path class="area-fill" transform="translate(75,25)" d="M 935.0,58.0 L 935.0,58.0 Q 935.0,50.0 943.0,50.0 L 1062.0,50.0 Q 1070.0,50.0 1070.0,58.0 L 1070.0,121.0 Q 1070.0,129.0 1062.0,129.0 L 975.5,129.0 Q 969.0,129.0 969.0,135.5 L 969.0,135.5 Q 969.0,142.0 962.5,142.0 L 943.0,142.0 Q 935.0,142.0 935.0,134.0 Z" fill="#5aaee0" stroke="#2a7eb0"></path>
+  <path class="area-fill" d="M 1010.0,83.0 L 1010.0,83.0 Q 1010.0,75.0 1018.0,75.0 L 1137.0,75.0 Q 1145.0,75.0 1145.0,83.0 L 1145.0,146.0 Q 1145.0,154.0 1137.0,154.0 L 1055.5,154.0 Q 1049.0,154.0 1049.0,160.5 L 1049.0,160.5 Q 1049.0,167.0 1042.5,167.0 L 1018.0,167.0 Q 1010.0,167.0 1010.0,159.0 Z" fill="#5aaee0" stroke="#2a7eb0"></path>
   </g>
 
   <!-- GREENLAND PLANTS AND ORCHIDS CENTER -->
@@ -202,7 +202,7 @@ $map_img = esc_url(get_template_directory_uri() . '/assets/images/cartimar-map-f
   <g class="area-zone" data-area="Save More Grocery Store"
      tabindex="0" role="button" aria-label="Save More Grocery Store">
     <title>Save More Grocery Store</title>
-    <path class="area-fill" transform="translate(33,35)" d="M 910.0,383.0 L 910.0,383.0 Q 910.0,375.0 918.0,375.0 L 1037.0,375.0 Q 1045.0,375.0 1045.0,383.0 L 1045.0,432.0 Q 1045.0,440.0 1053.0,440.0 L 1372.0,440.0 Q 1380.0,440.0 1380.0,448.0 L 1380.0,515.0 Q 1380.0,523.0 1372.0,523.0 L 918.0,523.0 Q 910.0,523.0 910.0,515.0 Z" fill="#7850c8" stroke="#4820a0"></path>
+    <path class="area-fill" d="M 943.0,418.0 L 943.0,418.0 Q 943.0,410.0 951.0,410.0 L 1070.0,410.0 Q 1078.0,410.0 1078.0,418.0 L 1078.0,467.0 Q 1078.0,475.0 1086.0,475.0 L 1405.0,475.0 Q 1413.0,475.0 1413.0,483.0 L 1413.0,550.0 Q 1413.0,558.0 1405.0,558.0 L 951.0,558.0 Q 943.0,558.0 943.0,550.0 Z" fill="#7850c8" stroke="#4820a0"></path>
   </g>
 
   <!-- GRAINS & GROCERY -->

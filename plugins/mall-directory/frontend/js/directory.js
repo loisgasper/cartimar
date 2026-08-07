@@ -216,6 +216,13 @@ jQuery(document).ready(function ($) {
     var pinBounceEl = document.querySelector('#map-pin .map-pin__bounce');
     var pinArea     = null;
 
+    // Per-zone nudges on top of the default getBBox() placement below —
+    // for zones (like Save More Grocery Store's L-shaped notch) where the
+    // default 28%/20% offset lands somewhere awkward.
+    var pinOffsets = {
+        'Save More Grocery Store': { dx: -50, dy: 0 },
+    };
+
     function showPin(areaName) {
         var zone = findZone(areaName);
         var rect = zone && zone.querySelector('.area-fill');
@@ -228,6 +235,11 @@ jQuery(document).ready(function ($) {
         var bbox = rect.getBBox();
         var cx = bbox.x + bbox.width * 0.28;
         var cy = bbox.y + bbox.height * 0.2;
+        var offset = pinOffsets[areaName];
+        if (offset) {
+            cx += offset.dx;
+            cy += offset.dy;
+        }
         $pin.attr('transform', 'translate(' + cx + ',' + cy + ')');
         // Only replay the drop/bounce when arriving somewhere new — re-hovering
         // the area it's already sitting on shouldn't make it jitter.
