@@ -226,7 +226,9 @@
 .store-item.active .store-item-location,
 .store-item.active .store-item-phone,
 .store-item.active .store-item-location svg,
-.store-item.active .store-item-phone svg { color: #fff; fill: #fff; }
+.store-item.active .store-item-phone svg,
+.store-item.active .store-item-stall,
+.store-item.active .store-item-stall svg { color: #fff; fill: #fff; }
 
 /* Thumbnail */
 .store-item-thumb {

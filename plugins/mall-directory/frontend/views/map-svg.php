@@ -139,62 +139,64 @@ $map_img = esc_url(get_template_directory_uri() . '/assets/images/cartimar-map-f
   <g class="area-zone" data-area="Greenland Plants and Orchids Center"
      tabindex="0" role="button" aria-label="Greenland Plants and Orchids Center">
     <title>Greenland Plants and Orchids Center</title>
-    <rect class="area-fill" x="1100" y="25" width="285" height="105" rx="8" fill="#5aae6e" stroke="#2a7e4e"></rect>
+    <rect class="area-fill" x="1160" y="75" width="250" height="80" rx="8" fill="#5aae6e" stroke="#2a7e4e"></rect>
   </g>
 
   <!-- CARTIMAR VILLA VILLAGE 2 -->
   <g class="area-zone" data-area="Cartimar Villa Village 2"
      tabindex="0" role="button" aria-label="Cartimar Villa Village 2">
     <title>Cartimar Villa Village 2</title>
-<rect class="area-fill" x="355" y="165" width="345" height="112" rx="8" fill="#e8a030" stroke="#b87010"></rect>
+    <rect class="area-fill" x="405" y="190" width="385" height="130" rx="8" fill="#8860d0" stroke="#5830a0"></rect>
   </g>
 
   <!-- CARTIMAR VILLA VILLAGE 1 (LEFT) -->
   <g class="area-zone" data-area="Cartimar Villa Village 1 (Left)"
      tabindex="0" role="button" aria-label="Cartimar Villa Village 1 Left">
     <title>Cartimar Villa Village 1 (Left)</title>
-<rect class="area-fill" x="720" y="165" width="270" height="115" rx="8" fill="#8860d0" stroke="#5830a0"></rect>
+    <rect class="area-fill" x="805" y="190" width="250" height="130" rx="8" fill="#e0607a" stroke="#b03050"></rect>
   </g>
 
   <!-- CARTIMAR VILLA VILLAGE 1 (RIGHT) -->
   <g class="area-zone" data-area="Cartimar Villa Village 1 (Right)"
      tabindex="0" role="button" aria-label="Cartimar Villa Village 1 Right">
     <title>Cartimar Villa Village 1 (Right)</title>
-    <rect class="area-fill" x="1030" y="185" width="350" height="75" rx="7" fill="#e0607a" stroke="#b03050"></rect>
+    <rect class="area-fill" x="1085" y="215" width="325" height="75" rx="7" fill="#e0607a" stroke="#b03050"></rect>
   </g>
 
   <!-- PET CENTER -->
   <g class="area-zone" data-area="Pet Center"
      tabindex="0" role="button" aria-label="Pet Center">
     <title>Pet Center</title>
-    <rect class="area-fill" x="1030" y="280" width="350" height="80" rx="7" fill="#e0607a" stroke="#b03050"></rect>
+    <rect class="area-fill" x="1085" y="310" width="325" height="70" rx="7" fill="#e0607a" stroke="#b03050"></rect>
   </g>
 
   <!-- PLAZA -->
   <g class="area-zone" data-area="Plaza"
      tabindex="0" role="button" aria-label="Plaza">
     <title>Plaza</title>
-<rect class="area-fill" x="355" y="360" width="300" height="160" rx="8" fill="#3a72c8" stroke="#1a4298"></rect>
+    <rect class="area-fill" x="410" y="395" width="295" height="165" rx="8" fill="#3a72c8" stroke="#1a4298"></rect>
   </g>
 
   <!-- ADMIN -->
   <g class="area-zone" data-area="Admin"
      tabindex="0" role="button" aria-label="Admin">
     <title>Admin</title>
-<rect class="area-fill" x="672" y="360" width="80" height="160" rx="6" fill="#e06845" stroke="#b03815"></rect>  </g>
+    <rect class="area-fill" x="720" y="395" width="80" height="165" rx="6" fill="#91e4e8" stroke="#15bcbe"></rect>
+  </g>
 
   <!-- FOOD COURT -->
   <g class="area-zone" data-area="Food Court"
      tabindex="0" role="button" aria-label="Food Court">
     <title>Food Court</title>
-<rect class="area-fill" x="805" y="375" width="85" height="145" rx="6" fill="#e0607a" stroke="#b03050"></rect>  </g>
+    <rect class="area-fill" x="843" y="410" width="80" height="150" rx="6" fill="#e0607a" stroke="#b03050"></rect>
+  </g>
 
   <!-- SAVE MORE GROCERY STORE -->
   <!-- AQUALAND CENTER -->
   <g class="area-zone" data-area="Aqualand Center"
      tabindex="0" role="button" aria-label="Aqualand Center">
     <title>Aqualand Center</title>
-    <rect class="area-fill" x="1210" y="375" width="170" height="55" rx="8" fill="#7850c8" stroke="#4820a0"></rect>
+    <rect class="area-fill" x="1084" y="405" width="330" height="60" rx="8" fill="#7850c8" stroke="#4820a0"></rect>
   </g>
 
   <g class="area-zone" data-area="Save More Grocery Store"
@@ -207,34 +209,36 @@ $map_img = esc_url(get_template_directory_uri() . '/assets/images/cartimar-map-f
   <g class="area-zone" data-area="Grains &amp; Grocery"
      tabindex="0" role="button" aria-label="Grains and Grocery">
     <title>Grains &amp; Grocery</title>
-<rect class="area-fill" x="355" y="600" width="400" height="225" rx="8" fill="#e8a030" stroke="#b87010"></rect>  </g>
+    <rect class="area-fill" x="420" y="635" width="370" height="205" rx="8" fill="#e8a030" stroke="#b87010"></rect>
+  </g>
 
   <!-- CARTIMAR MAIN BUILDING -->
   <g class="area-zone" data-area="Cartimar Main Building"
      tabindex="0" role="button" aria-label="Cartimar Main Building">
     <title>Cartimar Main Building</title>
-<rect class="area-fill" x="805" y="600" width="575" height="225" rx="8" fill="#28a8a5" stroke="#007870"></rect>
+    <rect class="area-fill" x="835" y="630" width="575" height="215" rx="8" fill="#28a8a5" stroke="#007870"></rect>
   </g>
 
   <!-- CARTIMAR CARPARK AND FRESH FOOD PLAZA -->
   <g class="area-zone" data-area="Cartimar Carpark and Fresh Food Plaza"
      tabindex="0" role="button" aria-label="Cartimar Carpark and Fresh Food Plaza">
     <title>Cartimar Carpark and Fresh Food Plaza</title>
-<rect class="area-fill" x="65" y="640" width="210" height="75" rx="7" fill="#8848b8" stroke="#582888"></rect>
+    <rect class="area-fill" x="150" y="655" width="200" height="73" rx="7" fill="#8848b8" stroke="#582888"></rect>
   </g>
 
   <!-- GATEWAY UPPER -->
   <g class="area-zone" data-area="Gateway (Upper)"
      tabindex="0" role="button" aria-label="Gateway Upper">
     <title>Gateway (Upper)</title>
-<rect class="area-fill" x="1453" y="260" width="54" height="212" rx="7" fill="#9a8040" stroke="#6a5010"></rect>
+    <rect class="area-fill" x="1480" y="280" width="50" height="225" rx="7" fill="#9a8040" stroke="#6a5010"></rect>
   </g>
 
   <!-- GATEWAY LOWER -->
   <g class="area-zone" data-area="Gateway (Lower)"
      tabindex="0" role="button" aria-label="Gateway Lower">
     <title>Gateway (Lower)</title>
-<rect class="area-fill" x="1452" y="530" width="58" height="295" rx="7" fill="#9a8040" stroke="#6a5010"></rect>  </g>
+    <rect class="area-fill" x="1480" y="565" width="50" height="270" rx="7" fill="#9a8040" stroke="#6a5010"></rect>
+  </g>
 
   <!-- ══════════════════════════════════════════════════════ -->
   <!-- PIN-ONLY ZONES — parking, roads, hallway. No colour fill  -->
