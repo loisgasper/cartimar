@@ -132,7 +132,7 @@ $map_img = esc_url(get_template_directory_uri() . '/assets/images/cartimar-map-f
   <g class="area-zone" data-area="Aqualand Alley"
      tabindex="0" role="button" aria-label="Aqualand Alley">
     <title>Aqualand Alley</title>
-  <path class="area-fill" d="M 935.0,33.0 L 935.0,33.0 Q 935.0,25.0 943.0,25.0 L 1082.0,25.0 Q 1090.0,25.0 1090.0,33.0 L 1090.0,121.0 Q 1090.0,129.0 1082.0,129.0 L 985.5,129.0 Q 979.0,129.0 979.0,135.5 L 979.0,135.5 Q 979.0,142.0 972.5,142.0 L 943.0,142.0 Q 935.0,142.0 935.0,134.0 Z" fill="#5aaee0" stroke="#2a7eb0"></path>
+  <path class="area-fill" transform="translate(75,25)" d="M 935.0,58.0 L 935.0,58.0 Q 935.0,50.0 943.0,50.0 L 1062.0,50.0 Q 1070.0,50.0 1070.0,58.0 L 1070.0,121.0 Q 1070.0,129.0 1062.0,129.0 L 975.5,129.0 Q 969.0,129.0 969.0,135.5 L 969.0,135.5 Q 969.0,142.0 962.5,142.0 L 943.0,142.0 Q 935.0,142.0 935.0,134.0 Z" fill="#5aaee0" stroke="#2a7eb0"></path>
   </g>
 
   <!-- GREENLAND PLANTS AND ORCHIDS CENTER -->
