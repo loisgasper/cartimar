@@ -46,18 +46,18 @@ $map_img = esc_url(get_template_directory_uri() . '/assets/images/cartimar-map-f
       #cartimar-map-svg text { pointer-events: none; user-select: none; }
 
       /* Pin-only zones — parking, roads, the hallway. These are plain text
-         labels in the base image, not a distinct coloured block, so a
-         colour-fill highlight would look wrong sitting over plain background.
-         Still fully clickable/hoverable like any other zone (same pin-drop
-         feedback), just without the rectangle ever becoming visible. Rule
-         order matters here: this must stay below the general hover/highlight/
-         focus rules above so it wins the cascade at equal specificity. */
+         labels in the base image, not a distinct coloured block, so a full
+         colour-fill highlight would look wrong sitting over plain background —
+         a muted grey tint instead, so hover is still visible without looking
+         like a mismatched shop zone. Rule order matters here: this must stay
+         below the general hover/highlight/focus rules above so it wins the
+         cascade at equal specificity. */
       #cartimar-map-svg .area-zone--pin-only:hover      .area-fill,
       #cartimar-map-svg .area-zone--pin-only.is-highlighted .area-fill,
       #cartimar-map-svg .area-zone--pin-only:focus      .area-fill {
-        fill-opacity:   0;
-        stroke-width:   0;
-        stroke-opacity: 0;
+        fill-opacity:   .22;
+        stroke-width:    2;
+        stroke-opacity:  .6;
       }
 
       /* Pin that drops onto whichever area is currently highlighted
@@ -250,46 +250,49 @@ $map_img = esc_url(get_template_directory_uri() . '/assets/images/cartimar-map-f
   <g class="area-zone area-zone--pin-only" data-area="Road Lot &amp; Parking (Open)"
      tabindex="0" role="button" aria-label="Road Lot and Parking, Open">
     <title>Road Lot &amp; Parking (Open)</title>
-<rect class="area-fill" x="1000" y="150" width="300" height="48" fill="#888888" stroke="#555555"></rect>  </g>
+    <rect class="area-fill" x="1060" y="165" width="360" height="35" fill="#888888" stroke="#555555"></rect>
+  </g>
 
   <!-- ROAD LOT & PARKING (ROOFED) -->
   <g class="area-zone area-zone--pin-only" data-area="Road Lot &amp; Parking (Roofed)"
      tabindex="0" role="button" aria-label="Road Lot and Parking, Roofed">
     <title>Road Lot &amp; Parking (Roofed)</title>
-<rect class="area-fill" x="675" y="300" width="260" height="68" fill="#888888" stroke="#555555"></rect>
+    <rect class="area-fill" x="800" y="330" width="265" height="65" fill="#888888" stroke="#555555"></rect>
   </g>
 
   <!-- HALLWAY -->
   <g class="area-zone area-zone--pin-only" data-area="Hallway"
      tabindex="0" role="button" aria-label="Hallway">
     <title>Hallway</title>
-<rect class="area-fill" x="1070" y="265" width="340" height="24" fill="#888888" stroke="#555555"></rect>  </g>
+  <rect class="area-fill" x="1078" y="290" width="340" height="20" fill="#888888" stroke="#555555"></rect>
+  </g>
 
   <!-- CARTIMAR ROAD & PARKING (OPEN) -->
   <g class="area-zone area-zone--pin-only" data-area="Cartimar Road &amp; Parking (Open)"
      tabindex="0" role="button" aria-label="Cartimar Road and Parking, Open">
     <title>Cartimar Road &amp; Parking (Open)</title>
-<rect class="area-fill" x="325" y="300" width="330" height="68" fill="#888888" stroke="#555555"></rect>  </g>
+    <rect class="area-fill" x="400" y="330" width="395" height="55" fill="#888888" stroke="#555555"></rect>
+  </g>
 
   <!-- CARTIMAR AVE & PARKING (OPEN) — LEFT, under Plaza/Admin -->
   <g class="area-zone area-zone--pin-only" data-area="Cartimar Ave &amp; Parking (Open) (Left)"
      tabindex="0" role="button" aria-label="Cartimar Avenue and Parking, Open, left side">
     <title>Cartimar Ave &amp; Parking (Open)</title>
-<rect class="area-fill" x="325" y="545" width="379" height="71" fill="#888888" stroke="#555555"></rect>
+    <rect class="area-fill" x="410" y="565" width="395" height="60" fill="#888888" stroke="#555555"></rect>
   </g>
 
   <!-- CARTIMAR AVE & PARKING (OPEN) — RIGHT, under Food Court/Save More -->
   <g class="area-zone area-zone--pin-only" data-area="Cartimar Ave &amp; Parking (Open) (Right)"
      tabindex="0" role="button" aria-label="Cartimar Avenue and Parking, Open, right side">
     <title>Cartimar Ave &amp; Parking (Open)</title>
-<rect class="area-fill" x="805" y="540" width="560" height="71" fill="#888888" stroke="#555555"></rect>
+    <rect class="area-fill" x="835" y="565" width="585" height="55" fill="#888888" stroke="#555555"></rect>
   </g>
 
   <!-- EXISTING ROAD -->
   <g class="area-zone area-zone--pin-only" data-area="Existing Road"
      tabindex="0" role="button" aria-label="Existing Road">
     <title>Existing Road</title>
-<rect class="area-fill" x="50" y="730" width="210" height="40" fill="#888888" stroke="#555555"></rect>
+    <rect class="area-fill" x="140" y="730" width="220" height="45" fill="#888888" stroke="#555555"></rect>
   </g>
 
   <!-- ══════════════════════════════════════════════════════ -->
