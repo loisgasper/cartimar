@@ -1,0 +1,17 @@
+# Environment
+.env
+
+# WordPress uploads (large files, not version controlled)
+uploads/
+
+# WordPress core (managed by Docker)
+wp_data/
+db_data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp

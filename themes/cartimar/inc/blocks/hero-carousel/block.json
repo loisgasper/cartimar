@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "cartimar/hero-carousel",
+    "title": "Cartimar Hero Carousel",
+    "category": "media",
+    "icon": "images-alt2",
+    "description": "A full-bleed hero background that auto-cycles through images and/or videos, with fixed content (heading, search, etc.) on top.",
+    "supports": { "html": false, "anchor": true },
+    "attributes": {
+        "className": { "type": "string" }
+    },
+    "textdomain": "cartimar",
+    "editorScript": "file:./edit.js"
+}

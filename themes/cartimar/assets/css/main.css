@@ -1,0 +1,1500 @@
+/* ============================================================
+   CUSTOM PROPERTIES
+   ============================================================ */
+:root {
+    --color-dark:      var(--wp--preset--color--dark, #0d1b2a);
+    --color-dark-alt:  var(--wp--preset--color--dark-alt, #1a2a3a);
+    --color-accent:    var(--wp--preset--color--accent, #c8860a);
+    --color-accent-lt: var(--wp--preset--color--accent-light, #e8a012);
+    --color-white:     var(--wp--preset--color--white, #ffffff);
+    --color-light:     var(--wp--preset--color--light, #f7f7f9);
+    --color-lavender:  var(--wp--preset--color--lavender, #f2f0fb);
+    --color-peach:     var(--wp--preset--color--peach, #faeada);
+    --color-text:      var(--wp--preset--color--text, #2c2c2c);
+    --color-muted:     var(--wp--preset--color--muted, #666);
+    --color-border:    var(--wp--preset--color--border, #e0e0e0);
+    --color-navy:      #15005D;
+    --color-dark-blue: #0D0038;
+
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-display: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    --max-w: 1440px;
+    --nav-h: 64px;
+    --radius: 6px;
+    --transition: 0.25s ease;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background: var(--color-white);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.container {
+    width: 100%;
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 70px;
+
+    @media (max-width: 1024px) {
+        padding: 0 20px !important;
+    }
+}
+
+
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    cursor: pointer;
+    transition: all var(--transition);
+    border: 2px solid transparent;
+    white-space: nowrap;
+}
+.btn--accent {
+    background: var(--color-accent);
+    color: var(--color-white);
+    border-color: var(--color-accent);
+}
+.btn--accent:hover { background: color-mix(in srgb, var(--color-white) 70%, transparent); color: var(--color-accent); }
+
+.btn--outline-white {
+    background: transparent;
+    color: var(--color-white);
+    border-color: var(--color-white);
+}
+.btn--outline-white:hover { background: var(--color-white); color: var(--color-dark); }
+
+.section-header { text-align: center; margin-bottom: 36px; }
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 600;
+    color: var(--color-dark);
+    line-height: 1.2;
+}
+.section-title--center { text-align: center; }
+.section-title--light   { color: var(--color-white); }
+
+.section-subtitle {
+    margin-top: 10px;
+    font-size: 16px;
+    color: var(--color-muted);
+}
+
+.cart-section { padding: 80px 0; }
+
+.img-placeholder { background: #d8d8d8; min-height: 220px; border-radius: var(--radius); }
+
+/* ============================================================
+   LOGO
+   ============================================================ */
+.logo-c { color: var(--color-accent); }
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.cart-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: var(--nav-h);
+    background: #313981;
+    transition: background var(--transition), box-shadow var(--transition);
+}
+.cart-nav.scrolled {
+    background: #313981;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+
+.cart-nav__inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 70px;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+}
+
+.cart-nav__menu {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+}
+
+.cart-nav__menu li a {
+    color: var(--color-white) !important;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: var(--radius);
+    transition: background var(--transition);
+    white-space: nowrap;
+}
+
+.cart-nav__menu li a:hover,
+.cart-nav__menu li.current-menu-item a {
+    background: rgba(255,255,255,0.15);
+}
+
+.cart-nav__logo {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-white);
+    letter-spacing: -0.5px;
+}
+
+.cart-nav__logo .custom-logo-link img {
+    height: 60px;
+    width: auto;
+    display: block;
+    position: relative;
+    left: -10px;
+}
+
+.cart-nav__cta { justify-self: end; }
+.cart-nav__cta .wp-block-button__link {
+    background: var(--color-white) !important;
+    border: 1.5px solid transparent !important;
+    border-radius: 8px !important;
+    color: var(--color-dark) !important;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all var(--transition);
+}
+.cart-nav__cta .wp-block-button__link:hover { background: color-mix(in srgb, var(--color-dark) 70%, transparent) !important; color: var(--color-white) !important; }
+
+.cart-nav.scrolled .cart-nav__cta .wp-block-button__link:hover {
+    background: color-mix(in srgb, var(--color-white) 70%, transparent) !important;
+    color: var(--color-dark) !important;
+}
+
+/* Pages without a banner after the header (Find a Store, legal pages,
+   single posts…): the nav is solid #313981 on every page now, so no color
+   override is needed here — just keep the content from sitting under it.
+   The body class comes from functions.php. */
+/* The no-title template has no top padding of its own (banner pages want the
+   content flush behind the nav), so without a banner the opaque nav bar
+   would sit on top of the first block. Other templates already pad past it. */
+.no-banner-nav.page-template-page-no-title main { padding-top: var(--nav-h); }
+
+/* Nav on tablet/mobile: logo + hamburger only, nothing else.
+   WordPress core hard-codes its own nav breakpoint at 600px
+   (wp-includes/blocks/navigation/style.css) — below 1024px but above
+   that, the full desktop nav (links + Contact button) no longer fit but
+   core's hamburger hadn't appeared yet, breaking the layout. This block
+   takes over that decision for the whole 1024px-and-down range instead,
+   so the header is logo + hamburger consistently down to phone width.
+   Scoped entirely inside this media query — desktop above 1024px is
+   untouched. */
+@media (max-width: 1024px) {
+    /* The base rule's 70px side padding is a desktop-width value with no
+       existing mobile override — on a narrow phone it was eating enough
+       width to push the hamburger button past the viewport edge entirely. */
+    .cart-nav__inner { grid-template-columns: auto 1fr; padding: 0 20px; }
+    .cart-nav__inner .wp-block-buttons { display: none; }
+
+    /* The button was never given a colour of its own — it fell back to the
+       dark body-text colour and was nearly invisible against the navy nav.
+       Only ever shown below 1024px, so this can't affect anything on desktop. */
+    .cart-nav .wp-block-navigation__responsive-container-open {
+        display: flex !important;
+        color: var(--color-white);
+    }
+    .cart-nav .wp-block-navigation__responsive-container:not(.is-menu-open) {
+        display: none !important;
+    }
+    .cart-nav__menu { justify-content: flex-end !important; }
+
+    /* The opened mobile panel gets WordPress's own white background by
+       default, but the links were still inheriting the white text meant
+       for the dark desktop nav bar — invisible white-on-white. Scoped to
+       .is-menu-open only, so the desktop inline nav (dark photo behind it,
+       needs white text) is untouched — same elements, different context. */
+    .cart-nav .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content.wp-block-navigation-item__content {
+        color: #000 !important;
+    }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.cart-hero {
+    position: relative;
+    height: 700px;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-dark-alt)
+        url('../images/hero-bg.jpg') center/cover no-repeat;
+    overflow: hidden;
+}
+
+.cart-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(13,27,42,0.78) 0%, rgba(13,27,42,0.55) 100%);
+}
+
+/* Hero carousel variant: swaps the single CSS background for a stack of
+   image/video slides that crossfade via opacity, with the same dark
+   gradient overlay always on top so heading/search stay legible. */
+.cart-hero--carousel { background: var(--color-dark-alt); }
+
+.cart-hero--carousel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.cart-hero__slides {
+    position: absolute;
+    inset: 0;
+}
+
+.cart-hero__slides > * {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.cart-hero__slides > .is-active { opacity: 1; }
+
+.cart-hero__slides img,
+.cart-hero__slides video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    object-position: top;
+}
+
+.cart-hero--carousel .cart-hero__content { z-index: 2; }
+
+.cart-hero__content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 0 24px;
+    max-width: 720px;
+}
+
+/* Carousel slides vary a lot in brightness — a text-shadow plus a soft
+   radial scrim behind the content keeps the heading/search readable even
+   over light images or video, without needing a hard background box. */
+.cart-hero--carousel .cart-hero__content::before {
+    content: '';
+    position: absolute;
+    inset: -32px -24px;
+    z-index: -1;
+    background: radial-gradient(ellipse at center, rgba(13,27,42,0.55) 0%, rgba(13,27,42,0) 70%);
+}
+
+.cart-hero__heading {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 7vw, 80px);
+    font-weight: 500;
+    color: var(--color-white);
+    line-height: 1.1;
+    margin-bottom: 36px;
+    /* text-shadow: 0 2px 20px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.3); */
+}
+
+.cart-hero__search {
+    display: flex;
+    gap: 0;
+    max-width: 560px;
+    margin: 0 auto;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.cart-hero__search-input {
+    flex: 1;
+    padding: 16px 20px;
+    font-size: 15px;
+    border: none;
+    outline: none;
+    background: rgba(255,255,255,0.95);
+    color: var(--color-text);
+}
+.cart-hero__search-input::placeholder { color: #999; }
+
+.cart-hero__search .btn {
+    border-radius: 0;
+    padding: 16px 28px;
+    font-size: 15px;
+}
+
+/* Hero carousel controls: minimalist prev/next arrows + dot pagination.
+   Arrows are unobtrusive (transparent, low-opacity icon) until hovered so
+   they don't compete with the heading/search on top of the slides. */
+.cart-hero__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+.cart-hero__arrow:hover,
+.cart-hero__arrow:focus-visible { color: #fff; }
+.cart-hero__arrow--prev { left: 16px; }
+.cart-hero__arrow--next { right: 16px; }
+
+@media (max-width: 640px) {
+    .cart-hero__arrow { display: none; }
+}
+
+.cart-hero__dots {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cart-hero__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    padding: 0;
+    border: none;
+    background: rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.cart-hero__dot:hover { background: rgba(255,255,255,0.7); }
+.cart-hero__dot.is-active {
+    background: #fff;
+    transform: scale(1.2);
+}
+
+.cart-hero__search .btn:hover {
+    background-color: #2f08b6;
+    color: #fff;
+    border-color: #2f08b6;
+}
+
+.cart-hero__scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+.cart-hero__scroll-hint span {
+    display: block;
+    width: 2px;
+    height: 48px;
+    background: rgba(255,255,255,0.4);
+    margin: 0 auto;
+    animation: scrollHint 1.8s ease-in-out infinite;
+}
+@keyframes scrollHint {
+    0%, 100% { transform: scaleY(1); opacity: 0.4; }
+    50%       { transform: scaleY(0.5); opacity: 0.1; }
+}
+
+/* ============================================================
+   SHOP DIRECTORY
+   ============================================================ */
+.cart-directory { background: var(--color-white); padding: 50px; }
+
+.cart-directory .section-header { margin-bottom: 0; }
+
+/* Mall directory plugin handles its own layout — only site-level overrides here */
+.cart-directory .mall-directory-container { max-width: 100%; }
+.cart-directory .floor-plan-section { top: var(--nav-h); }
+
+/* Heading + search/filter bar in one row — the bar itself is relocated here
+   via JS (main.js), since the plugin shortcode renders it as a sibling
+   further down the DOM. Explicit grid placement (rather than plain flex)
+   keeps the title+subtitle stacked as their own column while the bar sits
+   beside them, since they're three separate direct children once relocated. */
+#directory .section-header {
+    display: grid;
+    align-items: center;
+    column-gap: 32px;
+}
+#directory > .container.wp-block-group {
+    padding: 0 20px;
+}
+#directory .section-header .section-title { grid-column: 1; grid-row: 1; }
+#directory .section-header .section-subtitle { grid-column: 1; grid-row: 2; }
+#directory .section-header .mall-directory-filters {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    padding: 0;
+    border-bottom: none;
+    margin: 0;
+}
+@media (max-width: 768px) {
+    /* Not enough room for heading + full-width search + dropdown side by
+       side on a phone — revert to plain stacked flow (DOM order: title,
+       subtitle, then the bar, since that's the order it was relocated into). */
+    #directory .section-header { display: block; }
+    #directory .section-header .mall-directory-filters { margin-top: 20px; }
+}
+
+/* ============================================================
+   SEE WHAT'S HAPPENING
+   ============================================================ */
+.cart-news {
+    position: relative;
+    padding: 80px 0;
+    height: 500px;
+    display: flex;
+    align-items: end;
+    background: var(--color-dark-alt)
+        url('../images/news-bg.jpg') center/cover no-repeat;
+}
+.cart-news__bg {
+    position: absolute;
+    inset: 0;
+}
+.cart-news .container { position: relative; z-index: 1; }
+
+.cart-news__header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.cart-news__header-left { display: flex; flex-direction: column; gap: 12px; }
+
+.cart-news__social { display: flex; gap: 12px; }
+
+.cart-news__cta .wp-block-button__link {
+    background: var(--color-white) !important;
+    border: 1.5px solid transparent !important;
+    border-radius: 8px !important;
+    color: var(--color-dark) !important;
+    font-weight: 600;
+}
+.cart-news__cta .wp-block-button__link:hover { background: color-mix(in srgb, var(--color-dark) 70%, transparent) !important; color: var(--color-white) !important; }
+
+.social-link {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    transition: opacity var(--transition);
+}
+.social-link:hover { opacity: 0.75; }
+.social-link svg { width: 100%; height: 100%; display: block; }
+
+/* The grid now always holds every fetched post in one row (up to 30 — see the
+   query's perPage in templates/home.html) and JS pages through it 3 at a
+   time via transform, rather than WordPress's own Query Pagination doing a
+   full page reload. flex-basis on each card is set in JS (see main.js),
+   sized to fit exactly N-per-page against the *viewport's* width, since a
+   percentage set here would resolve against this (much wider) track instead. */
+.cart-news__viewport { overflow: hidden; }
+.cart-news__grid .wp-block-post-template {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    transition: transform 0.4s ease;
+}
+.cart-news__grid .wp-block-post-template > li { list-style: none; flex-shrink: 0; margin-top: 0;}
+.news-card__img-link img { width: 100%; height: 100%; object-fit: cover; display: block; object-position: top;}
+
+.cart-news__slideshow-nav {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 32px;
+}
+.cart-news__slideshow-nav.is-active { display: flex; }
+.cart-news__slideshow-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: var(--color-white);
+    color: var(--color-dark);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+.cart-news__slideshow-arrow:hover:not(:disabled) { background: var(--color-dark); color: var(--color-white); border-color: var(--color-dark); }
+.cart-news__slideshow-arrow:disabled { opacity: 0.35; cursor: default; margin-block-start: 24px;}
+.cart-news__slideshow-count { font-size: 14px; color: var(--color-muted); min-width: 48px; text-align: center; }
+
+.news-card {
+    background: var(--color-white);
+    border-radius: 0;
+    overflow: hidden;
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+.news-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.15); }
+
+.news-card__img-link { display: block; }
+
+.news-card__body { padding: 20px; }
+.news-card__date { font-size: 12px; color: var(--color-muted); margin-bottom: 8px; }
+.news-card__title { font-size: 16px; font-weight: 600; line-height: 1.35; margin-bottom: 10px; }
+.news-card__title a:hover { color: var(--color-accent); }
+.news-card__excerpt { font-size: 13px; color: var(--color-muted); line-height: 1.5; margin-bottom: 14px; }
+.news-card__read-more {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.news-card__read-more:hover { color: var(--color-accent-lt); }
+
+body.blog .news-card__read-more {
+    display: none;
+}
+
+body.blog .news-card__body {
+    padding: 0;
+}
+
+body.blog .wp-block-post-title :where(a) {
+    font-size: 18px;
+    color: #121212;
+}
+
+body.blog .news-card:hover {
+    box-shadow: unset;
+}
+
+body.blog figure.news-card__img-link.wp-block-post-featured-image {
+    height: 288px !important;
+}
+
+body.blog .news-card__img-link img,
+body.blog .wp-block-post-featured-image a {
+    height: 100% !important;
+}
+
+/* ── Homepage "See What's Happening" featured teaser (1 large + 2 stacked) ── */
+.cart-news__featured-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: stretch;
+    max-height: 553px;
+}
+
+.cart-news__featured .wp-block-post-template,
+.cart-news__secondary .wp-block-post-template { margin: 0; padding: 0; list-style: none; }
+.cart-news__featured .wp-block-post-template > li { list-style: none; }
+
+.cart-news__featured .wp-block-post-template,
+.cart-news__featured .wp-block-post-template > li,
+.news-feature-card__img {
+    height: 100%;
+}
+
+.cart-news__secondary .wp-block-post-template {
+    display: flex;
+    flex-direction: column; 
+    gap: 32px;
+}
+.cart-news__secondary .wp-block-post-template > li { list-style: none; }
+
+.news-feature-card { display: flex; gap: 32px; height: 100%; overflow: hidden; }
+.news-feature-card--sm { height: calc((553px - 32px) / 2); }
+
+.news-feature-card__body {
+    flex: 0 0 36%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+.news-feature-card__title {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-dark);
+    margin: 0 0 14px 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+}
+.news-feature-card__title a { color: inherit; font-size: 20px; line-height: 26px; }
+.news-feature-card__title a:hover { color: var(--color-accent); }
+.news-feature-card__excerpt {
+    font-size: 14px;
+    color: var(--color-muted);
+    line-height: 1.6;
+    margin: 0 0 20px 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+}
+.news-feature-card__btn { align-self: flex-start; flex-shrink: 0; background: var(--color-navy); color: #fff;}
+
+.news-feature-card--sm .news-feature-card__title { font-size: 18px; margin-bottom: 8px; -webkit-line-clamp: 2; line-clamp: 2; }
+.news-feature-card--sm .news-feature-card__excerpt { margin-bottom: 14px; -webkit-line-clamp: 3; line-clamp: 3; }
+
+.news-feature-card__img { flex: 1; min-width: 0; margin: 0; height: 100%; }
+.news-feature-card__img img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0; object-position: top;}
+
+@media (max-width: 1024px) {
+    .cart-news__featured-grid { grid-template-columns: 1fr; max-height: none; }
+    .news-feature-card { height: auto; flex-direction: column; overflow: visible; }
+    .news-feature-card--sm { height: auto; }
+    .news-feature-card__body { flex: none; overflow: visible; }
+    .news-feature-card__img { height: 240px; }
+}
+
+.cart-news__featured + .cart-news__secondary {
+    margin-top: 0;
+}
+
+/* ============================================================
+   ABOUT US
+   ============================================================ */
+.cart-about-story { background: var(--color-lavender); }
+.cart-about-story .section-title { margin-bottom: 48px; }
+
+.cart-about__story {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+.cart-about__story-img {
+    height: 600px;
+}
+.cart-about__story-img .wp-block-image,
+.cart-about__story-img .wp-block-image img {
+    height: 100%;
+}
+.cart-about__story-img img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 0;
+}
+.cart-about__story-text h3 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--color-dark);
+}
+.cart-about__story-text p { color: var(--color-muted); line-height: 1.8; margin-bottom: 16px; }
+
+.cart-about-intro { background: var(--color-peach); margin-top: 0;}
+
+.cart-about__intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+}
+.cart-about__intro p { color: var(--color-text); line-height: 1.8; }
+
+.cart-about__gallery {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 12px;
+    align-items: start;
+}
+.cart-about__gallery-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.cart-about__gallery-row { display: flex; gap: 12px; height: 312px; margin-top: 0;}
+.cart-about__gallery-row .cart-about__gallery-item:first-child { flex: 7 1 0; }
+.cart-about__gallery-row .cart-about__gallery-item:last-child { flex: 3 1 0; margin-top: 0;}
+.cart-about__gallery-row--reverse .cart-about__gallery-item:first-child { flex: 3 1 0; }
+.cart-about__gallery-row--reverse .cart-about__gallery-item:last-child { flex: 7 1 0; }
+
+.cart-about__gallery-stack {
+    display: grid;
+    /* first image matches the left 2x2 grid's total height (220px * 2 + 12px gap); second image is extra, taller-column look */
+    grid-template-rows: 452px 300px;
+    gap: 12px;
+    margin-top: 0;
+}
+.cart-about__gallery-item { overflow: hidden; border-radius: 0; margin-top: 0; min-height: 0; min-width: 0;}
+.cart-about__gallery-item .wp-block-image { height: 100%; margin: 0; }
+.cart-about__gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.cart-about__closing {
+    margin-top: 12px;
+    color: var(--color-text);
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+/* ============================================================
+   HERE TO SERVE
+   ============================================================ */
+.cart-serve { background: var(--color-white); }
+
+.cart-serve__header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+    margin-bottom: 40px;
+}
+.cart-serve__header h2 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4.5vw, 44px);
+    font-weight: 600;
+    color: var(--color-dark);
+    line-height: 1.15;
+}
+.cart-serve__header p {
+    color: var(--color-muted);
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+.cart-serve__carousel { position: relative; }
+
+.cart-serve__nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 16px;
+    /* the carousel itself is now full-bleed (outside .container), but keep the
+       arrows visually aligned with the heading/text above by matching the
+       container's own side padding */
+    padding: 0 70px;
+}
+.cart-serve__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-dark);
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition);
+}
+.cart-serve__arrow:hover { background: var(--color-dark); color: var(--color-white); }
+.cart-serve__arrow:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+
+.cart-serve__viewport { overflow: hidden; border-radius: 0; padding-left: 70px; padding-right: 70px;}
+.cart-serve__track {
+    display: flex !important;
+    gap: 20px;
+    transition: transform 0.4s ease;
+}
+.cart-serve__track > .wp-block-image {
+    flex: 0 0 calc((100% - 2 * 20px) / 3.3) !important;
+    height: auto;
+    border-radius: 0;
+    overflow: hidden;
+    margin: 0;
+}
+.cart-serve__track > .wp-block-image img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0; }
+
+.cart-serve__closing {
+    max-width: 900px;
+    margin: 40px auto 0;
+    text-align: center;
+}
+.cart-serve__closing p { color: var(--color-muted); line-height: 1.8; font-size: 15px; margin-bottom: 12px; }
+
+/* ============================================================
+   75 YEARS
+   ============================================================ */
+.cart-anniversary { background: var(--color-light); }
+
+.cart-anniversary__brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--color-dark);
+}
+.anniversary-badge {
+    background: var(--color-accent);
+    color: var(--color-white);
+    font-size: 14px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+}
+
+.cart-anniversary__header {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 24px;
+}
+.cart-anniversary__logo { flex: 0 0 auto; margin: 0; }
+.cart-anniversary__logo img { display: block; width: 220px; height: auto; }
+
+.cart-anniversary__intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin: 16px 0 56px;
+    color: var(--color-muted);
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.cart-anniversary__photo { margin: 56px 0 0; }
+.cart-anniversary__photo img { display: block; width: 100%; height: 300px; object-fit: cover; border-radius: 0; }
+
+/* Desktop: hovering a year swaps which photo shows in the shared image pane
+   and highlights that year's text. The pane sticks in place while you scroll
+   through the years, only releasing once you've scrolled past the last one
+   (main.js moves each year's photo into the shared pane to make this work;
+   see the .cart-timeline__img-pane rules below). Mobile switches to a
+   tap-driven accordion instead — see the max-width:1024px block below. */
+.cart-timeline { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.cart-timeline__years { display: flex; flex-direction: column; }
+.cart-timeline__item {
+    padding: 28px 0;
+    border-top: 1px solid var(--color-border);
+    position: relative;
+}
+.cart-timeline__item:last-child { border-bottom: 1px solid var(--color-border); }
+
+/* Dot + connector line pointing at whichever year is currently active
+   (hovered, tapped, or scrolled into focus) — sits in the container's left
+   gutter so it doesn't disturb the text column. */
+.cart-timeline__item::before,
+.cart-timeline__item::after {
+    content: '';
+    position: absolute;
+    top: 46px;
+    transform: translateY(-50%);
+    background: var(--color-dark);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+/* .cart-timeline__item::before { left: -44px; width: 32px; height: 1px; }
+.cart-timeline__item::after { left: -48px; width: 8px; height: 8px; border-radius: 50%; }
+.cart-timeline__item.is-active::before,
+.cart-timeline__item.is-active::after { opacity: 1; } */
+
+.cart-timeline__year {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--color-muted);
+    margin-bottom: 12px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.cart-timeline__item p { color: var(--color-border); line-height: 1.8; font-size: 15px; transition: color 0.3s ease; }
+
+.cart-timeline__item.is-active .cart-timeline__year { color: var(--color-dark); }
+.cart-timeline__item.is-active p { color: var(--color-muted); }
+
+.cart-timeline__img-pane {
+    position: sticky;
+    top: calc(var(--nav-h) + 24px);
+    height: 100%;
+}
+.cart-timeline__item-img {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+.cart-timeline__item-img.is-active { opacity: 1; }
+.cart-timeline__item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* The timeline's hover/scroll/sticky behavior above is driven entirely by
+   front-end-only JS (main.js), which never runs inside the block editor —
+   so without an override, every year's photo sits at opacity:0 and every
+   description at a near-white text color, waiting for a JS-toggled
+   .is-active class that will never come, leaving nothing visible or
+   clickable to edit. Scoped to .editor-styles-wrapper so it only affects
+   the admin editor, never the live site: shows every year's text and
+   photo stacked normally, in document order, so the client can see and
+   click any of them directly. */
+.editor-styles-wrapper .cart-timeline { display: block; }
+.editor-styles-wrapper .cart-timeline__year { color: var(--color-dark); }
+.editor-styles-wrapper .cart-timeline__item p { color: var(--color-muted); }
+.editor-styles-wrapper .cart-timeline__item-img {
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+    margin-top: 16px;
+}
+.editor-styles-wrapper .cart-timeline__item-img img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    /* The block editor sets plain <img> elements to pointer-events:none by
+       default so clicks on them select the block instead of the image —
+       this one is the actual click target for changing the photo, so it
+       needs pointer events back. */
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+
+/* ============================================================
+   GET IN TOUCH (pre-footer CTA)
+   ============================================================ */
+.cart-contact-cta {
+    position: relative;
+    padding: 100px 0;
+    display: flex;
+    height: 600px;
+    background: var(--color-dark-alt)
+        url('../images/footer-contact.jpg') center/cover no-repeat;
+}
+.cart-contact-cta__bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(13,27,42,0.75), rgba(13,27,42,0.35));
+}
+
+footer .cart-contact-cta__bg { display: none; }
+.cart-contact-cta .container { position: relative; z-index: 1; margin-top: auto;}
+.cart-contact-cta h2 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 44px);
+    color: var(--color-white);
+    margin-bottom: 12px;
+}
+.cart-contact-cta p {
+    color: rgba(255,255,255,0.85);
+    font-size: 16px;
+    margin-bottom: 28px;
+}
+
+.cart-contact-cta__btn .wp-block-button__link {
+    background: var(--color-white) !important;
+    border: 1.5px solid transparent !important;
+    border-radius: 8px !important;
+    color: var(--color-dark) !important;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all var(--transition);
+}
+.cart-contact-cta__btn .wp-block-button__link:hover { background: color-mix(in srgb, var(--color-dark) 70%, transparent) !important; color: var(--color-white) !important; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.cart-footer {
+    background: #313981;
+    padding: 48px 70px 32px;
+    color: rgba(255,255,255,0.6);
+}
+.cart-footer__inner {
+    margin: 0 auto;
+    max-width: 1440px;
+    width: 100%;
+    padding: 0 60px;
+    @media (max-width: 1024px) {
+        padding: 0 20px !important;
+    }
+}
+.cart-footer__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px;
+    padding-bottom: 40px;
+}
+.cart-footer__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+.cart-footer__logo {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--color-white);
+}
+.cart-footer__logo img { 
+    height: 60px; 
+    width: auto; 
+}
+.cart-footer__stay-connected { font-size: 14px; font-weight: 600; color: var(--color-white); }
+.cart-footer__social { display: flex; gap: 14px; }
+
+
+/* Footer nav is a wp:navigation block, which ships its own responsive
+   collapse into a hamburger below 600px core-side — unwanted here, since
+   the footer nav is a short vertical link list, not a header menu. Force
+   the responsive container to always render open/inline regardless of
+   viewport, and hide the toggle button core would otherwise inject. */
+.cart-footer__nav .wp-block-navigation__responsive-container {
+    display: block !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    background: transparent !important;
+}
+.cart-footer__nav .wp-block-navigation__responsive-container-open,
+.cart-footer__nav .wp-block-navigation__responsive-container-close { display: none !important; }
+.cart-footer__legal .wp-block-navigation__responsive-container {
+    display: flex !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    background: transparent !important;
+}
+.cart-footer__legal .wp-block-navigation__responsive-container-open,
+.cart-footer__legal .wp-block-navigation__responsive-container-close { display: none !important; }
+
+.cart-footer__nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 18px;
+}
+.cart-footer__nav a {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.7);
+    transition: color var(--transition);
+}
+.cart-footer__nav a:hover { color: var(--color-white); }
+
+.cart-footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+.cart-footer__copy { font-size: 12px; color: rgba(255,255,255,0.4); }
+.cart-footer__legal { display: flex; gap: 24px; }
+.cart-footer__legal a { font-size: 12px; color: rgba(255,255,255,0.4); transition: color var(--transition); }
+.cart-footer__legal a:hover { color: var(--color-white); }
+
+/* ============================================================
+   GENERIC PAGE
+   ================================================.page-banner__title============ */
+.page-content { padding: 120px 0 80px; }
+.page-title {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: 32px;
+}
+
+/* ============================================================
+   SOLID PAGE BANNER (Privacy Policy, Terms and Conditions)
+   ============================================================ */
+.page-banner {
+    background: var(--color-dark-blue);
+    padding: 160px 0 40px;
+}
+.page-banner__title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 600;
+    color: var(--color-white);
+    margin-bottom: 8px;
+}
+.page-banner__meta { color: rgba(255,255,255,0.6); font-size: 14px; }
+
+.legal-content { padding: 56px 0; }
+.legal-content h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-dark);
+    margin: 32px 0 12px;
+}
+.legal-content h3:first-child { margin-top: 0; }
+.legal-content p { color: var(--color-muted); line-height: 1.8; margin-bottom: 10px; }
+.legal-content ul { color: var(--color-muted); line-height: 1.8; margin: 0 0 10px 20px; }
+
+/* ============================================================
+   CONTACT PAGE
+   ============================================================ */
+.page-hero-split {
+    position: relative;
+    height: 700px;
+    display: flex;
+    overflow: hidden;
+}
+.page-hero-split__img { flex: 1 1 50%; height: 100%; margin: 0; }
+.page-hero-split__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.page-hero-split__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(13,27,42,0.45), rgba(13,27,42,0.65));
+    display: block;
+    height: 100%;
+    margin: 0;
+    display: none;
+}
+.page-hero-split__content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 24px;
+}
+.page-hero-split__content h1 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    color: var(--color-white);
+    margin-bottom: 12px;
+}
+.page-hero-split__content p { color: rgba(255,255,255,0.85); font-size: 16px; }
+
+.contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    padding: 0 0 64px;
+}
+
+.contact-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.contact-form__field { margin-bottom: 20px; }
+.contact-form__field label { display: block; font-size: 14px; margin-bottom: 6px; color: var(--color-text); }
+.contact-form__field input,
+.contact-form__field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 14px;
+}
+.contact-form__field textarea { resize: vertical; }
+.contact-form__hp { position: absolute; left: -9999px; top: -9999px; }
+.contact-form__legal { font-size: 13px; color: var(--color-muted); margin-top: 16px; }
+.contact-form__legal a { color: var(--color-accent); }
+.contact-form__notice { padding: 14px 18px; border-radius: var(--radius); margin-bottom: 24px; font-size: 14px; }
+.contact-form__notice--success { background: #e6f4ea; color: #1e6b3a; }
+.contact-form__notice--error { background: #fbe9e7; color: #a33a2c; }
+
+.btn--dark { background: var(--color-dark); color: var(--color-white); border-color: var(--color-dark); }
+.btn--dark:hover { background: color-mix(in srgb, var(--color-white) 70%, transparent); color: var(--color-dark); }
+
+.contact-info__row { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.contact-info__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-dark);
+    color: var(--color-white);
+    flex-shrink: 0;
+}
+.contact-info__map { border-radius: 10px; overflow: hidden; margin: 8px 0 24px; }
+.contact-info__map iframe { width: 100%; height: 320px; border: 0; display: block; }
+.contact-info__social-label { font-weight: 600; margin-bottom: 12px; }
+.contact-info__social { display: flex; gap: 12px; }
+.contact-info__social .social-link { background: var(--color-dark); }
+
+/* ============================================================
+   BLOG ARCHIVE ("What's Happening")
+   ============================================================ */
+.archive-hero {
+    position: relative;
+    padding: 80px 0;
+    height: 700px;
+    display: flex;
+    align-items: center;
+    background: var(--color-dark-alt) url('../images/whats-happening-bg.jpg') center/cover no-repeat;
+}
+.archive-hero__bg { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(13,27,42,0.55), rgba(13,27,42,0.7)); display: none;}
+.archive-hero .container { position: relative; z-index: 1; text-align: center; }
+.archive-hero h1 { font-family: var(--font-display); font-size: clamp(32px, 5vw, 52px); color: var(--color-white); margin-bottom: 12px; }
+.archive-hero p { color: rgba(255,255,255,0.85); font-size: 16px; }
+
+.wp-block-query-pagination { justify-content: center; margin-top: 40px; gap: 16px; }
+.wp-block-query-pagination-numbers a,
+.wp-block-query-pagination-numbers span { padding: 6px 10px; border-radius: var(--radius); color: var(--color-muted); }
+.wp-block-query-pagination-numbers .current { background: var(--color-dark); color: var(--color-white); }
+.wp-block-query-pagination-previous,
+.wp-block-query-pagination-next { color: var(--color-dark); font-weight: 600; }
+
+/* ============================================================
+   SINGLE POST
+   ============================================================ */
+.single-post__back { display: inline-block; margin-bottom: 24px; color: var(--color-muted); font-size: 14px; }
+.single-post__back:hover { color: var(--color-accent); }
+
+.single-post__header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    margin-bottom: 40px;
+}
+.single-post__header h1 { font-family: var(--font-display); font-size: clamp(28px, 4vw, 40px); margin-bottom: 12px; }
+.single-post__date { color: var(--color-muted); font-size: 14px; }
+.single-post__image img { width: 100%; height: 360px; object-fit: cover; border-radius: 10px; object-position: top; }
+.single-post__social { display: flex; gap: 10px; margin-top: 20px; }
+
+.single-post__content { max-width: unset; width: 100%; margin: 0 auto; }
+.single-post__content p { color: var(--color-text); line-height: 1.9; margin-bottom: 18px; }
+
+.further-read { background: var(--color-lavender); padding: 56px 0; margin-top: 56px; }
+.further-read h2 { font-family: var(--font-display); font-size: 28px; margin-bottom: 32px; }
+.further-read__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+/* Further Read reuses the homepage's image+text "feature card" pattern, but
+   at its own proportions (a compact, roughly square photo beside the text)
+   rather than the homepage's tall, image-dominant layout — scoped here so it
+   doesn't touch the homepage's existing feature cards. */
+.further-read__grid .news-feature-card { height: auto; overflow: visible; }
+.further-read__grid .news-feature-card__img {
+    flex: 0 0 267px;
+    height: 267px;
+}
+.further-read__grid .news-feature-card__body { flex: 1; overflow: visible; margin-top:0;}
+.further-read__grid .news-feature-card__title { -webkit-line-clamp: unset; line-clamp: unset; width: 75%}
+
+@media (max-width: 640px) {
+    .further-read__grid .news-feature-card { flex-direction: column; }
+    .further-read__grid .news-feature-card__img { flex: none; width: 100%; height: 200px; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+    .cart-directory .mall-directory-main { grid-template-columns: 1fr; }
+    .cart-about__story { grid-template-columns: 1fr; gap: 32px; }
+    .cart-about__intro { grid-template-columns: 1fr; gap: 24px; }
+    .cart-about__gallery { grid-template-columns: 1fr; }
+    .cart-serve__header { grid-template-columns: 1fr; gap: 24px; }
+    .cart-serve__track > .wp-block-image { flex: 0 0 calc((100% - 20px) / 2.2) !important; }
+    .cart-anniversary__intro { grid-template-columns: 1fr; gap: 16px; }
+    .cart-anniversary__logo img { width: 160px; }
+    .cart-anniversary__photo img { height: 260px; }
+    /* Accordion: tapping a year (JS toggles .is-active) expands its own
+       description + photo in place; only one year is open at a time.
+       (main.js also moves each photo back inline from the desktop sticky
+       pane once the viewport drops below this breakpoint.) */
+    .cart-timeline { display: block; }
+    .cart-timeline__item::before,
+    .cart-timeline__item::after { display: none; }
+
+    .cart-timeline__year { padding-right: 32px; position: relative; }
+    .cart-timeline__year::after {
+        content: '+';
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-size: 26px;
+        font-weight: 400;
+        color: var(--color-muted);
+        transition: color 0.3s ease;
+    }
+    .cart-timeline__item.is-active .cart-timeline__year::after { content: '\2212'; color: var(--color-dark); }
+
+    .cart-timeline__item p {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        margin-top: 0;
+        transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.4s ease;
+    }
+    .cart-timeline__item.is-active p { max-height: 300px; opacity: 1; margin-top: 8px; }
+
+    .cart-timeline__item-img {
+        position: static;
+        width: 100%;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        margin-top: 0;
+        transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.4s ease;
+    }
+    .cart-timeline__item-img.is-active { max-height: 260px; opacity: 1; margin-top: 16px; }
+    .cart-timeline__item-img img { height: 260px; }
+    .contact-layout { grid-template-columns: 1fr; gap: 40px; }
+    .single-post__header { grid-template-columns: 1fr; gap: 24px; }
+    .further-read__grid .wp-block-post-template { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 1024px) {
+    .cart-hero { height: auto; min-height: 560px; padding: 140px 0 60px; }
+    .cart-directory { padding: 32px 20px; }
+    .cart-news { height: auto; padding: 60px 0; }
+    .cart-anniversary__intro { gap: 16px; }
+    .contact-layout { padding-bottom: 48px; }
+    .page-hero-split { height: 480px; }
+    .further-read__grid { grid-template-columns: 1fr; }
+    .cart-footer { padding: 40px 0 24px; }
+    .cart-serve__viewport { padding-left: 40px; padding-right: 40px; }
+    .cart-serve__nav { padding: 0 40px; }
+}
+
+@media (max-width: 768px) {
+    .container { padding: 0 20px; }
+    .cart-section { padding: 56px 0; }
+    .cart-serve__nav { padding: 0 20px; }
+    .cart-serve__viewport { padding-left: 20px; padding-right: 20px; }
+    /* Keep the search bar as a single row on mobile instead of stacking —
+       the "Find Stores" button collapses to a square icon-only button so
+       the input keeps most of the width for typing. Button label text is
+       visually hidden (not display:none) so it stays in the accessible
+       name for screen readers. */
+    .cart-hero__search { flex-direction: row; border-radius: var(--radius); overflow: hidden; }
+    .cart-hero__search-input { border-radius: 0; min-width: 0; }
+    .cart-hero__search .btn {
+        flex: 0 0 auto;
+        width: 52px;
+        padding: 0;
+        border-radius: 0;
+        position: relative;
+        font-size: 0;
+        line-height: 0;
+        color: transparent;
+    }
+    .cart-hero__search .btn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 18px;
+        height: 18px;
+        background: var(--color-white);
+        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") center/contain no-repeat;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") center/contain no-repeat;
+    }
+    .cart-news__header { flex-direction: column; align-items: flex-start; }
+    .cart-news__cta { align-self: stretch; }
+    .cart-news__cta .wp-block-button__link { width: 100%; }
+    .cart-about__gallery-row { flex-direction: column; height: auto; }
+    .cart-about__gallery-row .cart-about__gallery-item,
+    .cart-about__gallery-row--reverse .cart-about__gallery-item { flex: none; height: 220px; min-height: 220px; }
+    .cart-about__gallery-stack { grid-template-rows: 240px 200px; }
+    .cart-about__gallery-stack .cart-about__gallery-item { height: 100%; min-height: 0; }
+    .cart-about__story-img { height: auto; }
+    .cart-about__story-img img { height: 260px; }
+    .cart-serve__track > .wp-block-image { flex: 0 0 calc(100% - 20px) !important; }
+    .cart-anniversary__header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .cart-anniversary__logo img { width: 140px; }
+    .cart-anniversary__photo img { height: 200px; }
+
+    .cart-contact-cta { height: auto; padding: 64px 0; }
+    .cart-contact-cta__btn { width: 100%; }
+    .cart-contact-cta__btn .wp-block-button__link { width: 100%; }
+
+    .cart-footer { padding: 40px 20px 24px; }
+    .cart-footer__top { flex-direction: column; align-items: flex-start; gap: 28px; }
+    .cart-footer__brand { width: 100%; }
+    .cart-footer__nav { align-items: flex-start; gap: 12px; width: 100%; }
+    .cart-footer__bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .cart-footer__legal { flex-wrap: wrap; gap: 16px; }
+
+    .contact-form__row { grid-template-columns: 1fr; }
+    .page-hero-split { height: 320px; flex-direction: column; }
+    .single-post__image img { height: 240px; }
+    .archive-hero { height: auto; padding: 140px 0 48px; }
+
+    body.blog figure.news-card__img-link.wp-block-post-featured-image { height: 220px !important; }
+}
+
+@media (max-width: 480px) {
+    .cart-hero__heading { margin-bottom: 24px; }
+    .cart-footer__top,
+    .cart-footer__bottom { gap: 20px; }
+    .cart-anniversary__brand { flex-direction: column; gap: 8px; }
+    .cart-timeline__year { font-size: 28px; }
+}

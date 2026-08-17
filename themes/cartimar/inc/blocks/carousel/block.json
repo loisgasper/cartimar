@@ -1,0 +1,12 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "cartimar/carousel",
+    "title": "Cartimar Carousel",
+    "category": "media",
+    "icon": "slides",
+    "description": "A horizontal image carousel with prev/next arrows. Add, remove, or reorder images freely.",
+    "supports": { "html": false, "align": ["wide", "full"] },
+    "textdomain": "cartimar",
+    "editorScript": "file:./edit.js"
+}

@@ -1,0 +1,81 @@
+.mall-dir-metabox {
+    padding: 10px 0;
+}
+
+.mall-dir-field {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.mall-dir-field label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.logo-upload-wrapper {
+    margin-top: 10px;
+}
+
+.logo-upload-wrapper img {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.logo-upload-wrapper button {
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+.mall-dir-text-input {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 14px;
+    margin-top: 6px;
+    box-sizing: border-box;
+}
+
+.mall-dir-text-input:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.1);
+}
+
+.mall-dir-area-select {
+    width: 100%;
+    max-width: 480px;
+    padding: 7px 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+.mall-dir-area-select:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.1);
+}
+
+.mall-dir-map-picker {
+    margin-top: 20px;
+}
+
+.mall-dir-floorplan-wrapper {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    max-width: 100%;
+}
+
+.mall-dir-floorplan-wrapper svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
