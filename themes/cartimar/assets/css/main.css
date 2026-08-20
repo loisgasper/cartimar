@@ -289,7 +289,14 @@ a { color: inherit; text-decoration: none; }
 }
 
 .cart-hero__slides > * {
-    position: absolute;
+    /* !important because WordPress's own block-library editor.css ships
+       ".wp-block-image { position: relative }" at equal specificity
+       (single class selector) to this rule — whichever stylesheet loads
+       later in the cascade wins, and core's has been winning here, so the
+       slide figure never gets absolutely positioned/sized and collapses to
+       0 height. This only needs to beat that one core rule; nothing else
+       in the codebase sets position on .cart-hero__slides children. */
+    position: absolute !important;
     inset: 0;
     opacity: 0;
     transition: opacity 1s ease;
@@ -306,21 +313,30 @@ a { color: inherit; text-decoration: none; }
     object-position: top;
 }
 
-/* In the block editor, core/image renders <figure class="wp-block-image">
-   wrapping the <img>, and WordPress's own block-library editor styles set
-   ".wp-block-image img { max-width:100%; height:auto }" — equal selector
-   specificity to the rule above, loaded after it, so it wins and the image
-   collapses to its natural (non-cover) height instead of filling the slide.
-   Also sizes/positions the <figure> itself the same way .cart-hero__slides
-   > * does, since core/image's figure has no size of its own otherwise. */
-.editor-styles-wrapper .cart-hero__slides .wp-block-image,
-.editor-styles-wrapper .cart-hero__slides .wp-block-video {
-    position: absolute;
-    inset: 0;
+/* In the block editor, core/image sets "position: relative" on the
+   <figure class="wp-block-image"> via an inline style attribute (added by
+   Gutenberg's own React component for its resize-handle UI) — inline
+   styles always beat stylesheet rules regardless of !important, so this
+   figure can never be made position:absolute from CSS alone, which is what
+   the .cart-hero__slides > * rule above relies on to stack every slide on
+   top of each other (it silently loses in here, leaving slides stacked in
+   normal document flow one after another instead of overlapping).
+   Grid sidesteps the conflict entirely: every slide placed in the same
+   single cell stacks regardless of its own position value. Scoped to
+   .block-editor-block-list__layout (a class only ever present inside the
+   editor iframe, never in the front end's saved HTML) so the live site
+   keeps using its existing position:absolute stacking untouched. */
+.cart-hero__slides.block-editor-block-list__layout {
+    display: grid;
+}
+.cart-hero__slides.block-editor-block-list__layout > * {
+    grid-area: 1 / 1;
+    width: 100%;
+    height: 100%;
     margin: 0;
 }
-.editor-styles-wrapper .cart-hero__slides .wp-block-image img,
-.editor-styles-wrapper .cart-hero__slides .wp-block-video video {
+.cart-hero__slides .wp-block-image img,
+.cart-hero__slides .wp-block-video video {
     width: 100%;
     height: 100%;
     max-width: 100%;
@@ -331,21 +347,6 @@ a { color: inherit; text-decoration: none; }
        the actual click targets for changing the slide. */
     pointer-events: auto;
     cursor: pointer;
-}
-/* Always show the first slide by default, independent of the editor JS's
-   .is-active toggling — if that script fails to run/init in time (e.g.
-   jQuery not yet available inside the editor's iframe canvas), the hero
-   must not silently sit empty like the base (non-editor) opacity:0 rule
-   above would leave it. Once the JS does init, .is-carousel-init takes over
-   and .is-active drives which single slide shows instead. */
-.editor-styles-wrapper .cart-hero__slides > :first-child {
-    opacity: 1 !important;
-}
-.editor-styles-wrapper .cart-hero__slides.is-carousel-init > :first-child {
-    opacity: 0 !important;
-}
-.editor-styles-wrapper .cart-hero__slides.is-carousel-init .is-active {
-    opacity: 1 !important;
 }
 
 .cart-hero--carousel .cart-hero__content { z-index: 2; }

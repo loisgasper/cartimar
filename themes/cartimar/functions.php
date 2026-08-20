@@ -56,6 +56,22 @@ function cartimar_enqueue_editor_hero_carousel() {
 }
 add_action('enqueue_block_assets', 'cartimar_enqueue_editor_hero_carousel');
 
+// Open the block editor's List View (Document Overview) panel by default —
+// wp.data/wp.domReady live in the parent admin document, not the iframe
+// canvas, so this needs enqueue_block_editor_assets rather than
+// enqueue_block_assets (used above for the hero carousel script).
+function cartimar_enqueue_editor_list_view_default() {
+    $js_path = get_template_directory() . '/assets/js/editor-list-view-default.js';
+    wp_enqueue_script(
+        'cartimar-editor-list-view-default',
+        get_template_directory_uri() . '/assets/js/editor-list-view-default.js',
+        ['wp-data', 'wp-dom-ready'],
+        file_exists($js_path) ? filemtime($js_path) : CARTIMAR_VERSION,
+        true
+    );
+}
+add_action('enqueue_block_editor_assets', 'cartimar_enqueue_editor_list_view_default');
+
 function cartimar_register_blocks() {
     register_block_type(get_template_directory() . '/inc/blocks/carousel');
     register_block_type(get_template_directory() . '/inc/blocks/timeline');

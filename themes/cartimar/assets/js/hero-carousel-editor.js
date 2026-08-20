@@ -21,6 +21,14 @@ jQuery(function ($) {
                 return;
             }
 
+            // The editor can remount .cart-hero__slides as a fresh DOM node
+            // (e.g. on a layout-affecting re-render) while the previous
+            // instance's arrows/dots are still sitting in .cart-hero from
+            // an earlier init — .is-carousel-init lives on the (now
+            // replaced) slides node, not on .cart-hero, so it can't catch
+            // this. Clear any stale ones out before appending new ones.
+            $hero.children('.cart-hero__arrow, .cart-hero__dots').remove();
+
             var $arrowPrev = $('<button type="button" class="cart-hero__arrow cart-hero__arrow--prev" aria-label="Previous slide">' +
                 '<svg width="12" height="20" viewBox="0 0 12 20" fill="none"><path d="M10 2L2 10L10 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>');
             var $arrowNext = $('<button type="button" class="cart-hero__arrow cart-hero__arrow--next" aria-label="Next slide">' +
