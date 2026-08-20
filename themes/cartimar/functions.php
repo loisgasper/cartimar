@@ -100,35 +100,59 @@ add_filter('render_block_cartimar/hero-carousel-slides', 'cartimar_hero_carousel
 // Hero carousel videos must always play the exact file the client uploaded —
 // force each <video> src back to wp_get_attachment_url() for its attachment
 // ID so no cached/older URL or alternate copy can ever be served instead.
+//
+// Each core/video inner block is located and replaced by its own attachment
+// ID rather than by counting <video src="..."> matches across the whole
+// block's HTML: core/video doesn't always put src on the <video> tag itself
+// (it can render as <video controls><source src="..."></video> depending on
+// attrs), and a shared counter that only advances on a regex match will drift
+// out of sync with the inner block list the moment one slide's markup misses
+// that match — silently reassigning a later slide's URL to an earlier slide.
 function cartimar_hero_carousel_force_original_video_src($block_content, $block) {
     if (($block['blockName'] ?? '') !== 'cartimar/hero-carousel-slides') {
         return $block_content;
     }
-    $original_urls = array();
-    foreach (($block['innerBlocks'] ?? []) as $inner_block) {
-        if (($inner_block['blockName'] ?? '') !== 'core/video') {
-            continue;
+    $video_blocks = array_values(array_filter(
+        $block['innerBlocks'] ?? [],
+        function ($inner_block) {
+            return ($inner_block['blockName'] ?? '') === 'core/video';
         }
-        $attachment_id = $inner_block['attrs']['id'] ?? 0;
-        $original_url = $attachment_id ? wp_get_attachment_url($attachment_id) : false;
-        $original_urls[] = $original_url ?: null;
-    }
-    if (empty($original_urls)) {
+    ));
+    if (empty($video_blocks)) {
         return $block_content;
     }
-    $video_index = 0;
-    return preg_replace_callback(
-        '/(<video\b[^>]*\bsrc=")[^"]*(")/i',
-        function ($matches) use (&$video_index, $original_urls) {
-            $url = $original_urls[$video_index] ?? null;
-            $video_index++;
-            if (!$url) {
-                return $matches[0];
-            }
-            return $matches[1] . esc_url($url) . $matches[2];
-        },
-        $block_content
-    );
+
+    // <video>…</video> per slide, matched one-to-one with $video_blocks in
+    // document order (core/video always renders exactly one <video> element).
+    $video_tags = array();
+    preg_match_all('/<video\b[^>]*>.*?<\/video>/is', $block_content, $video_tags);
+    $video_tags = $video_tags[0];
+
+    if (count($video_tags) !== count($video_blocks)) {
+        return $block_content;
+    }
+
+    foreach ($video_blocks as $i => $inner_block) {
+        $attachment_id = $inner_block['attrs']['id'] ?? 0;
+        $original_url = $attachment_id ? wp_get_attachment_url($attachment_id) : false;
+        if (!$original_url) {
+            continue;
+        }
+        $replaced_tag = preg_replace(
+            '/\bsrc="[^"]*"/i',
+            'src="' . esc_url($original_url) . '"',
+            $video_tags[$i],
+            1
+        );
+        $block_content = substr_replace(
+            $block_content,
+            $replaced_tag,
+            strpos($block_content, $video_tags[$i]),
+            strlen($video_tags[$i])
+        );
+    }
+
+    return $block_content;
 }
 add_filter('render_block_cartimar/hero-carousel-slides', 'cartimar_hero_carousel_force_original_video_src', 10, 2);
 
