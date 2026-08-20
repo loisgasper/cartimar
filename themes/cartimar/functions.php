@@ -31,6 +31,31 @@ function cartimar_enqueue() {
 }
 add_action('wp_enqueue_scripts', 'cartimar_enqueue');
 
+// The hero carousel's slide-switching (crossfade, arrows, dots, autoplay) is
+// driven entirely by main.js, which only loads on the front end — so without
+// this, the editor preview shows an empty hero (see main.css's
+// .editor-styles-wrapper .cart-hero__slides rule for the CSS-only fallback
+// this complements). Loading main.js itself here isn't safe: it also wires
+// up unrelated front-end-only behavior (nav scroll, directory search
+// DOM relocation, anchor-click hijacking) against `document`, which can
+// conflict with the block editor's own DOM and event handling. This is a
+// standalone copy of just the carousel logic instead.
+// enqueue_block_assets (unlike enqueue_block_editor_assets) is mirrored by
+// WordPress into the post/site editor's iframe canvas, which is where
+// .cart-hero__slides actually lives — the parent admin document never sees it.
+function cartimar_enqueue_editor_hero_carousel() {
+    if (!is_admin()) return;
+    $js_path = get_template_directory() . '/assets/js/hero-carousel-editor.js';
+    wp_enqueue_script(
+        'cartimar-hero-carousel-editor',
+        get_template_directory_uri() . '/assets/js/hero-carousel-editor.js',
+        ['jquery'],
+        file_exists($js_path) ? filemtime($js_path) : CARTIMAR_VERSION,
+        true
+    );
+}
+add_action('enqueue_block_assets', 'cartimar_enqueue_editor_hero_carousel');
+
 function cartimar_register_blocks() {
     register_block_type(get_template_directory() . '/inc/blocks/carousel');
     register_block_type(get_template_directory() . '/inc/blocks/timeline');

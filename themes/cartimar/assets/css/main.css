@@ -306,6 +306,48 @@ a { color: inherit; text-decoration: none; }
     object-position: top;
 }
 
+/* In the block editor, core/image renders <figure class="wp-block-image">
+   wrapping the <img>, and WordPress's own block-library editor styles set
+   ".wp-block-image img { max-width:100%; height:auto }" — equal selector
+   specificity to the rule above, loaded after it, so it wins and the image
+   collapses to its natural (non-cover) height instead of filling the slide.
+   Also sizes/positions the <figure> itself the same way .cart-hero__slides
+   > * does, since core/image's figure has no size of its own otherwise. */
+.editor-styles-wrapper .cart-hero__slides .wp-block-image,
+.editor-styles-wrapper .cart-hero__slides .wp-block-video {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+}
+.editor-styles-wrapper .cart-hero__slides .wp-block-image img,
+.editor-styles-wrapper .cart-hero__slides .wp-block-video video {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    object-position: top;
+    /* The block editor sets plain <img>/<video> to pointer-events:none by
+       default so clicks select the block instead of the media — these are
+       the actual click targets for changing the slide. */
+    pointer-events: auto;
+    cursor: pointer;
+}
+/* Always show the first slide by default, independent of the editor JS's
+   .is-active toggling — if that script fails to run/init in time (e.g.
+   jQuery not yet available inside the editor's iframe canvas), the hero
+   must not silently sit empty like the base (non-editor) opacity:0 rule
+   above would leave it. Once the JS does init, .is-carousel-init takes over
+   and .is-active drives which single slide shows instead. */
+.editor-styles-wrapper .cart-hero__slides > :first-child {
+    opacity: 1 !important;
+}
+.editor-styles-wrapper .cart-hero__slides.is-carousel-init > :first-child {
+    opacity: 0 !important;
+}
+.editor-styles-wrapper .cart-hero__slides.is-carousel-init .is-active {
+    opacity: 1 !important;
+}
+
 .cart-hero--carousel .cart-hero__content { z-index: 2; }
 
 .cart-hero__content {
