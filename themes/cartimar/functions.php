@@ -328,3 +328,11 @@ add_filter('render_block_core/group', function ($block_content, $block) {
     }
     return '<div class="wp-block-group further-read__grid">' . cartimar_further_read_shortcode() . '</div>';
 }, 10, 2);
+
+// Force every avatar (admin bar, profile page, comments, user lists) to show
+// the Cartimar logo instead of hitting Gravatar, regardless of the user's
+// registered Gravatar image.
+function cartimar_force_logo_avatar_url($url, $id_or_email, $args) {
+    return get_template_directory_uri() . '/assets/images/cartimar-new-logo.png';
+}
+add_filter('get_avatar_url', 'cartimar_force_logo_avatar_url', 10, 3);
