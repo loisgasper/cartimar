@@ -1517,7 +1517,11 @@ footer .cart-contact-cta__bg { display: none; }
     .cart-about__gallery-stack .cart-about__gallery-item { height: 100%; min-height: 0; }
     .cart-about__story-img { height: auto; }
     .cart-about__story-img img { height: 260px; }
-    .cart-serve__track > .wp-block-image { flex: 0 0 calc(100% - 20px) !important; }
+    /* Client wants exactly one item fully visible per slide on mobile — no
+       peek of the next/previous image (unlike desktop/tablet, which show a
+       partial next item by design). flex-basis: 100% of the viewport's own
+       padded content box, with no held-back peek offset in the JS below. */
+    .cart-serve__track > .wp-block-image { flex: 0 0 100% !important; }
     .cart-anniversary__header { flex-direction: column; align-items: flex-start; gap: 16px; }
     .cart-anniversary__logo img { width: 140px; }
     .cart-anniversary__photo img { height: 200px; }
@@ -1534,7 +1538,8 @@ footer .cart-contact-cta__bg { display: none; }
     .cart-footer__legal { flex-wrap: wrap; gap: 16px; }
 
     .contact-form__row { grid-template-columns: 1fr; }
-    .page-hero-split { height: 320px; flex-direction: column; }
+    .page-hero-split { height: 320px;}
+    .page-hero-split__img img { object-position: 45%;}
     .single-post__image img { height: 240px; }
     .archive-hero { height: auto; padding: 140px 0 48px; }
 

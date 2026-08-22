@@ -133,7 +133,12 @@ jQuery(function ($) {
         var index = 0;
 
         function itemStep() {
-            return $items.eq(0).outerWidth(true);
+            // outerWidth(true) includes the item's own margin but not the
+            // track's flex `gap` — without adding that back in, each step
+            // undershoots by one gap's worth, leaving a sliver of the
+            // previous/next item visible instead of a clean single slide.
+            var gap = parseFloat($track.css('gap')) || 0;
+            return $items.eq(0).outerWidth(true) + gap;
         }
 
         // The real ceiling on how far the track can scroll, i.e. how far past
@@ -153,8 +158,11 @@ jQuery(function ($) {
             // Once the user moves forward, hold back part of a step so the previous
             // image's edge peeks in on the left, same as the next image already
             // peeks in on the right.
+            // On mobile each slide is 100% of the viewport (see main.css) —
+            // one full item per slide, no peek of its neighbours.
             var step = itemStep();
-            var peek = step * 0.25;
+            var isMobile = window.matchMedia('(max-width: 640px)').matches;
+            var peek = isMobile ? 0 : step * 0.25;
             var rawOffset = index === 0 ? 0 : (index * step - peek);
             var max = maxOffset();
             var offset = Math.min(Math.max(rawOffset, 0), max);
