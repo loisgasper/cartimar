@@ -310,17 +310,49 @@ jQuery(function ($) {
         });
     });
 
-    // Fade-in sections on scroll
-    var $sections = $('section');
-    function checkVisible() {
-        $sections.each(function () {
-            var top = $(this).offset().top;
-            var scrollBottom = $(window).scrollTop() + $(window).height();
-            if (scrollBottom > top + 80 && !$(this).hasClass('visible')) {
-                $(this).addClass('visible');
-            }
-        });
+    // Reveal each top-level content section with a smooth fade/slide-up as
+    // it scrolls into view (CSS transition lives on .reveal, toggled by
+    // .is-visible — see main.css). Same pass also swaps in any section's
+    // deferred CSS background-image (.is-bg-loaded — see main.css) once
+    // it's about to be scrolled into view, so off-screen background photos
+    // aren't fetched on initial page load. .cart-hero and .archive-hero are
+    // excluded — they're the first thing visible on page load (above the
+    // fold), so hiding them pre-JS/pre-scroll would just cause a flash.
+    var $revealSections = $(
+        '.cart-directory, .cart-news, .cart-about-story, ' +
+        '.cart-about-intro, .cart-serve, .cart-anniversary, .cart-contact-cta, ' +
+        '.cart-section'
+    ).addClass('reveal');
+
+    if ('IntersectionObserver' in window) {
+        var revealObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible', 'is-bg-loaded');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+        $revealSections.each(function () { revealObserver.observe(this); });
+    } else {
+        // No IntersectionObserver support: just show everything, no reveal animation.
+        $revealSections.addClass('is-visible is-bg-loaded');
     }
-    $(window).on('scroll', checkVisible);
-    checkVisible();
+
+    // About Us nav active state: unlike the other nav links, "About Us"
+    // points at #about — a same-page anchor on the homepage, not a
+    // separate page load — so it can't be marked active by a body class
+    // the way Home/Find a Store/etc. are (see main.css). Toggles .is-active
+    // on both header and footer "About Us" links while that section is
+    // scrolled into view.
+    var $aboutSection = $('#about');
+    var $aboutLinks = $('.cart-nav__menu a[href="/#about"], .cart-footer__nav a[href="/#about"]');
+    if ($aboutSection.length && $aboutLinks.length && 'IntersectionObserver' in window) {
+        var aboutObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                $aboutLinks.toggleClass('is-active', entry.isIntersecting);
+            });
+        }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+        aboutObserver.observe($aboutSection[0]);
+    }
 });
